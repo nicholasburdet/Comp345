@@ -15,8 +15,6 @@ public:
 	baseItem(itemType type, bonus enhancement);
 	~baseItem();
 
-	
-
 	virtual bonus getEnhancement();
 
 	itemType getType();
@@ -24,6 +22,7 @@ public:
 private:
 	bonus enhancement;
 	itemType type;
+	int id;
 
 
 };

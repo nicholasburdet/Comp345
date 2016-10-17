@@ -6,6 +6,7 @@ baseItem::baseItem(itemType type, bonus enhancement)
 {
 	(*this).type = type;
 	(*this).enhancement = enhancement;
+	this->id = 0;
 }
 
 

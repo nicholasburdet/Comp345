@@ -34,7 +34,7 @@ std::vector<std::shared_ptr<baseItem>> itemContainer::getItemList(){
 int itemContainer::addItemList(std::vector<std::shared_ptr<baseItem>> itemList){
 	int position = this->items.size() - 1;
 	
-	this->items.insert(itemList);
+	this->items.insert(items.begin(), itemList.begin(), itemList.end());
 
 	return position;
 };
