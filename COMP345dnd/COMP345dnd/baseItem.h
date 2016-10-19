@@ -12,7 +12,10 @@ public:
 		int amount;//int below 5
 	};
 
-	baseItem(itemType type, bonus enhancement);
+	baseItem(itemType type, bonus enhancement, int id = -1);
+
+	baseItem(itemType type, BonusType bType, int bonusAmount, int id = -1);
+
 	~baseItem();
 
 	virtual bonus getEnhancement();

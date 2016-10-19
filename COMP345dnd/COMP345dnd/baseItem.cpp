@@ -2,11 +2,17 @@
 #include "baseItem.h"
 
 
-baseItem::baseItem(itemType type, bonus enhancement)
+baseItem::baseItem(itemType type, bonus enhancement, int id)
 {
 	(*this).type = type;
 	(*this).enhancement = enhancement;
-	this->id = 0;
+	this->id = id < 0 ? rand() : id;
+}
+
+baseItem::baseItem(itemType type, BonusType bType, int bonusAmount, int id){
+	this->type = type;
+	this->enhancement = bonus{ bType, bonusAmount };
+	this->id = id < 0 ? rand() : id;
 }
 
 

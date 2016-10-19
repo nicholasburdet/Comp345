@@ -5,21 +5,23 @@
 #include <vector>
 #include <memory>
 
-class itemContainer
+class ItemContainer
 {
 public:
-	itemContainer();
-	~itemContainer();
+	ItemContainer();
+	~ItemContainer();
 
 
-	int addItem(std::shared_ptr<baseItem> item);
+	virtual int addItem(std::shared_ptr<baseItem> item);
 
 	std::shared_ptr<baseItem> getItem(int position);
+
+	std::shared_ptr<baseItem> getType(baseItem::itemType type);
 
 	std::vector<std::shared_ptr<baseItem>> getItemList();
 
 
-	int addItemList(std::vector<std::shared_ptr<baseItem>> itemList);
+	virtual int addItemList(std::vector<std::shared_ptr<baseItem>> itemList);
 
 private:
 	std::vector<std::shared_ptr<baseItem>> items;
