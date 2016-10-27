@@ -22,9 +22,14 @@ on screen so the user can view the whole map at once while editing.
 #include <QGraphicsPixmapItem>
 #include <QtWidgets>
 #include <QInputDialog>
-
+#include <QObject>
 
 editscreen::editscreen(char n[])
+{
+	createMenus();
+}
+
+void editscreen::editMap()
 {
 	bool ok1;
 	bool ok2;
@@ -35,17 +40,27 @@ editscreen::editscreen(char n[])
 	int height = 4;
 	int resolution = 50;
 	int minimumXRes = 7;
+	int addedHeight = 20;
+	
+	//NEW
+	int minimumWidth = 1;
+	int minimumHeight = 1;
 
 	int newOrLoad = 0;
 	log = new logic;
 
-	newOrLoad = QInputDialog::getInt(this, "New Map (0) or Load Map (1)", tr("Choose:"), 0, 0, 1, 1, &ok3);
+	newOrLoad = QInputDialog::getInt(this, "=Map Editor=", tr("New Map (0) or Load Map (1)"), 0, 0, 1, 1, &ok3);
 
 	if (newOrLoad == 0)
 	{
 		//should have default wid/hei and values for int values below
-		width = QInputDialog::getInt(this, "Enter the width", tr("Width:"), width, width, 100, 1, &ok1);
-		height = QInputDialog::getInt(this, "Enter the height", tr("Height:"), height, height, 100, 1, &ok2);
+		width = QInputDialog::getInt(this, "==Width==", tr("Enter the width:"), minimumWidth, minimumWidth, 100, 1, &ok1);
+		if (width < 4)
+		{
+			//This was added to check in case we want to make hallways
+			minimumHeight = minimumHeight + (4 - width);
+		}
+		height = QInputDialog::getInt(this, "=Height=", tr("Enter the height:"), minimumHeight, minimumHeight, 100, 1, &ok2);
 		log->initialize(width, height);
 	}
 	else
@@ -59,14 +74,19 @@ editscreen::editscreen(char n[])
 	log->setResolution(resolution);
 
 	setCentralWidget(log);
-	setWindowTitle(tr(n));
+	setWindowTitle(tr("Edit Map"));
 	int windowResX = width*resolution;
 	if (width < minimumXRes)
 	{
 		windowResX = minimumXRes*resolution;
 	}
 
-	resize(windowResX, (height*resolution)+resolution*2);
+	//resize(windowResX, (height*resolution)+(resolution*2)+addedHeight);
+
+	//This code allows it so the window cannot be resized
+	this->setFixedWidth(windowResX);
+	this->setFixedHeight((height*resolution) + (resolution * 3) + addedHeight);
+	
 }
 
 int editscreen::checkResolution(int w, int h)
@@ -114,4 +134,24 @@ int editscreen::checkResolution(int w, int h)
 	
 }
 
+void editscreen::closeEvent(QCloseEvent *event)
+{
+	
+}
+bool editscreen::getWindowOpen()
+{
+	return log->getWindowOpen();
+}
+
+void editscreen::createMenus()
+{
+	editMapAction = new QAction(tr("&Edit Map"), this);
+	connect(editMapAction, SIGNAL(triggered()), this, SLOT(editMap()));
+
+	editMenu = new QMenu(tr("&Edit"), this);
+	editMenu->addAction(editMapAction);
+
+	menuBar()->addMenu(editMenu);
+
+}
 

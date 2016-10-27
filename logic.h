@@ -14,6 +14,7 @@ Logic header file
 #include <QWidget>
 #include "MapScreen.h"
 #include <string>
+#include <QMessageBox>
 
 using namespace std;
 
@@ -27,6 +28,7 @@ class logic : public QWidget
 		void loadMap();
 		int getWidth();
 		int getHeight();
+		bool getWindowOpen();
 	protected:
 		void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 		void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
@@ -35,6 +37,7 @@ class logic : public QWidget
 	private:
 		QPoint lastPoint = QPoint(0,0);
 		QImage image;
+		QMessageBox message;
 
 		//flag to invoke fullscreen painter and initialization (also incase contents of screen disappear)
 		bool start = true;
@@ -52,9 +55,13 @@ class logic : public QWidget
 		//This will be the mode checking for tiles
 		int mode = 1; 
 		
+		//This will be in coupling with the mode, the determining factor for the NPC
+		int npcId = 0;
+
 		//flags to indicate the user is drawing entrance or exit
 		bool drawStart = false; 
 		bool drawEnd = false;
+		bool drawNPC = false;
 
 		//flag to check path status
 		bool checkStatus = true;
@@ -71,6 +78,8 @@ class logic : public QWidget
 		
 		int wid;
 		int hei;
+
+		bool windowOpen = true;
 };
 
 #endif

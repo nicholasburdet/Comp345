@@ -8,6 +8,7 @@ Map Screen header file
 */
 
 #pragma once
+#include "character.h"
 
 //Space structure will eventually evolve to a class object that will accomodate characters/objects
 //occupying the space. For the sake of this assignment, it is assumed that 4 spaces exist (entance,
@@ -15,6 +16,7 @@ Map Screen header file
 struct Space
 {
 	bool passable = true;
+	bool occupied = false;
 };
 
 class MapScreen
@@ -34,12 +36,23 @@ public:
 	void setEndY(int y);
 	bool isPassable();
 	bool isPassable(int x, int y);
+	bool isOccupied(int x, int y);
+	void setOccupied(int x, int y, bool pass);
 	void setPassable(int x, int y, bool pass);
+	int getNumberOfDistinctNPCs();
+	int getNumberOfNPCs();
 	bool checkExit();
 	int getMaxX();
 	int getMaxY();
 	void saveToFile();
 	void loadFromFile();
+	void loadNPCs();
+	bool addNPC(int id, int xPos, int yPos);
+	void removeNPC(int xPos, int yPos);
+	character characterTable[10]; //This is a table that holds each individual different type of NPC (for reference)
+	character characterEntities[100]; //This is a table of NPCS that exist on the map
+	
+
 private:
 	//current X and Y can be used for the player location (?)
 	//currently unused, to be used in later iterations
@@ -56,5 +69,10 @@ private:
 	//map size in x and y
 	int maxX;
 	int maxY;
+	
+	//Number of NPCs on the map
+	int numberOfNPCs = 0;
+	int numberOfDistinctNPCs = 0; //This is just for id tracking
+	
 };
 #pragma once

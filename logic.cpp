@@ -18,18 +18,17 @@ NOTE: Mouse click and painter methods could be broken down into smaller methods 
 complexity.
 */
 
-
 #include <QtWidgets>
 #include <QDebug>
 #include <QPainter>
 #include <QPixmap>
 #include "logic.h"
-#include <QMessageBox>
+
 
 
 logic::logic(QWidget *parent) : QWidget(parent)
 {
-	
+	ms.loadNPCs();
 }
 void logic::initialize(int w, int h)
 {
@@ -93,22 +92,39 @@ void logic::mousePressEvent(QMouseEvent *event)
 			}
 			else
 			{
+				rect = QRect(currentX, currentY, resolution + 1, resolution + 1);
 				//Currently, modes establish the brush the user is currently using
 				//Functionality for later should be to highlight which box user has clicked
 				//But for the moment this highlight is scoped out
 				if (mode == 1) {
 					//Mode 1 is grass
 					ms.setPassable(currentX / resolution, currentY / resolution, true);
+					if (ms.isOccupied(currentX / resolution, currentY / resolution))
+					{
+						ms.removeNPC(currentX / resolution, currentY / resolution);
+					}
+					update(rect);
+					clicked = true;
 				}
 				if (mode == 2) {
 					//Mode 2 is dirt (wall)
 					ms.setPassable(currentX / resolution, currentY / resolution, false);
+					if (ms.isOccupied(currentX / resolution, currentY / resolution))
+					{
+						ms.removeNPC(currentX / resolution, currentY / resolution);
+					}
+					update(rect);
+					clicked = true;
 				}
 				if (mode == 3) {
 					//Mode 3 is start/entrance
 					//Only one entrance can exist for now, so it when it applied, a grass/default
 					//tile replaces to original space
 					drawStart = true;
+					if (ms.isOccupied(currentX / resolution, currentY / resolution))
+					{
+						ms.removeNPC(currentX / resolution, currentY / resolution);
+					}
 					rect = QRect(ms.getStartX()*resolution, ms.getStartY()*resolution, resolution+1, resolution+1);
 					oldStartX = ms.getStartX()*resolution;
 					oldStartY = ms.getStartY()*resolution;
@@ -116,12 +132,20 @@ void logic::mousePressEvent(QMouseEvent *event)
 					ms.setPassable(currentX / resolution, currentY / resolution, true);
 					ms.setStartX(currentX / resolution);
 					ms.setStartY(currentY / resolution);
+
+					rect = QRect(ms.getStartX()*resolution, ms.getStartY()*resolution, resolution + 1, resolution + 1);
+					clicked = true;
+					update(rect);
 				}
 				if (mode == 4) {
 					//Mode 4 is end/exit
 					//Only one exit can exist for now, so it when it applied, a grass/default
 					//tile replaces to original space
 					drawEnd = true;
+					if (ms.isOccupied(currentX / resolution, currentY / resolution))
+					{
+						ms.removeNPC(currentX / resolution, currentY / resolution);
+					}
 					rect = QRect(ms.getEndX()*resolution, ms.getEndY()*resolution, resolution+1, resolution+1);
 					oldEndX = ms.getEndX()*resolution;
 					oldEndY = ms.getEndY()*resolution;
@@ -129,11 +153,27 @@ void logic::mousePressEvent(QMouseEvent *event)
 					ms.setPassable(currentX / resolution, currentY / resolution, true);
 					ms.setEndX(currentX / resolution);
 					ms.setEndY(currentY / resolution);
+					
+					rect = QRect(ms.getEndX()*resolution, ms.getEndY()*resolution, resolution + 1, resolution + 1);
+					clicked = true;
+					update(rect);
 				}
-				//This is to update just the tile clicked, not everything else
-				rect = QRect(currentX, currentY, resolution+1, resolution+1);
-				clicked = true;
-				update(rect);
+				if (mode == 5) {
+					//Mode 5 is NPC generation
+					if(ms.isPassable(currentX/resolution, currentY/resolution))
+					{
+						if (npcId < ms.getNumberOfDistinctNPCs())
+						{
+							if (ms.isOccupied(currentX / resolution, currentY / resolution))
+							{
+								ms.removeNPC(currentX / resolution, currentY / resolution);
+							}
+							ms.addNPC(npcId, currentX / resolution, currentY / resolution);
+							drawNPC = true;
+							update(rect);
+						}
+					}
+				}
 			}
 		}
 
@@ -172,7 +212,32 @@ void logic::mousePressEvent(QMouseEvent *event)
 		else if (currentX == resolution * 6 && currentY == (ms.getMaxY() * resolution) + resolution)
 		{
 			//Saves current map to file (currently overwrites current file, 1 file limit at this time)
-			ms.saveToFile();
+			if (ms.checkExit())
+			{
+				//Checks to see if path exists, will only save valid maps
+				message.setText("Map has been successfully saved.");
+				message.exec();
+				ms.saveToFile();
+				start = true;
+				update();
+			}
+			else
+			{
+				message.setText("Path to exit does not exist. Map was not saved.");
+				message.exec();
+				start = true;
+				update();
+			}
+		}
+		else if (currentY == (ms.getMaxY() * resolution) + resolution*2)
+		{
+			//Changes current tile to enemy ADDED 27/10/16
+			//This will check which Id is being used to grab the right image from the list
+			npcId = currentX / resolution;
+			string im = ms.characterTable[npcId].getImage();
+			const char * c = im.c_str();
+			currentTile = QPixmap(c);
+			mode = 5;
 		}
 	}
 }
@@ -189,7 +254,14 @@ void logic::paintEvent(QPaintEvent *event)
 	QPixmap checkButton("Images/button.png");
 	QPixmap errorButton("Images/redbutton.jpg");
 	QPixmap saveButton("Images/save.png");
+	//QPixmap menu("Images/menu.png");
 	//QPixmap loadButton("C:/Users/Nick/Desktop/Images/load.png");
+
+	QPixmap orc("Images/orc.png");
+	QPixmap ogre("Images/ogre.png");
+	QPixmap minotaur("Images/minotaur.png");
+
+	QPixmap background("Images/background.jpg");
 
 	QPainter painter(this);
 	//Start section draws the grid on screen (based on resolution) as well as all tiles on screen based off
@@ -198,7 +270,18 @@ void logic::paintEvent(QPaintEvent *event)
 	{
 		int xRes = ms.getMaxX() * resolution;
 		int yRes = ms.getMaxY() * resolution;
-		
+
+		int minX;
+
+		if (ms.getMaxX() < 7)
+		{
+			minX = 7;
+		}
+		else
+		{
+			minX = ms.getMaxX();
+		}
+		painter.drawPixmap(0, 0, minX*resolution, ((ms.getMaxY()*resolution)+(resolution * 3) + 20), background);
 		//Builds the tiles onto the screen from the map object. As of right now, there are only 4 tiles that exist
 		//for the map. Grass->passable, Dirt->not passable, Entrance and Exit.
 		//Will have to be reworked to incorporate larger sprite sets and the addition of items and enemies on the map
@@ -228,6 +311,27 @@ void logic::paintEvent(QPaintEvent *event)
 			}
 		}
 
+		//Paints NPCs onto screen
+		int max = ms.getNumberOfNPCs();
+		int count = 0;
+		int index = 0;
+		qDebug() << max << " < Number of NPCs";
+		while(count < max)
+		{
+			if (ms.characterEntities[index].getName() != "NULL")
+			{
+				string im = ms.characterEntities[index].getImage();
+				const char * c = im.c_str();
+				QPixmap npcTemp(c);
+				int x, y;
+				x = ms.characterEntities[index].getX();
+				y = ms.characterEntities[index].getY();
+				painter.drawPixmap(x*resolution, y*resolution, resolution, resolution, npcTemp);
+				count++;
+			}
+			index++;
+		}
+
 		//This section draws all vertical and horizontal lines
 		for (int y = 0; y <= yRes; y += resolution)
 		{
@@ -253,7 +357,20 @@ void logic::paintEvent(QPaintEvent *event)
 			painter.drawPixmap(resolution*5, (ms.getMaxY() * resolution + resolution), resolution, resolution, errorButton);
 		}
 		painter.drawPixmap(resolution * 6, yRes + resolution, resolution, resolution, saveButton);
-		//painter.drawPixmap(resolution * 7, yRes + resolution, resolution, resolution, loadButton);
+		//painter.drawPixmap(resolution * 7, yRes + resolution, resolution, resolution, menu);
+
+		//Draw NPC buttons here (broaden this later) ADDED 27/10/16
+		for (int i = 0; i < 10; i++)
+		{
+			if (ms.characterTable[i].getName() != "NULL")
+			{
+				//PROGRESS: Trying to figure out how to get string value into QPixmap
+				string img = ms.characterTable[i].getImage();
+				const char * c = img.c_str();
+				QPixmap npc(c);
+				painter.drawPixmap(resolution*i, yRes + resolution * 2, resolution, resolution, npc);
+			}
+		}
 		start = false;
 	}
 
@@ -285,6 +402,18 @@ void logic::paintEvent(QPaintEvent *event)
 		drawEnd = false;
 	}
 
+	if (drawNPC)
+	{
+		//This draws a grass tile and then draws the NPC
+		QRect rect(currentX, currentY, resolution, resolution);
+		painter.drawPixmap(rect, grass);
+		painter.drawRect(rect);
+		painter.drawPixmap(rect, currentTile);
+		painter.drawRect(rect);
+		painter.drawLine(currentX, currentY + resolution, currentX + resolution, currentY + resolution);
+		drawNPC = false;
+	}
+
 	if (checkStatus)
 	{
 		//This method invokes the algorithm to check if a path from start to finish exists, and displays green (exists) or red (doesnt exist)
@@ -314,6 +443,11 @@ void logic::leaveEvent(QEvent * event)
 	//updates window on leaving screen
 	start = true;
 	update();
+}
+
+bool logic::getWindowOpen()
+{
+	return windowOpen;
 }
 
 //Minor issue with contents of screen disappearing after size selection at launch, until user mouses out of window

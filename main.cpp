@@ -26,11 +26,15 @@ saving the current map to file. This will overwrite the current map on file.
 //#include "testqt.h"
 #include "editscreen.h"
 #include <QtWidgets/QApplication>
+#include <QInputDialog>
 
 int main(int argc, char *argv[])
 {
+	
 	QApplication a(argc, argv);
 	editscreen screen("Map Editor Screen");
 	screen.show();
-	return a.exec();
+	a.exec();
+
+	return 0;
 }
