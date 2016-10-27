@@ -12,10 +12,11 @@ in the main project. Also contains the method to check if a valid path exists fr
 entrance to exit. Explanation of method's functionality listed below.
 */
 
-#include <iostream>
+
 #include <fstream>
-#include <string>
 #include "MapScreen.h"
+#include <string>
+#include <iostream>
 using namespace std;
 
 //This structure, Search, is used for the searching of the map to discover
@@ -131,9 +132,27 @@ bool MapScreen::isPassable(int x, int y)
 void MapScreen::setPassable(int x, int y, bool pass)
 {
 	spaces[x][y].passable = pass;
-}
+};
 
+bool MapScreen::isOccupied(int x, int y)
+{
+	return spaces[x][y].occupied;
+};
 
+void MapScreen::setOccupied(int x, int y, bool pass)
+{
+	spaces[x][y].occupied = pass;
+};
+
+int MapScreen::getNumberOfDistinctNPCs()
+{
+	return numberOfDistinctNPCs;
+};
+
+int MapScreen::getNumberOfNPCs()
+{
+	return numberOfNPCs;
+};
 /*************************************************************************************************************
 Basic explantion for how the checkExit algorithm works.
 Using a depth first algorithm, the code will establish a search array (of type search) that
@@ -339,6 +358,21 @@ void MapScreen::saveToFile(void)
 		}
 	}
 
+	output << "numberOfNPCs" << " " << numberOfNPCs << endl;
+	//FIX THIS (NOT ACCOUNTING FOR EMPTIES!)
+
+	int count = 0;
+	int index = 0;
+	while (count < numberOfNPCs)
+	{
+		if (characterEntities[index].getName() != "NULL")
+		{
+			output << "npcID" << " " << characterEntities[index].getId() << " " << "xPos" << " " << characterEntities[index].getX() << " " << "yPos" << " " << characterEntities[index].getY() << endl;
+			count++;
+		}
+		index++;
+	}
+
 	output.close();
 }
 
@@ -348,24 +382,15 @@ void MapScreen::loadFromFile(void)
 	ifstream input("mapscreen1.txt");
 
 	string type;
-	int value;
 
-	input >> type >> value;
-	currentX = value;
-	input >> type >> value;
-	currentY = value;
-	input >> type >> value;
-	startX = value;
-	input >> type >> value;
-	startY = value;
-	input >> type >> value;
-	endX = value;
-	input >> type >> value;
-	endY = value;
-	input >> type >> value;
-	maxX = value;
-	input >> type >> value;
-	maxY = value;
+	input >> type >> currentX;
+	input >> type >> currentY;
+	input >> type >> startX;
+	input >> type >> startY;
+	input >> type >> endX;
+	input >> type >> endY;
+	input >> type >> maxX;
+	input >> type >> maxY;
 
 	int spaceX, spaceY;
 	int pass;
@@ -385,5 +410,97 @@ void MapScreen::loadFromFile(void)
 		}
 	}
 
+	input >> type >> numberOfNPCs;
+
+	int i, xP, yP;
+
+	for (int x = 0; x < numberOfNPCs; x++)
+	{
+		input >> type >> i >> type >> xP >> type >> yP;
+		characterEntities[x] = characterTable[i];
+		characterEntities[x].setX(xP);
+		characterEntities[x].setY(yP);
+		spaces[xP][yP].occupied = true;
+	}
+
 	input.close();
+}
+
+void MapScreen::loadNPCs(void)
+{
+	ifstream input("npc.txt");
+
+	string type;
+
+	int id;
+	string name;
+	int level;
+	string image;
+
+	input >> type >> id >> type >> name >> type >> level >> type >> image;
+	
+	if (!input.eof())
+	{
+		characterTable[id] = character(id, name, level, image);
+		numberOfDistinctNPCs++;
+	}
+
+	while (!input.eof())
+	{
+		input >> type >> id >> type >> name >> type >> level >> type >> image;
+		characterTable[id] = character(id, name, level, image);
+		numberOfDistinctNPCs++;
+	}
+
+	input.close();
+}
+
+bool MapScreen::addNPC(int id, int xPos, int yPos)
+{
+	if (numberOfNPCs >= 100)
+	{
+		return false;
+	}
+	numberOfNPCs++;
+
+	int i = 0;
+	while (characterEntities[i].getName() != "NULL")
+	{
+		i++;
+	}
+
+	characterEntities[i] = characterTable[id];
+	characterEntities[i].setX(xPos);
+	characterEntities[i].setY(yPos);
+	spaces[xPos][yPos].occupied = true;
+
+	return true;
+}
+
+void MapScreen::removeNPC(int xPos, int yPos)
+{
+	int index = 0;
+	int count = 0;
+	bool found = false;
+
+	spaces[xPos][yPos].occupied = false;
+
+	while (!found)
+	{
+		if (characterEntities[index].getName() != "NULL")
+		{
+			if (characterEntities[index].getX() == xPos && characterEntities[index].getY() == yPos)
+			{
+				found = true;
+				characterEntities[index] = character(); //Fills with empty character
+			}
+		}
+		index++;
+	}
+
+	numberOfNPCs--;
+	if (numberOfNPCs < 0)
+	{
+		numberOfNPCs = 0; //Potentially useless
+	}
 }
