@@ -24,13 +24,19 @@ public:
 	bool getWindowOpen();
 public slots:
 	void editMap();
+	void openMap();
+	void newMap();
 private:
 	logic *log;
 	int checkResolution(int w, int h);
 	void createMenus();
 
+	string fName;
+	int choice = 0;
+
 	QMenu *editMenu;
-	QAction *editMapAction;
+	QAction *newMapAction;
+	QAction *openMapAction;
 
 protected:
 	void closeEvent(QCloseEvent *event);

@@ -31,9 +31,8 @@ editscreen::editscreen(char n[])
 
 void editscreen::editMap()
 {
+	qDebug() << choice << " :CHOICE";
 	bool ok1;
-	bool ok2;
-	bool ok3;
 
 	//Minimum width, height, default resolution, and minimum x resolution
 	int width = 4;
@@ -46,12 +45,9 @@ void editscreen::editMap()
 	int minimumWidth = 1;
 	int minimumHeight = 1;
 
-	int newOrLoad = 0;
 	log = new logic;
 
-	newOrLoad = QInputDialog::getInt(this, "=Map Editor=", tr("New Map (0) or Load Map (1)"), 0, 0, 1, 1, &ok3);
-
-	if (newOrLoad == 0)
+	if (choice == 0)
 	{
 		//should have default wid/hei and values for int values below
 		width = QInputDialog::getInt(this, "==Width==", tr("Enter the width:"), minimumWidth, minimumWidth, 100, 1, &ok1);
@@ -60,12 +56,12 @@ void editscreen::editMap()
 			//This was added to check in case we want to make hallways
 			minimumHeight = minimumHeight + (4 - width);
 		}
-		height = QInputDialog::getInt(this, "=Height=", tr("Enter the height:"), minimumHeight, minimumHeight, 100, 1, &ok2);
+		height = QInputDialog::getInt(this, "=Height=", tr("Enter the height:"), minimumHeight, minimumHeight, 100, 1, &ok1);
 		log->initialize(width, height);
 	}
-	else
+	else if (choice == 1)
 	{
-		log->loadMap();
+		log->loadMap(fName);
 		width = log->getWidth();
 		height = log->getHeight();
 	}
@@ -74,7 +70,7 @@ void editscreen::editMap()
 	log->setResolution(resolution);
 
 	setCentralWidget(log);
-	setWindowTitle(tr("Edit Map"));
+	setWindowTitle(tr("Map Editor"));
 	int windowResX = width*resolution;
 	if (width < minimumXRes)
 	{
@@ -87,6 +83,24 @@ void editscreen::editMap()
 	this->setFixedWidth(windowResX);
 	this->setFixedHeight((height*resolution) + (resolution * 3) + addedHeight);
 	
+}
+
+void editscreen::newMap()
+{
+	choice = 0;
+	editMap();
+}
+
+void editscreen::openMap()
+{
+	QString fileName = QFileDialog::getOpenFileName(this, tr("Open Map"), QDir::currentPath());
+	
+	if(!fileName.isEmpty())
+	{
+		fName = fileName.toStdString();
+	}
+	choice = 1;
+	editMap();
 }
 
 int editscreen::checkResolution(int w, int h)
@@ -145,11 +159,15 @@ bool editscreen::getWindowOpen()
 
 void editscreen::createMenus()
 {
-	editMapAction = new QAction(tr("&Edit Map"), this);
-	connect(editMapAction, SIGNAL(triggered()), this, SLOT(editMap()));
+	newMapAction = new QAction(tr("&New Map"), this);
+	connect(newMapAction, SIGNAL(triggered()), this, SLOT(newMap()));
 
-	editMenu = new QMenu(tr("&Edit"), this);
-	editMenu->addAction(editMapAction);
+	openMapAction = new QAction(tr("&Open Map"), this);
+	connect(openMapAction, SIGNAL(triggered()), this, SLOT(openMap()));
+
+	editMenu = new QMenu(tr("&Map Editor"), this);
+	editMenu->addAction(newMapAction);
+	editMenu->addAction(openMapAction);
 
 	menuBar()->addMenu(editMenu);
 

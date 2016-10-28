@@ -25,7 +25,7 @@ class logic : public QWidget
 		logic(QWidget *parent = 0);
 		void initialize(int w, int h);
 		void setResolution(int res);
-		void loadMap();
+		void loadMap(string filename);
 		int getWidth();
 		int getHeight();
 		bool getWindowOpen();

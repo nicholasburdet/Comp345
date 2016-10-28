@@ -44,8 +44,8 @@ public:
 	bool checkExit();
 	int getMaxX();
 	int getMaxY();
-	void saveToFile();
-	void loadFromFile();
+	void saveToFile(string fName);
+	void loadFromFile(string filename);
 	void loadNPCs();
 	bool addNPC(int id, int xPos, int yPos);
 	void removeNPC(int xPos, int yPos);

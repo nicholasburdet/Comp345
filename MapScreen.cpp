@@ -335,11 +335,11 @@ bool MapScreen::checkExit()
 	return true;
 };
 
-void MapScreen::saveToFile(void)
+void MapScreen::saveToFile(string fName)
 {
 	ofstream output;
 
-	output.open("mapscreen1.txt");
+	output.open(fName.append(".txt"));
 	
 	output << "currentX" << " " << currentX << endl;
 	output << "currentY" << " " << currentY << endl;
@@ -359,7 +359,6 @@ void MapScreen::saveToFile(void)
 	}
 
 	output << "numberOfNPCs" << " " << numberOfNPCs << endl;
-	//FIX THIS (NOT ACCOUNTING FOR EMPTIES!)
 
 	int count = 0;
 	int index = 0;
@@ -377,9 +376,10 @@ void MapScreen::saveToFile(void)
 }
 
 
-void MapScreen::loadFromFile(void)
+void MapScreen::loadFromFile(string filename)
 {
-	ifstream input("mapscreen1.txt");
+	ifstream input;
+	input.open(filename, ios::in);
 
 	string type;
 

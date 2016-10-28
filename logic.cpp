@@ -46,10 +46,10 @@ void logic::setResolution(int res)
 	resolution = res;
 }
 
-void logic::loadMap()
+void logic::loadMap(string filename)
 {
 	//Loads map from txt file
-	ms.loadFromFile();
+	ms.loadFromFile(filename);
 	wid = ms.getMaxX();
 	hei = ms.getMaxY();
 }
@@ -215,9 +215,14 @@ void logic::mousePressEvent(QMouseEvent *event)
 			if (ms.checkExit())
 			{
 				//Checks to see if path exists, will only save valid maps
+				QString filename;
+				bool ok;
+				filename = QInputDialog::getText(this, "==Filename?==", tr("Save as:(.txt will auto add to end)"), QLineEdit::Normal, "", &ok);
+				string fName = filename.toStdString();
+
 				message.setText("Map has been successfully saved.");
 				message.exec();
-				ms.saveToFile();
+				ms.saveToFile(fName);
 				start = true;
 				update();
 			}
@@ -315,7 +320,6 @@ void logic::paintEvent(QPaintEvent *event)
 		int max = ms.getNumberOfNPCs();
 		int count = 0;
 		int index = 0;
-		qDebug() << max << " < Number of NPCs";
 		while(count < max)
 		{
 			if (ms.characterEntities[index].getName() != "NULL")
