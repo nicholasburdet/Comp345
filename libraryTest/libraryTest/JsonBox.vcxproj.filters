@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\src\JsonWritingError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\src\Value.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\src\SolidusEscaper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\src\Escaper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\src\Indenter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\src\IndentCanceller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\src\JsonParsingError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\src\Convert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\include\JsonBox\Convert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\include\JsonBox\Escaper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\include\JsonBox\Grammar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\include\JsonBox\IndentCanceller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\include\JsonBox\Indenter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\include\JsonBox\JsonParsingError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\include\JsonBox\JsonWritingError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\include\JsonBox\OutputFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\include\JsonBox\SolidusEscaper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\include\JsonBox\Value.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\include\JsonBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Nathan\Desktop\SW\c++\JsonBox-master\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{C31E93B6-5847-3A5B-9C54-D9AF3E37C833}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{8B3FC77C-62D0-34F1-A2A3-A7C8A8CA2527}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

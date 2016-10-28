@@ -1,0 +1,4 @@
+﻿  Source.cpp
+c:\users\nathan\documents\visual studio 2015\projects\librarytest\librarytest\includes\jsoncons\json_parser.hpp(148): warning C4003: not enough actual parameters for macro 'max'
+  libraryTest.vcxproj -> C:\Users\Nathan\Documents\Visual Studio 2015\Projects\libraryTest\Debug\libraryTest.exe
+  libraryTest.vcxproj -> C:\Users\Nathan\Documents\Visual Studio 2015\Projects\libraryTest\Debug\libraryTest.pdb (Full PDB)

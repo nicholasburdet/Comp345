@@ -1,0 +1,12 @@
+[
+	{
+		"name" : "Leather helmet",
+		"type" : "Helmet",
+		"description" : "A Full helmet.",
+		"damage" : "1d4",
+		"crit" : "19-20/x2",
+		"enchantmentTypes" : "Attack Bonus, Damage Bonus",
+		"enchantmentBonus" : "0"
+	},
+	
+]

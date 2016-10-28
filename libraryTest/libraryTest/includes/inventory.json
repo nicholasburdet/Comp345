@@ -1,0 +1,65 @@
+[
+    {
+        "crit": "19-20/x2",
+        "damage": "1d4",
+        "description": "A short ornate blade in a serpentine shape.",
+        "enchantmentBonus": "0",
+        "enchantmentTypes": "Attack Bonus, Damage Bonus",
+        "name": "Dagger",
+        "range": "1"
+    },
+    {
+        "crit": "19-20/x2",
+        "damage": "1d4",
+        "description": "A short ornate blade in a serpentine shape.",
+        "enchantmentBonus": "0",
+        "enchantmentTypes": "Attack Bonus, Damage Bonus",
+        "name": "Dagger",
+        "range": "1"
+    },
+    {
+        "crit": "19-20/x2",
+        "damage": "1d4",
+        "description": "A short ornate blade in a serpentine shape.",
+        "enchantmentBonus": "0",
+        "enchantmentTypes": "Attack Bonus, Damage Bonus",
+        "name": "Dagger",
+        "range": "1"
+    },
+    {
+        "crit": "19-20/x2",
+        "damage": "1d4",
+        "description": "A short ornate blade in a serpentine shape.",
+        "enchantmentBonus": "0",
+        "enchantmentTypes": "Attack Bonus, Damage Bonus",
+        "name": "Dagger",
+        "range": "1"
+    },
+    {
+        "crit": "19-20/x2",
+        "damage": "1d4",
+        "description": "A short ornate blade in a serpentine shape.",
+        "enchantmentBonus": "0",
+        "enchantmentTypes": "Attack Bonus, Damage Bonus",
+        "name": "Dagger",
+        "range": "1"
+    },
+    {
+        "crit": "19-20/x2",
+        "damage": "1d4",
+        "description": "A short ornate blade in a serpentine shape with a level 1 enchantment.",
+        "enchantmentBonus": "1",
+        "enchantmentTypes": "Attack Bonus, Damage Bonus",
+        "name": "Dagger +1",
+        "range": "1"
+    },
+    {
+        "crit": "19-20/x2",
+        "damage": "1d4",
+        "description": "A short ornate blade in a serpentine shape.",
+        "enchantmentBonus": "0",
+        "enchantmentTypes": "Attack Bonus, Damage Bonus",
+        "name": "Dagger",
+        "range": "1"
+    }
+]
