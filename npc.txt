@@ -1,3 +1,0 @@
-id 0 name Orc level 1 image Images/orc.png
-id 1 name Ogre level 3 image Images/ogre.png
-id 2 name Minotaur level 5 image Images/minotaur.png
