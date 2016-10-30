@@ -179,6 +179,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="editscreen.cpp" />
     <ClCompile Include="MapScreen.cpp" />
+    <ClCompile Include="observer.cpp" />
     <ClCompile Include="testqt.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +227,7 @@
     <ClInclude Include="characterObserver.h" />
     <ClInclude Include="GeneratedFiles\ui_testqt.h" />
     <ClInclude Include="MapScreen.h" />
+    <ClInclude Include="observer.h" />
     <CustomBuild Include="logic.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing logic.h...</Message>

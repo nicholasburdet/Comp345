@@ -1,48 +1,16 @@
-c:\users\nick\documents\visual studio 2015\projects\testqt\testqt\x64\debug\vc140.pdb
-c:\users\nick\documents\visual studio 2015\projects\testqt\testqt\x64\debug\testqt.obj
-c:\users\nick\documents\visual studio 2015\projects\testqt\testqt\x64\debug\moc_testqt.obj
-c:\users\nick\documents\visual studio 2015\projects\testqt\testqt\x64\debug\gridscene.obj
-c:\users\nick\documents\visual studio 2015\projects\testqt\testqt\x64\debug\main.obj
-c:\users\nick\documents\visual studio 2015\projects\testqt\testqt\x64\debug\myrect.obj
-c:\users\nick\documents\visual studio 2015\projects\testqt\testqt\x64\debug\logic.obj
-c:\users\nick\documents\visual studio 2015\projects\testqt\testqt\x64\debug\moc_myrect.obj
-c:\users\nick\documents\visual studio 2015\projects\testqt\testqt\x64\debug\moc_logic.obj
-c:\users\nick\documents\visual studio 2015\projects\testqt\testqt\x64\debug\editscreen.obj
-c:\users\nick\documents\visual studio 2015\projects\testqt\testqt\x64\debug\temp.obj
-c:\users\nick\documents\visual studio 2015\projects\testqt\testqt\x64\debug\mapscreen.obj
-c:\users\nick\documents\visual studio 2015\projects\testqt\testqt\x64\debug\moc_editscreen.obj
-c:\users\nick\documents\visual studio 2015\projects\testqt\testqt\x64\debug\qrc_testqt.obj
-c:\users\nick\documents\visual studio 2015\projects\testqt\testqt\generatedfiles\debug\moc_testqt.cpp
-c:\users\nick\documents\visual studio 2015\projects\testqt\testqt\generatedfiles\ui_testqt.h
-c:\users\nick\documents\visual studio 2015\projects\testqt\testqt\generatedfiles\qrc_testqt.cpp
-c:\users\nick\documents\visual studio 2015\projects\testqt\testqt\generatedfiles\debug\moc_logic.cpp
-c:\users\nick\documents\visual studio 2015\projects\testqt\testqt\generatedfiles\debug\moc_editscreen.cpp
-c:\users\nick\documents\visual studio 2015\projects\testqt\x64\debug\testqt.ilk
-c:\users\nick\documents\visual studio 2015\projects\testqt\x64\debug\testqt.exe
-c:\users\nick\documents\visual studio 2015\projects\testqt\x64\debug\testqt.pdb
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\editscreen.obj
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\gridscene.obj
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\logic.obj
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\main.obj
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\mapscreen.obj
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\moc_editscreen.obj
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\moc_logic.obj
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\moc_myrect.obj
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\moc_testqt.obj
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\myrect.obj
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\qrc_testqt.obj
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\temp.obj
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\testqt.obj
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\vc140.pdb
-c:\users\alexis\comp345\newcompproj\testqt\x64\debug\testqt.pdb
-c:\users\alexis\comp345\newcompproj\testqt\x64\debug\testqt.exe
-c:\users\alexis\comp345\newcompproj\testqt\x64\debug\testqt.ilk
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\testqt.tlog\cl.command.1.tlog
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\testqt.tlog\cl.read.1.tlog
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\testqt.tlog\cl.write.1.tlog
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\testqt.tlog\custombuild.command.1.tlog
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\testqt.tlog\custombuild.read.1.tlog
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\testqt.tlog\custombuild.write.1.tlog
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\testqt.tlog\link.command.1.tlog
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\testqt.tlog\link.read.1.tlog
-c:\users\alexis\comp345\newcompproj\testqt\testqt\x64\debug\testqt.tlog\link.write.1.tlog
+c:\users\alexis\comp345\comp345\testqt\x64\debug\vc140.pdb
+c:\users\alexis\comp345\comp345\testqt\x64\debug\testqt.obj
+c:\users\alexis\comp345\comp345\testqt\x64\debug\main.obj
+c:\users\alexis\comp345\comp345\testqt\x64\debug\moc_testqt.obj
+c:\users\alexis\comp345\comp345\testqt\x64\debug\moc_editscreen.obj
+c:\users\alexis\comp345\comp345\testqt\generatedfiles\debug\moc_testqt.cpp
+c:\users\alexis\comp345\comp345\testqt\generatedfiles\ui_testqt.h
+c:\users\alexis\comp345\comp345\testqt\generatedfiles\debug\moc_logic.cpp
+c:\users\alexis\comp345\comp345\testqt\generatedfiles\debug\moc_editscreen.cpp
+c:\users\alexis\comp345\comp345\testqt\generatedfiles\qrc_testqt.cpp
+c:\users\alexis\comp345\comp345\testqt\x64\debug\testqt.tlog\cl.command.1.tlog
+c:\users\alexis\comp345\comp345\testqt\x64\debug\testqt.tlog\cl.read.1.tlog
+c:\users\alexis\comp345\comp345\testqt\x64\debug\testqt.tlog\cl.write.1.tlog
+c:\users\alexis\comp345\comp345\testqt\x64\debug\testqt.tlog\custombuild.command.1.tlog
+c:\users\alexis\comp345\comp345\testqt\x64\debug\testqt.tlog\custombuild.read.1.tlog
+c:\users\alexis\comp345\comp345\testqt\x64\debug\testqt.tlog\custombuild.write.1.tlog

@@ -11,6 +11,7 @@ Character cpp file
 
 #include "character.h"
 #include <stdlib.h>
+#include <set>
 
 using namespace std;
 
@@ -32,53 +33,71 @@ character::character(int i, string n, int l, string im):observers()
 	HP = getMaxHP();
 }
 
-character::character(int i, string n, int l, string im, int abList[6]):observers()
+character::character(int i, string n, int l, string im, int abList[6]) :observers()
 {
 	id = i;
 	name = n;
 	level = l;
 	image = im;
 	abilities = abilList{ abList[0],abList[1],abList[2],abList[3],abList[4],abList[5] };
+
 }
+
+character::~character() {
+	observers.clear();
+}
+
 
 void character::setId(int i)
 {
 	id = i;
+	notifyObservers();
+
 }
 void character::setName(string n)
 {
 	name = n;
+	notifyObservers();
+
 }
 void character::setLevel(int l)
 {
 	if(l<=20){
 			level = l;
 	}
+
+	notifyObservers();
 }
 
 void character::setImage(string im)
 {
 	image = im;
+	notifyObservers();
 }
 void character::setX(int x)
 {
 	xPosition = x;
+	notifyObservers();
+
 }
 void character::setY(int y)
 {
 	yPosition = y;
+	notifyObservers();
 }
 
 void character::moveBy(int x, int y)
 {
 	xPosition += x;
 	yPosition += y;
+	notifyObservers();
 }
 
 void character::moveTo(int x, int y)
 {
 	setX(x);
 	setY(y);
+	notifyObservers();
 }
 
 int character::getId()
@@ -94,8 +113,18 @@ int character::getLevel()
 	return level;
 }
 
+character::abilList character::getAbilities() {
+	return abilities;
+}
+
+string character::getClassName() {
+	return charClassName;
+}
+
 int character::levelUp(int incAmount=1){
 	HP += getModifier(abilities.constitution)*incAmount;
+
+	notifyObservers();
 
 	return HP;
 }
@@ -138,19 +167,27 @@ int character::getMaxRollSum(int faces, int numRolls)
 }
 
 
-void character::addObserver(shared_ptr<characterObserver> obs)
+void character::addObserver(observer & obs)
 {
-	observers.insert(obs);
+	observer* o = &obs;
+
+	observers.insert(o);
 }
 
-void character::removeObserver(shared_ptr<characterObserver> obs)
+void character::removeObserver(observer & obs)
 {
-	observers.erase(obs);
+
+	observers.erase(&obs);
 
 }
 
 void character::notifyObservers()
 {
+	for (observer* i : observers) {
+		if (i != NULL) {
+			i->notify();
+		}
+	}
 }
 
 int character::getHP(){
@@ -159,6 +196,7 @@ int character::getHP(){
 
 void character::setHP(int hp){
 	HP = hp;
+	notifyObservers();
 }
 
 void character::decHP(int damage) {

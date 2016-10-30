@@ -12,10 +12,9 @@ Character header file
 
 #pragma once
 #include <string>
-#include "characterObserver.h"
+#include "observer.h"
 #include <set>
 #include <memory>
-using namespace std;
 
 
 
@@ -23,10 +22,11 @@ class character
 {
 public:
 	character();
-	character(int i, string n, int l, string im);
-	character(int i, string n, int l, string im, int abilities[6]);
+	character(int i, std::string n, int l, std::string im);
+	character(int i, std::string n, int l, std::string im, int abilities[6]);
+	~character();
 	void setId(int i);
-	void setName(string n);
+	void setName(std::string n);
 	void setLevel(int l);
 	void setHP(int hp);
 	void decHP(int damage);
@@ -35,7 +35,7 @@ public:
 	virtual int getAttackBonus();
 	int getMaxHP();
 
-	void setImage(string im);
+	void setImage(std::string im);
 
 
 
@@ -59,10 +59,12 @@ public:
 	};
 
 	int getId();
-	string getName();
+	std::string getName();
 	int getLevel();
+	character::abilList getAbilities();
+	string getClassName();
 	virtual int levelUp(int incAmount);
-	string getImage();
+	std::string getImage();
 
 	int getX();
 	int getY();
@@ -70,14 +72,11 @@ public:
 	int rollDice(int faces);
 	int getMaxRollSum(int faces, int numRolls);
 
-	void addObserver(shared_ptr<characterObserver> obs);
-
-	void removeObserver(shared_ptr<characterObserver> obs);
 
 	//Observer related stuff
 
-	void addObserver(characterObserver& obs);
-	void removeObserver(characterObserver& obs);
+	void addObserver(observer& obs);
+	void removeObserver(observer& obs);
 	void notifyObservers();
 
 
@@ -85,8 +84,8 @@ public:
 
 private:
 	int id;
-	string name = "NULL";
-	string charClassName = "fighter";
+	std::string name = "NULL";
+	std::string charClassName = "fighter";
 	int level;
 	int hitDice;
 	//PLACEHOLDERS
@@ -97,11 +96,11 @@ private:
 	//END PLACEHOLDERS
 	int HP;
 	abilList abilities;
-	string image;
+	std::string image;
 	int xPosition = -1;
 	int yPosition = -1;
 
-	set<shared_ptr<characterObserver>> observers;
+	std::set<observer*, std::less<observer*>> observers;
 
 };
 #pragma once

@@ -10,6 +10,7 @@ Map Screen header file
 #pragma once
 #include "character.h"
 
+using namespace std;
 //Space structure will eventually evolve to a class object that will accomodate characters/objects
 //occupying the space. For the sake of this assignment, it is assumed that 4 spaces exist (entance,
 //exit, grass and dirt walls).
