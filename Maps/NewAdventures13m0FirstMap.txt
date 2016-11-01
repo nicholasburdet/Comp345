@@ -1,0 +1,26 @@
+campaignName NewAdventures campaignId 13 mapId 0 mapName FirstMap
+currentX 0
+currentY 0
+startX 0
+startY 0
+endX 6
+endY 1
+maxX 7
+maxY 2
+space 0 0 1
+space 0 1 1
+space 1 0 1
+space 1 1 1
+space 2 0 1
+space 2 1 1
+space 3 0 1
+space 3 1 1
+space 4 0 1
+space 4 1 1
+space 5 0 1
+space 5 1 1
+space 6 0 1
+space 6 1 1
+numberOfNPCs 2
+npcID 1 xPos 2 yPos 1
+npcID 1 xPos 4 yPos 0
