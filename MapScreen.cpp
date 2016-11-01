@@ -2,7 +2,7 @@
 Author: Nicholas Burdet
 Id: 29613773
 Course: COMP 345
-Assignment 1 Part 2: Map
+Assignment 2 Part 3: Map
 
 Map Screen cpp file
 
@@ -10,6 +10,9 @@ Map Screen class holds the state of the generated map (its size, passable spaces
 start and exit). Currently has a save function for potential multiple map entities
 in the main project. Also contains the method to check if a valid path exists from
 entrance to exit. Explanation of method's functionality listed below.
+
+Campaign functionality added, campaigns now have an ordered list of maps that flow
+one into the other.
 */
 
 
@@ -38,7 +41,7 @@ MapScreen::MapScreen(void)
 }
 //For the matter of simplicity of coding and not using vectors,
 //we will assume map sizes cannot exceed 100x100.
-void MapScreen::initMap(int x, int y)
+void MapScreen::initMap(int x, int y, string n)
 {
 	//error checking not done for size constraints
 	if (x < 1 || x>100 || y < 1 || y>100)
@@ -48,6 +51,7 @@ void MapScreen::initMap(int x, int y)
 	}
 	else
 	{
+		mapName = n;
 		maxX = x;
 		maxY = y;
 		currentX = 0;
@@ -153,6 +157,46 @@ int MapScreen::getNumberOfNPCs()
 {
 	return numberOfNPCs;
 };
+
+int MapScreen::getId()
+{
+	return mapId;
+}
+
+string MapScreen::getName()
+{
+	return mapName;
+}
+
+void MapScreen::setId(int i)
+{
+	mapId = i;
+}
+
+void MapScreen::setName(string n)
+{
+	mapName = n;
+}
+
+int MapScreen::getCampaignId()
+{
+	return campaignId;
+}
+
+string MapScreen::getCampaignName()
+{
+	return campaignName;
+}
+
+void MapScreen::setCampaignId(int i)
+{
+	campaignId = i;
+}
+
+void MapScreen::setCampaignName(string n)
+{
+	campaignName = n;
+}
 /*************************************************************************************************************
 Basic explantion for how the checkExit algorithm works.
 Using a depth first algorithm, the code will establish a search array (of type search) that
@@ -335,12 +379,20 @@ bool MapScreen::checkExit()
 	return true;
 };
 
-void MapScreen::saveToFile(string fName)
+void MapScreen::saveToFile()
 {
 	ofstream output;
+	string extension = "Maps/";
+	string fName = extension;
+	fName.append(campaignName);
+	fName.append(to_string(campaignId));
+	fName.append("m");
+	fName.append(to_string(mapId));
+	fName.append(mapName);
 
 	output.open(fName.append(".txt"));
 	
+	output << "campaignName" << " " << campaignName << " " << "campaignId" << " " << campaignId << " " << "mapId" << " " << mapId << " " << "mapName" << " " << mapName << endl;
 	output << "currentX" << " " << currentX << endl;
 	output << "currentY" << " " << currentY << endl;
 	output << "startX" << " " << startX << endl;
@@ -383,6 +435,7 @@ void MapScreen::loadFromFile(string filename)
 
 	string type;
 
+	input >> type >> campaignName >> type >> campaignId >> type >> mapId >> type >> mapName;
 	input >> type >> currentX;
 	input >> type >> currentY;
 	input >> type >> startX;
@@ -426,6 +479,8 @@ void MapScreen::loadFromFile(string filename)
 	input.close();
 }
 
+//This method will load all DISTINCT NPCs into an identity table, so in the case of
+//adding or retrieving them, it won't go into the .txt file every time.
 void MapScreen::loadNPCs(void)
 {
 	ifstream input("npc.txt");
@@ -455,6 +510,9 @@ void MapScreen::loadNPCs(void)
 	input.close();
 }
 
+//This method adds an NPC onto the map, with its ID and position and adds them
+//to the entity table
+//NOTE: This is not for creating new NPCs
 bool MapScreen::addNPC(int id, int xPos, int yPos)
 {
 	if (numberOfNPCs >= 100)
@@ -477,6 +535,9 @@ bool MapScreen::addNPC(int id, int xPos, int yPos)
 	return true;
 }
 
+//This method removes the NPC at the location on the map given and
+//removes them from the entity table. This method is only called if
+//the widget wants to change the contents of the space containing an NPC
 void MapScreen::removeNPC(int xPos, int yPos)
 {
 	int index = 0;
@@ -503,4 +564,18 @@ void MapScreen::removeNPC(int xPos, int yPos)
 	{
 		numberOfNPCs = 0; //Potentially useless
 	}
+}
+
+//Generates the filename for this map to pass along to campaign or whatnot
+string MapScreen::getFilename()
+{
+	string fName;
+	fName = campaignName;
+	fName.append(to_string(campaignId));
+	fName.append("m");
+	fName.append(to_string(mapId));
+	fName.append(mapName);
+	fName.append(".txt");
+
+	return fName;
 }

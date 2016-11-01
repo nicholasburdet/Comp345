@@ -2,17 +2,18 @@
 Author: Nicholas Burdet
 Id: 29613773
 Course: COMP 345
-Assignment 1 Part 2: Map
+Assignment 2 Part 3: Map
 
 Map Screen header file
+
+Campaign functionality added in second update
 */
 
 #pragma once
 #include "character.h"
 
-//Space structure will eventually evolve to a class object that will accomodate characters/objects
-//occupying the space. For the sake of this assignment, it is assumed that 4 spaces exist (entance,
-//exit, grass and dirt walls).
+//Occupied refers to whether an entity (item/NPC/character) is in the space
+//Passable refers to if an entity can occupy or pass through the space
 struct Space
 {
 	bool passable = true;
@@ -23,7 +24,7 @@ class MapScreen
 {
 public:
 	MapScreen(void);
-	void initMap(int x, int y);
+	void initMap(int x, int y, string n);
 	int getCurrentX();
 	int getCurrentY();
 	int getStartX();
@@ -44,14 +45,22 @@ public:
 	bool checkExit();
 	int getMaxX();
 	int getMaxY();
-	void saveToFile(string fName);
+	int getId();
+	string getName();
+	void setId(int i);
+	void setName(string n);
+	int getCampaignId();
+	string getCampaignName();
+	void setCampaignId(int i);
+	void setCampaignName(string n);
+	void saveToFile();
 	void loadFromFile(string filename);
 	void loadNPCs();
 	bool addNPC(int id, int xPos, int yPos);
 	void removeNPC(int xPos, int yPos);
 	character characterTable[10]; //This is a table that holds each individual different type of NPC (for reference)
 	character characterEntities[100]; //This is a table of NPCS that exist on the map
-	
+	string getFilename();
 
 private:
 	//current X and Y can be used for the player location (?)
@@ -74,5 +83,14 @@ private:
 	int numberOfNPCs = 0;
 	int numberOfDistinctNPCs = 0; //This is just for id tracking
 	
+	int mapId;
+	string mapName;
+
+	//Stores campaignId and Name for backwards referencing, in the case of
+	//opening a map, which will prompt the appropriate campaign to load in
+	//consequence.
+	int campaignId;
+	string campaignName;
+
 };
 #pragma once

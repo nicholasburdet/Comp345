@@ -4,18 +4,16 @@
 Author: Nicholas Burdet
 Id: 29613773
 Course: COMP 345
-Assignment 2 Part 2: Map Editor
+Assignment 2 Part 3: Map Editor
 
 Character header file
 
-This is purely a temporary arrangement file
+Bare bones file to show off NPC capability on the editor screen
 */
 
 #pragma once
 #include <string>
 using namespace std;
-
-
 
 class character
 {

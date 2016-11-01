@@ -2,7 +2,7 @@
 Author: Nicholas Burdet
 Id: 29613773
 Course: COMP 345
-Assignment 1 Part 2: Map
+Assignment 2 Part 3: Map
 
 Logic cpp file
 
@@ -16,6 +16,8 @@ to determine what steps it needs to take. Flags are reset upon handling for next
 
 NOTE: Mouse click and painter methods could be broken down into smaller methods to reduce code
 complexity.
+
+Second update now handles campaign functionality
 */
 
 #include <QtWidgets>
@@ -25,33 +27,142 @@ complexity.
 #include "logic.h"
 
 
-
+//Constructor loads Distinct NPCs into memory for use by editor and maps
 logic::logic(QWidget *parent) : QWidget(parent)
 {
 	ms.loadNPCs();
 }
-void logic::initialize(int w, int h)
+
+//Initializes a map object and loads the appropriate campaign
+void logic::initialize(int w, int h, string n)
 {
-	//Builds empty default map of size w and h
 	start = true;
-	ms.initMap(w, h);
+	ms.initMap(w, h, n);
+	ms.setId(Campaign.getNumberOfMaps());
+	Campaign.setCurrentMapId(Campaign.getNumberOfMaps());
+	ms.setCampaignId(Campaign.getId());
+	ms.setCampaignName(Campaign.getName());
+	ms.saveToFile();
+	Campaign.addMap(ms.getFilename());
+	Campaign.saveCampaign();
 	wid = ms.getMaxX();
 	hei = ms.getMaxY();
 	update();
 }
 
+//Enters campaign name and id#
+void logic::newCampaign(string cName, int cId)
+{
+	Campaign.setId(cId);
+	Campaign.setName(cName);
+}
+
+//Loads campaign and last map in the campaign
+void logic::loadCampaign(string filename)
+{
+	Campaign.loadCampaign(filename);
+	
+	string extension = "Maps/";
+
+	qDebug() << QString::fromStdString(Campaign.getMapFilename(Campaign.getNumberOfMaps() - 1));
+
+	loadMap(extension.append(Campaign.getMapFilename(Campaign.getNumberOfMaps() - 1)));
+	Campaign.setCurrentMapId(Campaign.getNumberOfMaps() - 1);
+}
+
+//This method is for loading the campaign after a map has been loaded. The previous method
+//will automatically load the last map from the campaign, and does so after the campaign has been loaded.
+void logic::loadJustCampaign()
+{
+	string extension = "Campaigns/";
+	string f = extension;
+	f.append(ms.getCampaignName());
+	f.append(to_string(ms.getCampaignId()));
+	f.append(".txt");
+	Campaign.loadCampaign(f);
+	Campaign.setCurrentMapId(ms.getId());
+	qDebug() << QString::fromStdString(to_string(Campaign.getNumberOfMaps()));
+}
+
+//Sets resolution for calculations based on size of map. Default is currently 50
 void logic::setResolution(int res)
 {
-	//Sets resolution for calculations based on size of map. Default is currently 50
 	resolution = res;
 }
 
+//Loads map from txt file
 void logic::loadMap(string filename)
 {
-	//Loads map from txt file
 	ms.loadFromFile(filename);
 	wid = ms.getMaxX();
 	hei = ms.getMaxY();
+}
+
+void logic::newMap()
+{
+	MapScreen newMap;
+	ms = newMap;
+	ms.loadNPCs();
+}
+
+//Resets the map object but retains its position and campaign
+void logic::resetMap(int w, int h)
+{
+	string holdName = ms.getName();
+	MapScreen newMap;
+	ms = newMap;
+	ms.loadNPCs();
+	ms.initMap(w, h, holdName);
+	ms.setId(Campaign.getCurrentMapId());
+	ms.setCampaignId(Campaign.getId());
+	ms.setCampaignName(Campaign.getName());
+	ms.saveToFile();
+	wid = ms.getMaxX();
+	hei = ms.getMaxY();
+}
+
+//Navigates to previous map, passes false if it cannot
+bool logic::previousMap()
+{
+	if (Campaign.getCurrentMapId() > 0)
+	{
+		Campaign.setCurrentMapId(Campaign.getCurrentMapId() - 1);
+		MapScreen newMap;
+		ms = newMap;
+		ms.loadNPCs();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+//Navigates to next map, passes false if it cannot
+bool logic::nextMap()
+{
+	if (Campaign.getCurrentMapId() < Campaign.getNumberOfMaps()-1)
+	{
+		Campaign.setCurrentMapId(Campaign.getCurrentMapId() + 1);
+		MapScreen newMap;
+		ms = newMap;
+		ms.loadNPCs();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+string logic::getFilename()
+{
+	return Campaign.getMapFilename(Campaign.getCurrentMapId());
+}
+
+void logic::closeWindow()
+{
+	close();
 }
 
 int logic::getWidth()
@@ -215,14 +326,14 @@ void logic::mousePressEvent(QMouseEvent *event)
 			if (ms.checkExit())
 			{
 				//Checks to see if path exists, will only save valid maps
-				QString filename;
+				/*QString filename;
 				bool ok;
 				filename = QInputDialog::getText(this, "==Filename?==", tr("Save as:(.txt will auto add to end)"), QLineEdit::Normal, "", &ok);
 				string fName = filename.toStdString();
-
+				*/
 				message.setText("Map has been successfully saved.");
 				message.exec();
-				ms.saveToFile(fName);
+				ms.saveToFile();
 				start = true;
 				update();
 			}
@@ -447,11 +558,6 @@ void logic::leaveEvent(QEvent * event)
 	//updates window on leaving screen
 	start = true;
 	update();
-}
-
-bool logic::getWindowOpen()
-{
-	return windowOpen;
 }
 
 //Minor issue with contents of screen disappearing after size selection at launch, until user mouses out of window

@@ -2,7 +2,7 @@
 Author: Nicholas Burdet
 Id: 29613773
 Course: COMP 345
-Assignment 1 Part 2: Map
+Assignment 2 Part 3: Map
 
 Logic header file
 */
@@ -13,6 +13,7 @@ Logic header file
 #include <QPoint>
 #include <QWidget>
 #include "MapScreen.h"
+#include "Campaign.h"
 #include <string>
 #include <QMessageBox>
 
@@ -23,12 +24,20 @@ class logic : public QWidget
 	Q_OBJECT;
 	public:
 		logic(QWidget *parent = 0);
-		void initialize(int w, int h);
+		void initialize(int w, int h, string n);
+		void newCampaign(string cName, int cId);
+		void loadCampaign(string filename);
+		void loadJustCampaign();
 		void setResolution(int res);
 		void loadMap(string filename);
+		void newMap();
+		bool previousMap();
+		bool nextMap();
+		void resetMap(int w, int h);
 		int getWidth();
 		int getHeight();
-		bool getWindowOpen();
+		string getFilename();
+		void closeWindow();
 	protected:
 		void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 		void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
@@ -43,6 +52,7 @@ class logic : public QWidget
 		bool start = true;
 
 		MapScreen ms;
+		campaign Campaign;
 		int resolution = 50;
 
 		//flag each time users clicks on screen to invoke mouse event
@@ -78,8 +88,6 @@ class logic : public QWidget
 		
 		int wid;
 		int hei;
-
-		bool windowOpen = true;
 };
 
 #endif

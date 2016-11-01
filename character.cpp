@@ -4,9 +4,11 @@
 Author: Nicholas Burdet
 Id: 29613773
 Course: COMP 345
-Assignment 2 Part 2: Map Editor
+Assignment 2 Part 3: Map Editor
 
 Character cpp file
+
+Bare bones file to show off NPC capability on the editor screen
 */
 
 #include "character.h"
