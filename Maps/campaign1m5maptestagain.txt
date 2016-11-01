@@ -1,0 +1,14 @@
+campaignName campaign campaignId 1 mapId 5 mapName maptestagain
+currentX 0
+currentY 0
+startX 0
+startY 0
+endX 0
+endY 3
+maxX 1
+maxY 4
+space 0 0 1
+space 0 1 1
+space 0 2 1
+space 0 3 1
+numberOfNPCs 0
