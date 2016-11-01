@@ -1,0 +1,3 @@
+Campaignofthenight 4 numberOfMaps 2
+id 0 fname Campaignofthenight4m0Section1.txt
+id 1 fname Campaignofthenight4m1nightfall.txt
