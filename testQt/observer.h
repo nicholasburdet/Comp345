@@ -1,4 +1,10 @@
 #pragma once
+/*!
+	Abstract class for implementation of observer pattern
+*/
+
+
+
 class observer
 {
 public:

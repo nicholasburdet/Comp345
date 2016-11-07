@@ -1,10 +1,10 @@
 #pragma once
 
 /*
-Author: Nicholas Burdet
-Id: 29613773
+Author: Alexis Grondin
+Id: 26639569
 Course: COMP 345
-Assignment 2 Part 2: Map Editor
+Assignment 2 Part 2: Character Observer
 
 Character header file
 
@@ -17,7 +17,33 @@ Character header file
 #include <memory>
 
 
+/*!
+	Character class. Contains all information related to a character. For the time being, the only character class is fighter.
+	A character can be linked to an image file, which will be used to display him on the map.
 
+	DnD Rules:
+	-Level: For the level, we use a maximum level of 20. This level is first set at character creation, but can afterwards be increased.
+
+	-Abilities: There are six different abilities, represented by a struct, and which can be set by the player of generated randomly. If generated randomly, each
+	 ability will be given by rolling a 6-dice four times and taking the sum of the 3 highest throws.
+
+	-Ability modifiers: Ability modifiers are given by the formula (ability level-10)/2
+
+	-HP: HP upon character creation is defined by the formula: (Hit Dice)+(Character Level)*(Constitution modifier). Afterwards, the HP can be increased or decreased,
+	 when a character heals or is injured. When a character levels up, his HP is increased by an amount equal to his constitution modifier.
+
+	-Hit Dice: fighters have a hit dice of 10, which represents some sort of value related to their ability to survive, I suppose.
+
+	-Armor Bonus: Armor bonus is the sum of: 10+(armor bonus)+(shield bonus)+(dexterity modifier)
+
+	-Attack Bonus: Attack bonus is given by: proficiency bonus (see below) plus a modifier (strenght if short range weapon, dexterity if long range) plus
+	a dice roll of the weapon's dice.
+
+	Design:
+	The character class keeps a set of observers. When the character's state changes, the observers are notified. Std::set was used to keep the set of observers,
+	because it doesn't allow for duplicates and generally corresponds to our needs.
+
+*/
 class character
 {
 public:
@@ -33,6 +59,9 @@ public:
 	int getArmorBonus();
 	virtual int getDamageBonus();
 	virtual int getAttackBonus();
+	/*!
+		returns the maximum starting HP for the character's level, class and constitution
+	*/
 	int getMaxHP();
 
 	void setImage(std::string im);
@@ -62,7 +91,7 @@ public:
 	std::string getName();
 	int getLevel();
 	character::abilList getAbilities();
-	string getClassName();
+	std::string getClassName();
 	virtual int levelUp(int incAmount);
 	std::string getImage();
 
@@ -77,6 +106,7 @@ public:
 
 	void addObserver(observer& obs);
 	void removeObserver(observer& obs);
+	bool isAttached(observer* obs);
 	void notifyObservers();
 
 

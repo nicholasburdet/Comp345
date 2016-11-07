@@ -1,17 +1,20 @@
 #pragma once
 
 /*
-Author: Nicholas Burdet
-Id: 29613773
+Author: Alexis Grondin
+Id: 26639569
 Course: COMP 345
-Assignment 2 Part 2: Map Editor
+Assignment 2 Part 2: Character Observer
 
 Character cpp file
 */
 
 #include "character.h"
 #include <stdlib.h>
+#include <stdio.h>
+#include <iostream>
 #include <set>
+#include <QDebug>
 
 using namespace std;
 
@@ -21,6 +24,7 @@ character::character():observers()
 	level=1;
 	image="";
 	abilities = generateAbilities();
+	hitDice = 10;
 	HP = getMaxHP();
 }
 character::character(int i, string n, int l, string im):observers()
@@ -30,6 +34,7 @@ character::character(int i, string n, int l, string im):observers()
 	level = l;
 	image = im;
 	abilities = generateAbilities();
+	hitDice = 10;
 	HP = getMaxHP();
 }
 
@@ -39,7 +44,9 @@ character::character(int i, string n, int l, string im, int abList[6]) :observer
 	name = n;
 	level = l;
 	image = im;
-	abilities = abilList{ abList[0],abList[1],abList[2],abList[3],abList[4],abList[5] };
+	abilities = abilList{ abList[0]%18,abList[1]%18,abList[2]%18,abList[3]%18,abList[4]%18,abList[5]%18 };
+	hitDice = 10;
+	HP = getMaxHP();
 
 }
 
@@ -122,6 +129,7 @@ string character::getClassName() {
 }
 
 int character::levelUp(int incAmount=1){
+	level += incAmount;
 	HP += getModifier(abilities.constitution)*incAmount;
 
 	notifyObservers();
@@ -142,7 +150,7 @@ int character::getY()
 }
 
 character::abilList character::generateAbilities() {
-	
+
 	abilList newAbs = { getMaxRollSum(6,4), getMaxRollSum(6, 4), getMaxRollSum(6, 4), getMaxRollSum(6, 4) ,getMaxRollSum(6, 4), getMaxRollSum(6,4) };
 
 	return newAbs;
@@ -179,6 +187,10 @@ void character::removeObserver(observer & obs)
 
 	observers.erase(&obs);
 
+}
+
+bool character::isAttached(observer* obs){
+	return observers.find(obs) != observers.end();
 }
 
 void character::notifyObservers()
@@ -226,6 +238,6 @@ int character::getModifier(int abilityScore){
 }
 
 int character::getMaxHP(){
+
 	return (getModifier(this->abilities.constitution)*this->level + this->hitDice);
 }
-

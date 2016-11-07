@@ -33,6 +33,9 @@
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="Resource Files\images">
+      <UniqueIdentifier>{4b047931-6309-4f2f-a349-93039c6c5134}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -80,6 +83,21 @@
     <ClCompile Include="observer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="itemContainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="characterController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_characterController.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_characterController.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="characterTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="testqt.h">
@@ -95,6 +113,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="editscreen.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="characterController.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -114,5 +135,37 @@
     <ClInclude Include="observer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="itemContainer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Q_DebugStream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\button.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="Images\dirt.jpg">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="Images\end.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="Images\grass.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="Images\load.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="Images\redbutton.jpg">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="Images\save.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
+    <Image Include="Images\start.png">
+      <Filter>Resource Files\images</Filter>
+    </Image>
   </ItemGroup>
 </Project>

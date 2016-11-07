@@ -1,8 +1,26 @@
-﻿  character.cpp
+﻿  Moc'ing testqt.h...
+  Uic'ing testqt.ui...
+  Moc'ing characterController.h...
+  Moc'ing logic.h...
+  Moc'ing editscreen.h...
+  Rcc'ing testqt.qrc...
+RCC : warning : No resources in 'C:\Users\Alexis\COMP345\Comp345\testQt\testqt.qrc'.
+  
+  character.cpp
   characterObserver.cpp
+  characterTest.cpp
+  moc_characterController.cpp
+  moc_editscreen.cpp
   moc_logic.cpp
+  moc_testqt.cpp
+  itemContainer.cpp
   logic.cpp
+  main.cpp
+  editscreen.cpp
+  MapScreen.cpp
+  observer.cpp
+  characterController.cpp
+  testqt.cpp
   Generating Code...
   qrc_testqt.cpp
-  testQt.vcxproj -> C:\Users\Alexis\COMP345\Comp345\x64\Debug\testQt.exe
-  testQt.vcxproj -> C:\Users\Alexis\COMP345\Comp345\x64\Debug\testQt.pdb (Full PDB)
+cppunit.lib(TestFactoryRegistry.obj) : fatal error LNK1112: module machine type 'X86' conflicts with target machine type 'x64'

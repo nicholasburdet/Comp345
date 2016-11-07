@@ -1,0 +1,60 @@
+\hypertarget{classcharacter_observer}{}\section{character\+Observer Class Reference}
+\label{classcharacter_observer}\index{character\+Observer@{character\+Observer}}
+
+
+{\ttfamily \#include $<$character\+Observer.\+h$>$}
+
+Inheritance diagram for character\+Observer\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcharacter_observer}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classcharacter_observer_a076a0222ae36d51b761298ed5ae3ec71}{}\label{classcharacter_observer_a076a0222ae36d51b761298ed5ae3ec71} 
+{\bfseries character\+Observer} (Q\+Widget $\ast$parent, \hyperlink{classcharacter}{character} $\ast$sub)
+\item 
+void \hyperlink{classcharacter_observer_acef1a20aefd63499e3cbcad9fdfd7e02}{notify} ()
+\item 
+void \hyperlink{classcharacter_observer_a617083ec4e753ede947c6a355df18dfe}{initialize} ()
+\item 
+void \hyperlink{classcharacter_observer_a1a3ec8b3be1a73dc89e413dc817a6077}{update\+Table} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Character observer class, implementing the observer pattern. It also inherits the Q\+Main\+Window class of the QT framework. This class generates a QT table widget, where the character\textquotesingle{}s stats are displayed. In the final application, this will be used by the player to monitor his character\textquotesingle{}s or the npc\textquotesingle{}s stats.
+
+The QT framework was chosen because of its simplicity and good documentation 
+
+\subsection{Member Function Documentation}
+\hypertarget{classcharacter_observer_a617083ec4e753ede947c6a355df18dfe}{}\label{classcharacter_observer_a617083ec4e753ede947c6a355df18dfe} 
+\index{character\+Observer@{character\+Observer}!initialize@{initialize}}
+\index{initialize@{initialize}!character\+Observer@{character\+Observer}}
+\subsubsection{\texorpdfstring{initialize()}{initialize()}}
+{\footnotesize\ttfamily void character\+Observer\+::initialize (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Initializes the table displaying the character\textquotesingle{}s stats \hypertarget{classcharacter_observer_acef1a20aefd63499e3cbcad9fdfd7e02}{}\label{classcharacter_observer_acef1a20aefd63499e3cbcad9fdfd7e02} 
+\index{character\+Observer@{character\+Observer}!notify@{notify}}
+\index{notify@{notify}!character\+Observer@{character\+Observer}}
+\subsubsection{\texorpdfstring{notify()}{notify()}}
+{\footnotesize\ttfamily void character\+Observer\+::notify (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Notifies the observer of a state change in the subject, prompting it to update its display 
+
+Implements \hyperlink{classobserver}{observer}.
+
+\hypertarget{classcharacter_observer_a1a3ec8b3be1a73dc89e413dc817a6077}{}\label{classcharacter_observer_a1a3ec8b3be1a73dc89e413dc817a6077} 
+\index{character\+Observer@{character\+Observer}!update\+Table@{update\+Table}}
+\index{update\+Table@{update\+Table}!character\+Observer@{character\+Observer}}
+\subsubsection{\texorpdfstring{update\+Table()}{updateTable()}}
+{\footnotesize\ttfamily void character\+Observer\+::update\+Table (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Updates the table with the new character\textquotesingle{}s stats 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+test\+Qt/character\+Observer.\+h\item 
+test\+Qt/character\+Observer.\+cpp\end{DoxyCompactItemize}

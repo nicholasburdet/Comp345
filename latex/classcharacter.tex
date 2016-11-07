@@ -1,0 +1,152 @@
+\hypertarget{classcharacter}{}\section{character Class Reference}
+\label{classcharacter}\index{character@{character}}
+
+
+{\ttfamily \#include $<$character.\+h$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structcharacter_1_1abil_list}{abil\+List}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classcharacter_a7f19c0ee3b827b017eff3ad6fae5c422}{}\label{classcharacter_a7f19c0ee3b827b017eff3ad6fae5c422} 
+{\bfseries character} (int i, std\+::string n, int l, std\+::string im)
+\item 
+\hypertarget{classcharacter_adeb8d2beadcc402ce388606cdaa0bba6}{}\label{classcharacter_adeb8d2beadcc402ce388606cdaa0bba6} 
+{\bfseries character} (int i, std\+::string n, int l, std\+::string im, int abilities\mbox{[}6\mbox{]})
+\item 
+\hypertarget{classcharacter_a8dcd236fcff892e4515e859318072551}{}\label{classcharacter_a8dcd236fcff892e4515e859318072551} 
+void {\bfseries set\+Id} (int i)
+\item 
+\hypertarget{classcharacter_ae9dffcbabcac5371a92f442a08b497fd}{}\label{classcharacter_ae9dffcbabcac5371a92f442a08b497fd} 
+void {\bfseries set\+Name} (std\+::string n)
+\item 
+\hypertarget{classcharacter_a1debcb88c0662f8b361122b4261d777c}{}\label{classcharacter_a1debcb88c0662f8b361122b4261d777c} 
+void {\bfseries set\+Level} (int l)
+\item 
+\hypertarget{classcharacter_a528b7881f18a272cd71bb4f442c5ad80}{}\label{classcharacter_a528b7881f18a272cd71bb4f442c5ad80} 
+void {\bfseries set\+HP} (int hp)
+\item 
+\hypertarget{classcharacter_ae25486dd054cd4c9202111b616794a8e}{}\label{classcharacter_ae25486dd054cd4c9202111b616794a8e} 
+void {\bfseries dec\+HP} (int damage)
+\item 
+\hypertarget{classcharacter_a342bf66b25c7f8e5b006ed88a85c7183}{}\label{classcharacter_a342bf66b25c7f8e5b006ed88a85c7183} 
+int {\bfseries get\+Armor\+Bonus} ()
+\item 
+\hypertarget{classcharacter_aa9641ce584c23e39fa9a085afa1b8d5b}{}\label{classcharacter_aa9641ce584c23e39fa9a085afa1b8d5b} 
+virtual int {\bfseries get\+Damage\+Bonus} ()
+\item 
+\hypertarget{classcharacter_a926466b75c8655ca69385780ad3f1a0b}{}\label{classcharacter_a926466b75c8655ca69385780ad3f1a0b} 
+virtual int {\bfseries get\+Attack\+Bonus} ()
+\item 
+int \hyperlink{classcharacter_a7545a786510f968f6299e8975e6b6b06}{get\+Max\+HP} ()
+\item 
+\hypertarget{classcharacter_aae5fa02f62b32f9daa389d8d68d5b4d6}{}\label{classcharacter_aae5fa02f62b32f9daa389d8d68d5b4d6} 
+void {\bfseries set\+Image} (std\+::string im)
+\item 
+\hypertarget{classcharacter_a67c8168cb18f99febc2e4160a8e0c58c}{}\label{classcharacter_a67c8168cb18f99febc2e4160a8e0c58c} 
+void {\bfseries setX} (int x)
+\item 
+\hypertarget{classcharacter_a1161fcef69fd85b3e2dcf9ff20b9b471}{}\label{classcharacter_a1161fcef69fd85b3e2dcf9ff20b9b471} 
+void {\bfseries setY} (int y)
+\item 
+\hypertarget{classcharacter_a153c1d1989f5cb13e9ddcf8881f74701}{}\label{classcharacter_a153c1d1989f5cb13e9ddcf8881f74701} 
+void {\bfseries move\+By} (int x, int y)
+\item 
+\hypertarget{classcharacter_a6af93dc6977752b5e91bda0b2a28841a}{}\label{classcharacter_a6af93dc6977752b5e91bda0b2a28841a} 
+void {\bfseries move\+To} (int x, int y)
+\item 
+\hypertarget{classcharacter_a081aaac1bcb0854c6579710746ca3c71}{}\label{classcharacter_a081aaac1bcb0854c6579710746ca3c71} 
+virtual int {\bfseries get\+HP} ()
+\item 
+\hypertarget{classcharacter_a242a91b319a57b29c4014937bedd4e37}{}\label{classcharacter_a242a91b319a57b29c4014937bedd4e37} 
+int {\bfseries get\+Id} ()
+\item 
+\hypertarget{classcharacter_ac2afed052f62a7eb2bf181d2f2258fd1}{}\label{classcharacter_ac2afed052f62a7eb2bf181d2f2258fd1} 
+std\+::string {\bfseries get\+Name} ()
+\item 
+\hypertarget{classcharacter_a185635ea352e657170ab839a491a47f5}{}\label{classcharacter_a185635ea352e657170ab839a491a47f5} 
+int {\bfseries get\+Level} ()
+\item 
+\hypertarget{classcharacter_ab65accb5f45aa00aec892e71ec292174}{}\label{classcharacter_ab65accb5f45aa00aec892e71ec292174} 
+\hyperlink{structcharacter_1_1abil_list}{character\+::abil\+List} {\bfseries get\+Abilities} ()
+\item 
+\hypertarget{classcharacter_ac2f4739d203695f4eda1536dca5fcfed}{}\label{classcharacter_ac2f4739d203695f4eda1536dca5fcfed} 
+std\+::string {\bfseries get\+Class\+Name} ()
+\item 
+\hypertarget{classcharacter_a18dce66a2f2431a60e5a8e8c970aff44}{}\label{classcharacter_a18dce66a2f2431a60e5a8e8c970aff44} 
+virtual int {\bfseries level\+Up} (int inc\+Amount)
+\item 
+\hypertarget{classcharacter_a76a4dede3755507ba76953080d4c729c}{}\label{classcharacter_a76a4dede3755507ba76953080d4c729c} 
+std\+::string {\bfseries get\+Image} ()
+\item 
+\hypertarget{classcharacter_a5a8739169623487c1d2a7626b37e2886}{}\label{classcharacter_a5a8739169623487c1d2a7626b37e2886} 
+int {\bfseries getX} ()
+\item 
+\hypertarget{classcharacter_a9ac85ca2d1a1930ef4ecf069997be39f}{}\label{classcharacter_a9ac85ca2d1a1930ef4ecf069997be39f} 
+int {\bfseries getY} ()
+\item 
+\hypertarget{classcharacter_a14a67dba3fa314ce52f23966fa55bd22}{}\label{classcharacter_a14a67dba3fa314ce52f23966fa55bd22} 
+\hyperlink{structcharacter_1_1abil_list}{abil\+List} {\bfseries generate\+Abilities} ()
+\item 
+\hypertarget{classcharacter_ae4482570a73550e4de68a5088e4166fa}{}\label{classcharacter_ae4482570a73550e4de68a5088e4166fa} 
+int {\bfseries roll\+Dice} (int faces)
+\item 
+\hypertarget{classcharacter_a79782f747741ca665c4002969cccb1a1}{}\label{classcharacter_a79782f747741ca665c4002969cccb1a1} 
+int {\bfseries get\+Max\+Roll\+Sum} (int faces, int num\+Rolls)
+\item 
+\hypertarget{classcharacter_a31b1482c77e8e8e81791ff6c6b83f334}{}\label{classcharacter_a31b1482c77e8e8e81791ff6c6b83f334} 
+void {\bfseries add\+Observer} (\hyperlink{classobserver}{observer} \&obs)
+\item 
+\hypertarget{classcharacter_a8457474b31e7f3e8b3a3c48d5f564b96}{}\label{classcharacter_a8457474b31e7f3e8b3a3c48d5f564b96} 
+void {\bfseries remove\+Observer} (\hyperlink{classobserver}{observer} \&obs)
+\item 
+\hypertarget{classcharacter_aaf06669f3ed8751518bad227f7a3cf11}{}\label{classcharacter_aaf06669f3ed8751518bad227f7a3cf11} 
+bool {\bfseries is\+Attached} (\hyperlink{classobserver}{observer} $\ast$obs)
+\item 
+\hypertarget{classcharacter_ae514d5a8a08ac6437eb425d7d1ecd9d2}{}\label{classcharacter_ae514d5a8a08ac6437eb425d7d1ecd9d2} 
+void {\bfseries notify\+Observers} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classcharacter_a2551d2c84e185b12dabfdb4746af3519}{}\label{classcharacter_a2551d2c84e185b12dabfdb4746af3519} 
+static int {\bfseries get\+Modifier} (int ability\+Score)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Character class. Contains all information related to a character. For the time being, the only character class is fighter. A character can be linked to an image file, which will be used to display him on the map.
+
+DnD Rules\+: -\/\+Level\+: For the level, we use a maximum level of 20. This level is first set at character creation, but can afterwards be increased.
+
+-\/\+Abilities\+: There are six different abilities, represented by a struct, and which can be set by the player of generated randomly. If generated randomly, each ability will be given by rolling a 6-\/dice four times and taking the sum of the 3 highest throws.
+
+-\/\+Ability modifiers\+: Ability modifiers are given by the formula (ability level-\/10)/2
+
+-\/\+HP\+: HP upon character creation is defined by the formula\+: (Hit Dice)+(Character Level)$\ast$(Constitution modifier). Afterwards, the HP can be increased or decreased, when a character heals or is injured. When a character levels up, his HP is increased by an amount equal to his constitution modifier.
+
+-\/\+Hit Dice\+: fighters have a hit dice of 10, which represents some sort of value related to their ability to survive, I suppose.
+
+-\/\+Armor Bonus\+: Armor bonus is the sum of\+: 10+(armor bonus)+(shield bonus)+(dexterity modifier)
+
+-\/\+Attack Bonus\+: Attack bonus is given by\+: proficiency bonus (see below) plus a modifier (strenght if short range weapon, dexterity if long range) plus a dice roll of the weapon\textquotesingle{}s dice.
+
+Design\+: The character class keeps a set of observers. When the character\textquotesingle{}s state changes, the observers are notified. Std\+::set was used to keep the set of observers, because it doesn\textquotesingle{}t allow for duplicates and generally corresponds to our needs. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classcharacter_a7545a786510f968f6299e8975e6b6b06}{}\label{classcharacter_a7545a786510f968f6299e8975e6b6b06} 
+\index{character@{character}!get\+Max\+HP@{get\+Max\+HP}}
+\index{get\+Max\+HP@{get\+Max\+HP}!character@{character}}
+\subsubsection{\texorpdfstring{get\+Max\+H\+P()}{getMaxHP()}}
+{\footnotesize\ttfamily int character\+::get\+Max\+HP (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+returns the maximum starting HP for the character\textquotesingle{}s level, class and constitution 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+test\+Qt/character.\+h\item 
+test\+Qt/character.\+cpp\end{DoxyCompactItemize}
