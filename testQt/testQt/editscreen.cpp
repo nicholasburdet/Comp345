@@ -22,6 +22,12 @@ serve as the UI controller for the entire game project for the most part
 #include <QInputDialog>
 #include <QObject>
 
+////Item Editor
+#include <iostream>
+#include <fstream>
+using namespace std;
+////
+
 //Initialize all menus here upon class initialization
 editscreen::editscreen(char n[])
 {
@@ -55,11 +61,22 @@ editscreen::editscreen(char n[])
 	campaignMenuAction = new QAction(tr("&Campaign and Map Editor"), this);
 	connect(campaignMenuAction, SIGNAL(triggered()), this, SLOT(createCampaignMenus()));
 
+
+	////Item Editor
+	newItemAction = new QAction(tr("&New Item"), this);
+	connect(newItemAction, SIGNAL(triggered()), this, SLOT(newItem()));
+	////
+
+
 	campaignMenuCloseAction = new QAction(tr("&Close Campaign Menu"), this);
 	connect(campaignMenuCloseAction, SIGNAL(triggered()), this, SLOT(campaignMenuClose()));
 
 	editMenu = new QMenu(tr("&Main Menu"), this);
 	editMenu->addAction(campaignMenuAction);
+	
+	//// Item Generator added to menu
+	editMenu->addAction(newItemAction);
+	////
 	
 	mapMenu = new QMenu(tr("&Map File"), this);
 	mapMenu->addAction(newMapAction);
@@ -227,6 +244,175 @@ void editscreen::openMap()
 	openingMap = true;
 	editMap();
 }
+
+
+//// Creating a new Item
+void editscreen::newItem() 
+{
+
+	bool ok1;
+
+	
+	int armorClass = 1;
+	int enchantmentBonus = 0;
+	QString enchantmentType;
+	QString armorGrade;
+
+	ifstream file("Resources/items.txt");
+	string str;
+	string str2;
+	string file_contents;
+	string symbol = "|";
+	while (getline(file, str))
+	{
+		size_t found = str.find(symbol);
+		str2 = str.substr(0, found);
+	};
+
+	int temp = atoi(str2.c_str());
+	temp = temp + 1;
+
+
+	//Currently has to be typed out -- at a later date it'll be a combo box to prevent errors and to improve the ux
+	QString itemType = QInputDialog::getText(this, tr("Item Type"), tr("Enter Item Type: Helmet, Armor, Shield, Ring, Belt, Boots, Weapon"), QLineEdit::Normal, "", &ok1);
+	
+	
+	QString itemName = QInputDialog::getText(this, tr("Item Name"), tr("Give your item a Name!"), QLineEdit::Normal, "", &ok1);
+	
+
+	
+		//Make Id base on line number in file
+		string customItemsFile = "Resources/items.txt";
+	
+	
+		if (ok1) {
+
+			if (itemType == "Helmet") {
+
+				//enchantmentType
+				enchantmentType = QInputDialog::getText(this, tr("Enchantment Type"), tr("Give your item an enchantment! Intelligence, Wisdom, Armor Class - Leave blank for no enchantment"), QLineEdit::Normal, "", &ok1);
+
+				//enchantmentBonus if applicable	
+				if (enchantmentType != "") {
+					enchantmentBonus = QInputDialog::getInt(this, "Enchantment Bonus", tr("Enter the enchantment bonus. Range: 1 - 5"), 1, 1, 5, 1, &ok1);
+				}
+				else {
+					enchantmentBonus = 0;
+				}
+
+				QString armorGrade = QInputDialog::getText(this, tr("Armor Grade"), tr("Enter the Armor grade. Light, Medium, Heavy"), QLineEdit::Normal, "", &ok1);
+
+
+			}
+			else if (itemType == "Armor" || itemType == "Shield") {
+				//armor and shield have the same potential bonuses
+
+
+				//enchantmentType
+				enchantmentType = QInputDialog::getText(this, tr("Enchantment Type"), tr("Give your item an enchantment! Armor Class - Leave blank for no enchantment"), QLineEdit::Normal, "", &ok1);
+
+				//enchantmentBonus if applicable	
+				if (enchantmentType != "") {
+					enchantmentBonus = QInputDialog::getInt(this, "Enchantment Bonus", tr("Enter the enchantment bonus. Range: 1 - 5"), 1, 1, 5, 1, &ok1);
+				}
+				else {
+					enchantmentBonus = 0;
+				}
+				armorGrade = QInputDialog::getText(this, tr("Armor Grade"), tr("Enter the Armor grade. Light, Medium, Heavy"), QLineEdit::Normal, "", &ok1);
+
+
+			}
+			else if (itemType == "Ring") {
+
+				//enchantmentType
+				enchantmentType = QInputDialog::getText(this, tr("Enchantment Type"), tr("Give your item an enchantment! Armor Class, Strength, Consitution, Wisdom, Charisma - Leave blank for no enchantment"), QLineEdit::Normal, "", &ok1);
+
+				//enchantmentBonus if applicable	
+				if (enchantmentType != "") {
+					enchantmentBonus = QInputDialog::getInt(this, "Enchantment Bonus", tr("Enter the enchantment bonus. Range: 1 - 5"), 1, 1, 5, 1, &ok1);
+				}
+				else {
+					enchantmentBonus = 0;
+				}
+
+				armorGrade = QInputDialog::getText(this, tr("Armor Grade"), tr("Enter the Armor grade. Light, Medium, Heavy"), QLineEdit::Normal, "", &ok1);
+
+
+			}
+			else if (itemType == "Belt") {
+
+
+				//enchantmentType
+				enchantmentType = QInputDialog::getText(this, tr("Enchantment Type"), tr("Give your item an enchantment! Constitution, Strength - Leave blank for no enchantment"), QLineEdit::Normal, "", &ok1);
+
+				//enchantmentBonus if applicable	
+				if (enchantmentType != "") {
+					enchantmentBonus = QInputDialog::getInt(this, "Enchantment Bonus", tr("Enter the enchantment bonus. Range: 1 - 5"), 1, 1, 5, 1, &ok1);
+				}
+				else {
+					enchantmentBonus = 0;
+				}
+
+				armorGrade = QInputDialog::getText(this, tr("Armor Grade"), tr("Enter the Armor grade. Light, Medium, Heavy"), QLineEdit::Normal, "", &ok1);
+
+			}
+			else if (itemType == "Boots") {
+
+				//enchantmentType
+				enchantmentType = QInputDialog::getText(this, tr("Enchantment Type"), tr("Give your item an enchantment! Armor Class, Dexteriy - Leave blank for no enchantment"), QLineEdit::Normal, "", &ok1);
+
+				//enchantmentBonus if applicable	
+				if (enchantmentType != "") {
+					enchantmentBonus = QInputDialog::getInt(this, "Enchantment Bonus", tr("Enter the enchantment bonus. Range: 1 - 5"), 1, 1, 5, 1, &ok1);
+				}
+				else {
+					enchantmentBonus = 0;
+				}
+
+				armorGrade = QInputDialog::getText(this, tr("Armor Grade"), tr("Enter the Armor grade. Light, Medium, Heavy"), QLineEdit::Normal, "", &ok1);
+
+			}
+			else if (itemType == "Weapon") {
+
+				//enchantmentType
+				enchantmentType = QInputDialog::getText(this, tr("Enchantment Type"), tr("Give your item an enchantment! Attack Bonus, Damage Bonus - Leave blank for no enchantment"), QLineEdit::Normal, "", &ok1);
+
+				//enchantmentBonus if applicable	
+				if (enchantmentType != "") {
+					enchantmentBonus = QInputDialog::getInt(this, "Enchantment Bonus", tr("Enter the enchantment bonus. Range: 1 - 5"), 1, 1, 5, 1, &ok1);
+				}
+				else {
+					enchantmentBonus = 0;
+				}
+
+				armorGrade = QInputDialog::getText(this, tr("Dice"), tr("Enter the dice Damage. #d#, example: 1d4"), QLineEdit::Normal, "", &ok1);
+
+			}
+
+			//// Write to file
+			//Convert QString to string
+			std::string itemTypeString = itemType.toLocal8Bit().constData();
+			std::string itemNameString = itemName.toLocal8Bit().constData();
+			std::string enchantmentTypeString = enchantmentType.toLocal8Bit().constData();
+			std::string ig = armorGrade.toLocal8Bit().constData();
+
+
+
+			////Format of items:
+			//ID | Type | Name | Enchantment | Bonus | DICE/ARMOR GRADE
+			ofstream customItems;
+			customItems.open(customItemsFile.c_str(), ios::out | ios::app);
+
+
+			//itemGrade is not written to file
+			customItems << temp << "|" << itemTypeString << "|" << itemNameString << "|" << enchantmentTypeString << "|" << enchantmentBonus << "|" << ig << "\n";
+			customItems.close();
+			////
+
+		}
+}
+////
+
 
 //Navigates to previous map in campaign. Displays error if reached beginning
 void editscreen::previousMap()
