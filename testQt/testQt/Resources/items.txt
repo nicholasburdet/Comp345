@@ -1,0 +1,13 @@
+0||||0|
+1|Helmet|Full Helmet|Wisdom|4|Heavy
+2|Armor|Half Platebody||0|Heavy
+3|Weapon|Sword||0|1d4
+4|Ring|Diamond Ring|Armor Class|5|Light
+5|Ring|Ruby Ring|Armor Class|2|Light
+6|Ring|Emerald Ring|Armor Class|0|Light
+7|Shield|Kiteshield|Armor Class|3|Heavy
+8|Belt|Titanium Belt|Strength|1|Heavy
+9|Boots|Rugged boots||0|Heavy
+10|Belt|Old Belt||0|Light
+11|Boots|Old Boots|Armor Class|1|Light
+12|Weapon|Dagger|Damage Bonus|5|1d4
