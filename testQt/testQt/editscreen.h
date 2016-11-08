@@ -33,6 +33,10 @@ public slots:
 	void loadCampaign();
 	void createCampaignMenus();
 	void campaignMenuClose();
+
+	////For Item
+	void newItem();
+	////
 private:
 	logic *log;
 	int checkResolution(int w, int h);
@@ -63,4 +67,8 @@ private:
 	QAction *resetMapAction;
 	QAction *mapMenuCloseAction;
 	QAction *campaignMenuCloseAction;
+
+	////Item Action
+	QAction *newItemAction;
+	////
 };
