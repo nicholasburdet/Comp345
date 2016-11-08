@@ -13,7 +13,7 @@ But for the purpose of this project/asssignment, it will stay for now. Ignore th
 #include "testqt.h"
 #include <QPixmap>
 #include <QGraphicsScene>
-#include "GridScene.cpp"
+//#include "GridScene.cpp"
 
 
 testQt::testQt(QWidget *parent)
@@ -34,7 +34,7 @@ void testQt::exit()
 
 void testQt::openWindow()
 {
-	GridScene scene(0, 0, 500, 500);
-	QGraphicsView view(&scene);
-	view.show();
+	//GridScene scene(0, 0, 500, 500);
+	//QGraphicsView view(&scene);
+	//view.show();
 }
