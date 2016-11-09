@@ -257,6 +257,10 @@ void editscreen::newItem()
 	int enchantmentBonus = 0;
 	QString enchantmentType;
 	QString armorGrade;
+	QStringList enchants;
+	QStringList items;
+	QStringList armorList;
+	armorList << tr("Light") << tr("Medium") << tr("Heavy");
 
 	ifstream file("Resources/items.txt");
 	string str;
@@ -273,8 +277,16 @@ void editscreen::newItem()
 	temp = temp + 1;
 
 
+
+
+	
+	items << tr("Helmet") << tr("Armor") << tr("Shield") << tr("Ring") << tr("Belt") << tr("Boots") << tr("Weapon");
+
+	QString itemType = QInputDialog::getItem(this, tr("QInputDialog::getItem()"),tr("Select Item Type:"), items, 0, false, &ok1);
+
+
 	//Currently has to be typed out -- at a later date it'll be a combo box to prevent errors and to improve the ux
-	QString itemType = QInputDialog::getText(this, tr("Item Type"), tr("Enter Item Type: Helmet, Armor, Shield, Ring, Belt, Boots, Weapon"), QLineEdit::Normal, "", &ok1);
+	//QString itemType = QInputDialog::getText(this, tr("Item Type"), tr("Enter Item Type: Helmet, Armor, Shield, Ring, Belt, Boots, Weapon"), QLineEdit::Normal, "", &ok1);
 	
 	
 	QString itemName = QInputDialog::getText(this, tr("Item Name"), tr("Give your item a Name!"), QLineEdit::Normal, "", &ok1);
@@ -290,7 +302,11 @@ void editscreen::newItem()
 			if (itemType == "Helmet") {
 
 				//enchantmentType
-				enchantmentType = QInputDialog::getText(this, tr("Enchantment Type"), tr("Give your item an enchantment! Intelligence, Wisdom, Armor Class - Leave blank for no enchantment"), QLineEdit::Normal, "", &ok1);
+				
+				enchants << tr("None") << tr("Intelligence") << tr("Wisdom") << tr("Consitution") << tr("Armor Class");
+				enchantmentType = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select Enchantment:"), enchants, 0, false, &ok1);
+
+
 
 				//enchantmentBonus if applicable	
 				if (enchantmentType != "") {
@@ -300,8 +316,8 @@ void editscreen::newItem()
 					enchantmentBonus = 0;
 				}
 
-				QString armorGrade = QInputDialog::getText(this, tr("Armor Grade"), tr("Enter the Armor grade. Light, Medium, Heavy"), QLineEdit::Normal, "", &ok1);
 
+				armorGrade = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select armor grade:"), armorList, 0, false, &ok1);
 
 			}
 			else if (itemType == "Armor" || itemType == "Shield") {
@@ -309,7 +325,9 @@ void editscreen::newItem()
 
 
 				//enchantmentType
-				enchantmentType = QInputDialog::getText(this, tr("Enchantment Type"), tr("Give your item an enchantment! Armor Class - Leave blank for no enchantment"), QLineEdit::Normal, "", &ok1);
+			
+				enchants << tr("None") << tr("Armor Class");
+				enchantmentType = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select Item enchantment:"), enchants, 0, false, &ok1);
 
 				//enchantmentBonus if applicable	
 				if (enchantmentType != "") {
@@ -318,24 +336,26 @@ void editscreen::newItem()
 				else {
 					enchantmentBonus = 0;
 				}
-				armorGrade = QInputDialog::getText(this, tr("Armor Grade"), tr("Enter the Armor grade. Light, Medium, Heavy"), QLineEdit::Normal, "", &ok1);
-
+				armorGrade = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select armor grade:"), armorList, 0, false, &ok1);
 
 			}
 			else if (itemType == "Ring") {
 
 				//enchantmentType
-				enchantmentType = QInputDialog::getText(this, tr("Enchantment Type"), tr("Give your item an enchantment! Armor Class, Strength, Consitution, Wisdom, Charisma - Leave blank for no enchantment"), QLineEdit::Normal, "", &ok1);
+				enchants << tr("None") << tr("Armor Class") << tr("Strength") << tr("Consitution") << tr("Wisdom") << tr("Charisma");
+				enchantmentType = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select Item enchantment:"), enchants, 0, false, &ok1);
 
+
+	
 				//enchantmentBonus if applicable	
-				if (enchantmentType != "") {
+				if (enchantmentType != "None") {
 					enchantmentBonus = QInputDialog::getInt(this, "Enchantment Bonus", tr("Enter the enchantment bonus. Range: 1 - 5"), 1, 1, 5, 1, &ok1);
 				}
 				else {
 					enchantmentBonus = 0;
 				}
 
-				armorGrade = QInputDialog::getText(this, tr("Armor Grade"), tr("Enter the Armor grade. Light, Medium, Heavy"), QLineEdit::Normal, "", &ok1);
+				armorGrade = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select armor grade:"), armorList, 0, false, &ok1);
 
 
 			}
@@ -343,42 +363,50 @@ void editscreen::newItem()
 
 
 				//enchantmentType
-				enchantmentType = QInputDialog::getText(this, tr("Enchantment Type"), tr("Give your item an enchantment! Constitution, Strength - Leave blank for no enchantment"), QLineEdit::Normal, "", &ok1);
+				enchants << tr("None")  << tr("Armor Class") << tr("Strength") << tr("Consitution") << tr("Wisdom") << tr("Charisma");
+				enchantmentType = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select Enchantment:"), enchants, 0, false, &ok1);
+
 
 				//enchantmentBonus if applicable	
-				if (enchantmentType != "") {
+				if (enchantmentType != "None") {
 					enchantmentBonus = QInputDialog::getInt(this, "Enchantment Bonus", tr("Enter the enchantment bonus. Range: 1 - 5"), 1, 1, 5, 1, &ok1);
 				}
 				else {
 					enchantmentBonus = 0;
 				}
 
-				armorGrade = QInputDialog::getText(this, tr("Armor Grade"), tr("Enter the Armor grade. Light, Medium, Heavy"), QLineEdit::Normal, "", &ok1);
+				armorGrade = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select armor grade:"), armorList, 0, false, &ok1);
 
 			}
 			else if (itemType == "Boots") {
 
 				//enchantmentType
-				enchantmentType = QInputDialog::getText(this, tr("Enchantment Type"), tr("Give your item an enchantment! Armor Class, Dexteriy - Leave blank for no enchantment"), QLineEdit::Normal, "", &ok1);
 
+				enchants << tr("None") << tr("Armor Class") << tr("Dexteriy");
+				enchantmentType = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select Enchantment:"), enchants, 0, false, &ok1);
+
+				
 				//enchantmentBonus if applicable	
-				if (enchantmentType != "") {
+				if (enchantmentType != "None") {
 					enchantmentBonus = QInputDialog::getInt(this, "Enchantment Bonus", tr("Enter the enchantment bonus. Range: 1 - 5"), 1, 1, 5, 1, &ok1);
 				}
 				else {
 					enchantmentBonus = 0;
 				}
 
-				armorGrade = QInputDialog::getText(this, tr("Armor Grade"), tr("Enter the Armor grade. Light, Medium, Heavy"), QLineEdit::Normal, "", &ok1);
+				armorGrade = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select armor grade:"), armorList, 0, false, &ok1);
 
 			}
 			else if (itemType == "Weapon") {
 
 				//enchantmentType
-				enchantmentType = QInputDialog::getText(this, tr("Enchantment Type"), tr("Give your item an enchantment! Attack Bonus, Damage Bonus - Leave blank for no enchantment"), QLineEdit::Normal, "", &ok1);
+
+				enchants << tr("None") << tr("Attack Bonus") << tr("Damage Bonus");
+				enchantmentType = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select Enchantment:"), enchants, 0, false, &ok1);
+
 
 				//enchantmentBonus if applicable	
-				if (enchantmentType != "") {
+				if (enchantmentType != "None") {
 					enchantmentBonus = QInputDialog::getInt(this, "Enchantment Bonus", tr("Enter the enchantment bonus. Range: 1 - 5"), 1, 1, 5, 1, &ok1);
 				}
 				else {
