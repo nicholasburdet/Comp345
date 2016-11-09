@@ -15,6 +15,8 @@ Character header file
 #include "observer.h"
 #include <set>
 #include <memory>
+#include <iostream>
+#include <fstream>
 
 
 /*!
@@ -109,8 +111,16 @@ public:
 	bool isAttached(observer* obs);
 	void notifyObservers();
 
+	//Loading and saving, will eventually be transferred to factory or builder
 
+	static character* loadFromFile(std::string filepath);
+	static void saveToFile(std::string filepath, character* toSave);
 
+	//Making it easier to interact with tables and files
+
+	void setAttribute(string attribute, string val);
+
+	string getAttribute(string attribute);
 
 private:
 	int id;

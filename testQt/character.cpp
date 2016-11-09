@@ -15,7 +15,9 @@ Character cpp file
 #include <iostream>
 #include <set>
 #include <QDebug>
-
+#include <iostream>
+#include <fstream>
+#include <sstream>
 using namespace std;
 
 character::character():observers()
@@ -200,6 +202,134 @@ void character::notifyObservers()
 			i->notify();
 		}
 	}
+}
+
+character * character::loadFromFile(std::string filepath)
+{
+	ifstream characterFile(filepath);
+
+	if (characterFile.is_open()) {
+
+		string str;
+		string file_contents;
+		string symbol = ":";
+		character* charac = new character();
+		while (getline(characterFile, str))
+		{
+			size_t found = str.find(symbol);
+			string attribute = str.substr(0, found);
+			string value = str.substr(found);
+
+			charac->setAttribute(attribute, value);
+
+		}
+
+		return charac;
+	}
+
+	return nullptr;
+}
+
+void character::saveToFile(std::string filepath, character * toSave)
+{
+	string attrList[] = { "Name", "id", "level", "image", "HP", "Class", "Strenght", "Intelligence", "Wisdom", "Constitution", "Charisma", "Dexterity" };
+
+	ofstream file(filepath);
+
+	if (file.is_open()) {
+		for (auto i : attrList) {
+			file << i;
+			file << toSave->getAttribute(i);
+			file << "\n";
+		};
+	}
+
+}
+
+void character::setAttribute(string attribute, string val)
+{
+	if (attribute == "Name") {
+		this->setName(val);
+	}
+	else if (attribute == "id") {
+		this->setId(std::stoi(val));
+	}
+	else if (attribute == "level") {
+		this->setLevel(std::stoi(val));
+	}
+	else if (attribute == "image") {
+		this->setImage(val);
+	}
+	else if (attribute == "HP") {
+		this->setHP(std::stoi(val));
+	}
+	else if (attribute == "Class") {
+		this->charClassName = val;
+	}
+	else if (attribute == "Strength") {
+		this->abilities.strength = std::stoi(val);
+	}
+	else if (attribute == "Intelligence") {
+		this->abilities.intelligence = std::stoi(val);
+	}
+	else if (attribute == "Wisdom") {
+		this->abilities.wisdom = std::stoi(val);
+	}
+	else if (attribute == "Constitution") {
+		this->abilities.constitution = std::stoi(val);
+	}
+	else if (attribute == "Charisma") {
+		this->abilities.charisma = std::stoi(val);
+	}
+	else if (attribute == "Dexterity") {
+		this->abilities.dexterity = std::stoi(val);
+	}
+	
+
+}
+
+string character::getAttribute(string attribute)
+{
+	if (attribute == "Name") {
+		return getName();
+	}
+	else if (attribute == "id") {
+		return std::to_string(getId());
+	}
+	else if (attribute == "level") {
+		return std::to_string(getLevel());
+	}
+	else if (attribute == "image") {
+		return getImage();
+	}
+	else if (attribute == "HP") {
+		return std::to_string(getHP());
+	}
+	else if (attribute == "Class") {
+		return this->charClassName;
+	}
+	else if (attribute == "Strength") {
+		return std::to_string(this->abilities.strength);
+	}
+	else if (attribute == "Intelligence") {
+		return std::to_string(this->abilities.intelligence );
+	}
+	else if (attribute == "Wisdom") {
+		return std::to_string(this->abilities.wisdom );
+	}
+	else if (attribute == "Constitution") {
+		return std::to_string(this->abilities.constitution );
+	}
+	else if (attribute == "Charisma") {
+		return std::to_string(this->abilities.charisma );
+	}
+	else if (attribute == "Dexterity") {
+		return std::to_string(this->abilities.dexterity );
+	}
+
+
+
+	return string();
 }
 
 int character::getHP(){
