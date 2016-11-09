@@ -11,3 +11,5 @@
 10|Belt|Old Belt||0|Light
 11|Boots|Old Boots|Armor Class|1|Light
 12|Weapon|Dagger|Damage Bonus|5|1d4
+13|Armor|Plate Armor||0|Heavy
+14|Belt|Belt of Undying|Armor Class|4|Medium

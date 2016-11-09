@@ -13,6 +13,8 @@ Menu commands are generally handled here, allowing the user to choose between pr
 serve as the UI controller for the entire game project for the most part
 */
 #include "editscreen.h"
+
+
 #include "logic.h"
 #include <QDebug>
 #include <QMouseEvent>
@@ -61,6 +63,14 @@ editscreen::editscreen(char n[])
 	campaignMenuAction = new QAction(tr("&Campaign and Map Editor"), this);
 	connect(campaignMenuAction, SIGNAL(triggered()), this, SLOT(createCampaignMenus()));
 
+	characterMenuAction = new QAction(tr("&Character Menu"), this);
+	connect(characterMenuAction, SIGNAL(triggered()), this, SLOT(createCharacterMenus()));
+
+	characterEditorMenuAction = new QAction(tr("&Create New Player Character"), this);
+	connect(characterEditorMenuAction, SIGNAL(triggered()), this, SLOT(characterEditorMenu()));
+
+	characterEditorSaveAction = new QAction(tr("&Save Character"), this);
+	connect(characterEditorSaveAction, SIGNAL(triggered()), this, SLOT(characterEditorSave()));
 
 	////Item Editor
 	newItemAction = new QAction(tr("&New Item"), this);
@@ -73,11 +83,11 @@ editscreen::editscreen(char n[])
 
 	editMenu = new QMenu(tr("&Main Menu"), this);
 	editMenu->addAction(campaignMenuAction);
-	
 	//// Item Generator added to menu
 	editMenu->addAction(newItemAction);
 	////
-	
+	editMenu->addAction(characterMenuAction);
+
 	mapMenu = new QMenu(tr("&Map File"), this);
 	mapMenu->addAction(newMapAction);
 	mapMenu->addAction(openMapAction);
@@ -94,7 +104,14 @@ editscreen::editscreen(char n[])
 	campaignMenu->addAction(openMapAction);
 	campaignMenu->addAction(campaignMenuCloseAction);
 
-	
+	characterMenu = new QMenu(tr("&Character"), this);
+	characterMenu->addAction(characterEditorMenuAction);
+
+	characterCreatorMenu = new QMenu(tr("&Character"), this);
+	characterCreatorMenu->addAction(characterEditorMenuAction);
+	characterCreatorMenu->addAction(characterEditorSaveAction);
+
+
 	createMainMenu();
 }
 
@@ -592,4 +609,71 @@ void editscreen::createCampaignMenus()
 	currentMenu = "campaignmenu";
 	menuBar()->clear();
 	menuBar()->addMenu(campaignMenu);
+}
+
+void editscreen::createCharacterMenus()
+{
+	currentMenu = "charactermenu";
+	menuBar()->clear();
+	menuBar()->addMenu(characterMenu);
+}
+
+void editscreen::characterEditorMenu()
+{
+	currentMenu = "charactereditormenu";
+	menuBar()->clear();
+	menuBar()->addMenu(characterCreatorMenu);
+
+	string charName;
+	int charLevel;
+
+	QDialog characterCreatorDialog(this);
+	QFormLayout characterForm(&characterCreatorDialog);
+
+	characterForm.addRow(new QLabel("Character Creation Window"));
+
+	QList<QLineEdit *> characterFields;
+
+	QLineEdit *lineEdit = new QLineEdit(&characterCreatorDialog);
+	QString label = QString("Name");
+	characterForm.addRow(label, lineEdit);
+	characterFields << lineEdit;
+	
+	lineEdit = new QLineEdit(&characterCreatorDialog);
+	label = QString("Level");
+	characterForm.addRow(label, lineEdit);
+	characterFields << lineEdit;
+
+
+	QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, &characterCreatorDialog);
+	characterForm.addRow(&buttonBox);
+	QObject::connect(&buttonBox, SIGNAL(accepted()), &characterCreatorDialog, SLOT(accept()));
+	QObject::connect(&buttonBox, SIGNAL(rejected()), &characterCreatorDialog, SLOT(reject()));
+
+
+	if (characterCreatorDialog.exec() == QDialog::Accepted) {
+		charName = characterFields.value(0)->text().toStdString();
+		charLevel = characterFields.value(1)->text().toInt();
+	
+		newCharacter = new character();
+		newCharacter->initialize(10, charName, charLevel, "");
+		
+		newCharacter->setPlayerCharacter(true);
+
+		characterObserver* charTable = new characterObserver(NULL, newCharacter);
+		characterController* driver = new characterController(newCharacter);
+
+		setCentralWidget(charTable);
+		setWindowTitle(tr("Character"));
+		this->setFixedWidth(400);
+		this->setFixedHeight(500);
+	}
+}
+
+void editscreen::characterEditorSave()
+{
+	newCharacter->saveToFile();
+	QMessageBox message;
+	message.setText("Character saved successfully!");
+	message.exec();
 }

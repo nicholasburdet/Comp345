@@ -64,8 +64,6 @@ void logic::loadCampaign(string filename)
 	
 	string extension = "Maps/";
 
-	qDebug() << QString::fromStdString(Campaign.getMapFilename(Campaign.getNumberOfMaps() - 1));
-
 	loadMap(extension.append(Campaign.getMapFilename(Campaign.getNumberOfMaps() - 1)));
 	Campaign.setCurrentMapId(Campaign.getNumberOfMaps() - 1);
 }
@@ -81,7 +79,6 @@ void logic::loadJustCampaign()
 	f.append(".txt");
 	Campaign.loadCampaign(f);
 	Campaign.setCurrentMapId(ms.getId());
-	qDebug() << QString::fromStdString(to_string(Campaign.getNumberOfMaps()));
 }
 
 //Sets resolution for calculations based on size of map. Default is currently 50

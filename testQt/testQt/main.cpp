@@ -35,10 +35,11 @@ QT Libraries are used in order to display the UI of the game and it's components
 #include "editscreen.h"
 #include <QtWidgets/QApplication>
 #include <QInputDialog>
+#include <ctime>
 
 int main(int argc, char *argv[])
 {
-	
+	srand(time(0));
 	QApplication a(argc, argv);
 	editscreen screen("Map Editor Screen");
 

@@ -12,6 +12,9 @@ Editscreen header file
 #include <QMainWindow>
 #include <string>
 #include <QMessageBox>
+#include "character.h"
+#include "characterObserver.h"
+#include "characterController.h"
 
 using namespace std;
 
@@ -33,12 +36,16 @@ public slots:
 	void loadCampaign();
 	void createCampaignMenus();
 	void campaignMenuClose();
+	void createCharacterMenus();
+	void characterEditorMenu();
+	void characterEditorSave();
 
 	////For Item
 	void newItem();
 	////
 private:
 	logic *log;
+	character *newCharacter = new character();
 	int checkResolution(int w, int h);
 	void createMainMenu();
 	void createEditorMenus();
@@ -56,6 +63,8 @@ private:
 	QMenu *mapMenu;
 	QMenu *campaignMenu;
 	QMenu *mapNavigatorMenu;
+	QMenu *characterMenu;
+	QMenu *characterCreatorMenu;
 
 	QAction *campaignMenuAction;
 	QAction *newCampaignAction;
@@ -67,6 +76,9 @@ private:
 	QAction *resetMapAction;
 	QAction *mapMenuCloseAction;
 	QAction *campaignMenuCloseAction;
+	QAction *characterMenuAction;
+	QAction *characterEditorMenuAction;
+	QAction *characterEditorSaveAction;
 
 	////Item Action
 	QAction *newItemAction;
