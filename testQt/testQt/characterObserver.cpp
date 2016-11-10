@@ -34,6 +34,21 @@ characterObserver::characterObserver(QWidget* parent, character* sub):observer()
 
 	cTable = new QTableWidget(12, 2, this);
 
+	QString tableStyle = "QTableWidget {background-color: lightGrey;";
+	tableStyle += "padding: 25%;";
+	tableStyle += "width: 40%;";
+	tableStyle += "border - color: black;";
+	tableStyle += "border - style: outset;";
+	tableStyle += "border - radius: 30px;";
+
+	tableStyle += "}\n";
+
+	tableStyle += "QHeaderView::section{background: grey;}\n";
+	tableStyle += "QHeaderView{background: lightGrey;}\n";
+
+
+	cTable->setStyleSheet(tableStyle);
+
 	cTable->setHorizontalHeaderLabels(headers);
 
 	cTable->verticalHeader()->setVisible(false);

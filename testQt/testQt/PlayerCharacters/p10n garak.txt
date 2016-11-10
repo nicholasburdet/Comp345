@@ -1,0 +1,12 @@
+id 10
+name  garak
+level 10
+hp 10
+hitdice 10
+className fighter
+strength 17
+dexterity 12
+constitution 8
+intelligence 15
+wisdom 11
+charisma 15
