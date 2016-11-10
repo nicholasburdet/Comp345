@@ -41,8 +41,9 @@ public slots:
 	void characterEditorSave();
 	void loadCharacter();
 
-	////For Item
+	////For Item && Character movement
 	void newItem();
+	void newGameMap();
 	////
 private:
 	logic *log;
@@ -82,7 +83,8 @@ private:
 	QAction *characterLoadMenuAction;
 	QAction *characterEditorSaveAction;
 
-	////Item Action
+	////Item Action && Character movement
 	QAction *newItemAction;
+	QAction *newMoveableMapAction;
 	////
 };

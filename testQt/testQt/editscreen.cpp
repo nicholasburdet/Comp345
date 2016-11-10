@@ -76,9 +76,12 @@ editscreen::editscreen(char n[])
 	characterEditorSaveAction = new QAction(tr("&Save Character"), this);
 	connect(characterEditorSaveAction, SIGNAL(triggered()), this, SLOT(characterEditorSave()));
 
-	////Item Editor
+	////Item Editor && Character Movement
 	newItemAction = new QAction(tr("&New Item"), this);
 	connect(newItemAction, SIGNAL(triggered()), this, SLOT(newItem()));
+	
+	newMoveableMapAction = new QAction(tr("&Play Default Map"), this);
+	connect(newMoveableMapAction, SIGNAL(triggered()), this, SLOT(newGameMap()));
 	////
 
 
@@ -87,9 +90,12 @@ editscreen::editscreen(char n[])
 
 	editMenu = new QMenu(tr("&Main Menu"), this);
 	editMenu->addAction(campaignMenuAction);
-	//// Item Generator added to menu
+	
+	//// Item Generator && Character Movement
 	editMenu->addAction(newItemAction);
+	editMenu->addAction(newMoveableMapAction);
 	////
+	
 	editMenu->addAction(characterMenuAction);
 
 	mapMenu = new QMenu(tr("&Map File"), this);
@@ -724,4 +730,10 @@ void editscreen::characterEditorSave()
 	QMessageBox message;
 	message.setText("Character saved successfully!");
 	message.exec();
+}
+
+//// Character Movement
+void editscreen::newGameMap()
+{
+	
 }
