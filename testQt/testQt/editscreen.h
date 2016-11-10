@@ -15,6 +15,7 @@ Editscreen header file
 #include "character.h"
 #include "characterObserver.h"
 #include "characterController.h"
+#include <QPixmap>
 
 using namespace std;
 
@@ -35,7 +36,7 @@ public slots:
 	void newCampaign();
 	void loadCampaign();
 	void createCampaignMenus();
-	void campaignMenuClose();
+	void menuClose();
 	void createCharacterMenus();
 	void characterEditorMenu();
 	void characterEditorSave();
@@ -79,7 +80,7 @@ private:
 	QAction *previousMapAction;
 	QAction *resetMapAction;
 	QAction *mapMenuCloseAction;
-	QAction *campaignMenuCloseAction;
+	QAction *menuCloseAction;
 	QAction *characterMenuAction;
 	QAction *characterEditorMenuAction;
 	QAction *characterLoadMenuAction;

@@ -45,6 +45,9 @@ class logic : public QWidget
 		void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 		void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 		void leaveEvent(QEvent * event) Q_DECL_OVERRIDE;
+		void changeEvent(QEvent * event) Q_DECL_OVERRIDE;
+		void focusOutEvent(QFocusEvent * event) Q_DECL_OVERRIDE;
+		void enterEvent(QEvent * event) Q_DECL_OVERRIDE;
 	private:
 		QPoint lastPoint = QPoint(0,0);
 		QImage image;

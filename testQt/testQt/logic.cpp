@@ -32,6 +32,7 @@ logic::logic(QWidget *parent) : QWidget(parent)
 {
 	ms.loadNPCs();
 	setFocusPolicy(Qt::ClickFocus);
+	message.setFocusPolicy(Qt::NoFocus);
 }
 
 //Initializes a map object and loads the appropriate campaign
@@ -340,7 +341,7 @@ void logic::mousePressEvent(QMouseEvent *event)
 					string fName = filename.toStdString();
 					*/
 					message.setText("Map has been successfully saved.");
-					message.exec();
+					message.show();
 					ms.saveToFile();
 					start = true;
 					update();
@@ -366,7 +367,8 @@ void logic::mousePressEvent(QMouseEvent *event)
 		}
 		else
 		{
-			
+			start = true;
+			update();
 		}
 	}
 }
@@ -384,8 +386,6 @@ void logic::paintEvent(QPaintEvent *event)
 	QPixmap errorButton("Images/redbutton.jpg");
 	QPixmap saveButton("Images/save.png");
 	QPixmap playerImage("Resources/player.png");
-	//QPixmap menu("Images/menu.png");
-	//QPixmap loadButton("C:/Users/Nick/Desktop/Images/load.png");
 
 	QPixmap orc("Images/orc.png");
 	QPixmap ogre("Images/ogre.png");
@@ -682,5 +682,22 @@ void logic::leaveEvent(QEvent * event)
 	update();
 }
 
+void logic::changeEvent(QEvent * event)
+{
+	start = true;
+	update();
+}
+
+void logic::focusOutEvent(QFocusEvent * event)
+{
+	start = true;
+	update();
+}
+
+void logic::enterEvent(QEvent * event)
+{
+	start = true;
+	update();
+}
 //Minor issue with contents of screen disappearing after size selection at launch, until user mouses out of window
 //Will look into fixing this issue, but it isn't a glaring issue at this time

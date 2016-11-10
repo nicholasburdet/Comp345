@@ -36,6 +36,7 @@ editscreen::editscreen(char n[])
 	this->setFixedWidth(400);
 	this->setFixedHeight(200);
 	
+	setFocusPolicy(Qt::NoFocus);
 	
 	newMapAction = new QAction(tr("&New Map"), this);
 	connect(newMapAction, SIGNAL(triggered()), this, SLOT(newMap()));
@@ -86,8 +87,8 @@ editscreen::editscreen(char n[])
 	viewMapAction = new QAction(tr("&View Map"), this);
 	connect(viewMapAction, SIGNAL(triggered()), this, SLOT(viewMap()));
 
-	campaignMenuCloseAction = new QAction(tr("&Close Campaign Menu"), this);
-	connect(campaignMenuCloseAction, SIGNAL(triggered()), this, SLOT(campaignMenuClose()));
+	menuCloseAction = new QAction(tr("&Close Menu"), this);
+	connect(menuCloseAction, SIGNAL(triggered()), this, SLOT(menuClose()));
 
 	editMenu = new QMenu(tr("&Main Menu"), this);
 	editMenu->addAction(campaignMenuAction);
@@ -114,16 +115,26 @@ editscreen::editscreen(char n[])
 	campaignMenu->addAction(newCampaignAction);
 	campaignMenu->addAction(openCampaignAction);
 	campaignMenu->addAction(openMapAction);
-	campaignMenu->addAction(campaignMenuCloseAction);
+	campaignMenu->addAction(menuCloseAction);
 
 	characterMenu = new QMenu(tr("&Character"), this);
 	characterMenu->addAction(characterEditorMenuAction);
 	characterMenu->addAction(characterLoadMenuAction);
+	characterMenu->addAction(menuCloseAction);
 
 	characterCreatorMenu = new QMenu(tr("&Character"), this);
 	characterCreatorMenu->addAction(characterEditorMenuAction);
 	characterCreatorMenu->addAction(characterEditorSaveAction);
+	characterCreatorMenu->addAction(menuCloseAction);
 
+	
+
+	editMenu->setFocusPolicy(Qt::NoFocus);
+	mapMenu->setFocusPolicy(Qt::NoFocus);
+	campaignMenu->setFocusPolicy(Qt::NoFocus);
+	mapNavigatorMenu->setFocusPolicy(Qt::NoFocus);
+	characterMenu->setFocusPolicy(Qt::NoFocus);
+	characterCreatorMenu->setFocusPolicy(Qt::NoFocus);
 
 	createMainMenu();
 }
@@ -530,7 +541,7 @@ void editscreen::mapMenuClose()
 	createCampaignMenus();
 }
 
-void editscreen::campaignMenuClose()
+void editscreen::menuClose()
 {
 	createMainMenu();
 }

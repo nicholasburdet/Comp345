@@ -1,5 +1,5 @@
 campaignName campaign campaignId 1 mapId 8 mapName test
-currentX 0
+currentX 7
 currentY 0
 startX 7
 startY 0
