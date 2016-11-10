@@ -18,6 +18,9 @@ Bare bones file to show off NPC capability on the editor screen
 #include <set>
 #include <memory>
 #include "Dice.h"
+
+#include <QGraphicsRectItem>
+
 using namespace std;
 
 
@@ -48,6 +51,13 @@ The character class keeps a set of observers. When the character's state changes
 because it doesn't allow for duplicates and generally corresponds to our needs.
 
 */
+
+class characterMovement : public QGraphicsPixmapItem {
+public:
+	void keyPressEvent(QKeyEvent * event);
+
+};
+
 class character
 {
 public:
