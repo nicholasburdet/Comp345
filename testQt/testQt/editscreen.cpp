@@ -83,7 +83,8 @@ editscreen::editscreen(char n[])
 	newMoveableMapAction = new QAction(tr("&Play Default Map"), this);
 	connect(newMoveableMapAction, SIGNAL(triggered()), this, SLOT(newGameMap()));
 	////
-
+	viewMapAction = new QAction(tr("&View Map"), this);
+	connect(viewMapAction, SIGNAL(triggered()), this, SLOT(viewMap()));
 
 	campaignMenuCloseAction = new QAction(tr("&Close Campaign Menu"), this);
 	connect(campaignMenuCloseAction, SIGNAL(triggered()), this, SLOT(campaignMenuClose()));
@@ -97,6 +98,7 @@ editscreen::editscreen(char n[])
 	////
 	
 	editMenu->addAction(characterMenuAction);
+	editMenu->addAction(viewMapAction);
 
 	mapMenu = new QMenu(tr("&Map File"), this);
 	mapMenu->addAction(newMapAction);
@@ -148,6 +150,8 @@ void editscreen::editMap()
 		log = new logic;
 	}
 	logicPersistence = false;
+	
+	log->setEditmode(false);
 	
 	if (choice == 0)
 	{
@@ -758,4 +762,44 @@ void editscreen::newGameMap()
 	QEventLoop loop;
 	connect(this, SIGNAL(destroyed()), &loop, SLOT(quit()));
 	loop.exec();
+}
+
+void editscreen::viewMap()
+{
+	//reusing some code from editMap, should implement function to do similar stuff, but lazy
+	bool ok1;
+	int width, height;
+	int resolution = 50;
+	int addedHeight = 20;
+
+	log = new logic;
+	log->setEditmode(false);
+
+	QString fileName = "";
+	QString extension = "/Maps";
+	fileName = QFileDialog::getOpenFileName(this, tr("Open Map"), QDir::currentPath().append(extension));
+	if (fileName != "")
+	{
+		fName = fileName.toStdString();
+	}
+	while (fileName == "")
+	{
+		fileName = QFileDialog::getOpenFileName(this, tr("Open Map"), QDir::currentPath().append(extension));
+		fName = fileName.toStdString();
+	}
+
+	log->loadMap(fName);
+	width = log->getWidth();
+	height = log->getHeight();
+		
+	resolution = checkResolution(width, height);
+	log->setResolution(resolution);
+
+	setCentralWidget(log);
+	setWindowTitle(tr("Map Editor"));
+	int windowResX = width*resolution;
+	
+	this->setFixedWidth(windowResX);
+	this->setFixedHeight((height*resolution) + addedHeight);
+	log->setFocus();
 }

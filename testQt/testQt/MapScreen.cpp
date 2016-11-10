@@ -103,6 +103,16 @@ int MapScreen::getMaxY()
 	return maxY;
 };
 
+void MapScreen::setCurrentX(int x)
+{
+	currentX = x;
+};
+
+void MapScreen::setCurrentY(int y)
+{
+	currentY = y;
+};
+
 void MapScreen::setStartX(int x)
 {
 	startX = x;

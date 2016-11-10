@@ -31,6 +31,8 @@ public:
 	int getStartY();
 	int getEndX();
 	int getEndY();
+	void setCurrentX(int x);
+	void setCurrentY(int y);
 	void setStartX(int x);
 	void setStartY(int y);
 	void setEndX(int x);
