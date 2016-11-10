@@ -38,9 +38,11 @@ class logic : public QWidget
 		int getHeight();
 		string getFilename();
 		void closeWindow();
+		void setEditmode(bool editM);
 	protected:
 		void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 		void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+		void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 		void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 		void leaveEvent(QEvent * event) Q_DECL_OVERRIDE;
 	private:
@@ -50,6 +52,7 @@ class logic : public QWidget
 
 		//flag to invoke fullscreen painter and initialization (also incase contents of screen disappear)
 		bool start = true;
+		bool editMode = true;
 
 		MapScreen ms;
 		campaign Campaign;
@@ -72,6 +75,8 @@ class logic : public QWidget
 		bool drawStart = false; 
 		bool drawEnd = false;
 		bool drawNPC = false;
+		bool movePlayer = false;
+		bool replacePlayer = false;
 
 		//flag to check path status
 		bool checkStatus = true;
@@ -85,7 +90,10 @@ class logic : public QWidget
 		int oldEndX;
 		int oldEndY;
 
-		
+		int oldPlayerX;
+		int oldPlayerY;
+		string replace = "";
+
 		int wid;
 		int hei;
 };
