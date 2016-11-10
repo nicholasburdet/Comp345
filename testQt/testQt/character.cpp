@@ -26,10 +26,8 @@ using namespace std;
 
 void characterMovement::keyPressEvent(QKeyEvent *event) {
 	if (event->key() == Qt::Key_Left) {
-
 		if (x() != 0)
 			setPos(x() - 50, y());
-
 	}
 
 	else if (event->key() == Qt::Key_Right) {
@@ -340,28 +338,28 @@ void character::loadFromFile(string filepath)
 			else if (attribute == "image") {
 				this->setImage(val);
 			}
-			else if (attribute == "HP") {
+			else if (attribute == "hp") {
 				this->setHP(std::stoi(val));
 			}
-			else if (attribute == "Class") {
+			else if (attribute == "className") {
 				this->charClassName = val;
 			}
-			else if (attribute == "Strength") {
+			else if (attribute == "strength") {
 				this->abilities.strength = std::stoi(val);
 			}
-			else if (attribute == "Intelligence") {
+			else if (attribute == "intelligence") {
 				this->abilities.intelligence = std::stoi(val);
 			}
-			else if (attribute == "Wisdom") {
+			else if (attribute == "wisdom") {
 				this->abilities.wisdom = std::stoi(val);
 			}
-			else if (attribute == "Constitution") {
+			else if (attribute == "constitution") {
 				this->abilities.constitution = std::stoi(val);
 			}
-			else if (attribute == "Charisma") {
+			else if (attribute == "charisma") {
 				this->abilities.charisma = std::stoi(val);
 			}
-			else if (attribute == "Dexterity") {
+			else if (attribute == "dexterity") {
 				this->abilities.dexterity = std::stoi(val);
 			}
 
