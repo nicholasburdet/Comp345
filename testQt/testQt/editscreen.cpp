@@ -735,5 +735,27 @@ void editscreen::characterEditorSave()
 //// Character Movement
 void editscreen::newGameMap()
 {
-	
+	//Initilize QT Application and images
+	QImage image("Resources/grass.png");
+	QPixmap playerImage("Resources/player.png");
+
+	//Create and adds bg to screen
+	QGraphicsPixmapItem* bg = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+	QGraphicsScene* scene = new QGraphicsScene;
+	scene->addItem(bg);
+
+	//Create and adds player to screen
+	characterMovement * player = new characterMovement();
+	player->setPixmap(playerImage);
+	scene->addItem(player);
+	player->setFlag(QGraphicsItem::ItemIsFocusable);
+	player->setFocus();
+
+	//Creates and adds scene
+	QGraphicsView view(scene);
+	view.show();
+
+	QEventLoop loop;
+	connect(this, SIGNAL(destroyed()), &loop, SLOT(quit()));
+	loop.exec();
 }
