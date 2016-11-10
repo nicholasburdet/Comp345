@@ -118,7 +118,7 @@ public:
 	void setPlayerCharacter(bool pc);
 
 	void saveToFile();
-	void loadFromFile();
+	void loadFromFile(string filepath);
 
 private:
 	int id;

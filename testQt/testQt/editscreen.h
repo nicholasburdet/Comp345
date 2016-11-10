@@ -39,6 +39,7 @@ public slots:
 	void createCharacterMenus();
 	void characterEditorMenu();
 	void characterEditorSave();
+	void loadCharacter();
 
 	////For Item
 	void newItem();
@@ -78,6 +79,7 @@ private:
 	QAction *campaignMenuCloseAction;
 	QAction *characterMenuAction;
 	QAction *characterEditorMenuAction;
+	QAction *characterLoadMenuAction;
 	QAction *characterEditorSaveAction;
 
 	////Item Action

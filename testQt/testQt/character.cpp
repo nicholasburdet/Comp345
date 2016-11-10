@@ -288,7 +288,60 @@ void character::saveToFile()
 	}
 }
 
-void character::loadFromFile()
+void character::loadFromFile(string filepath)
 {
+	ifstream input(filepath);
+
+	string result;
+
+	if (input.is_open()) {
+		while (getline(input, result)) {
+			size_t delim = result.find(' ');
+			string attribute = result.substr(0, delim);
+			string val = result.substr(delim);
+
+			if (attribute == "name") {
+				this->setName(val);
+			}
+			else if (attribute == "id") {
+				this->setId(std::stoi(val));
+			}
+			else if (attribute == "level") {
+				this->setLevel(std::stoi(val));
+			}
+			else if (attribute == "image") {
+				this->setImage(val);
+			}
+			else if (attribute == "HP") {
+				this->setHP(std::stoi(val));
+			}
+			else if (attribute == "Class") {
+				this->charClassName = val;
+			}
+			else if (attribute == "Strength") {
+				this->abilities.strength = std::stoi(val);
+			}
+			else if (attribute == "Intelligence") {
+				this->abilities.intelligence = std::stoi(val);
+			}
+			else if (attribute == "Wisdom") {
+				this->abilities.wisdom = std::stoi(val);
+			}
+			else if (attribute == "Constitution") {
+				this->abilities.constitution = std::stoi(val);
+			}
+			else if (attribute == "Charisma") {
+				this->abilities.charisma = std::stoi(val);
+			}
+			else if (attribute == "Dexterity") {
+				this->abilities.dexterity = std::stoi(val);
+			}
+
+
+		}
+		input.close();
+
+	}
+
 
 }

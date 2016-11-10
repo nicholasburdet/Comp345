@@ -36,6 +36,7 @@ editscreen::editscreen(char n[])
 	this->setFixedWidth(400);
 	this->setFixedHeight(200);
 	
+	
 	newMapAction = new QAction(tr("&New Map"), this);
 	connect(newMapAction, SIGNAL(triggered()), this, SLOT(newMap()));
 
@@ -68,6 +69,9 @@ editscreen::editscreen(char n[])
 
 	characterEditorMenuAction = new QAction(tr("&Create New Player Character"), this);
 	connect(characterEditorMenuAction, SIGNAL(triggered()), this, SLOT(characterEditorMenu()));
+
+	characterLoadMenuAction = new QAction(tr("&Load Player Character"), this);
+	connect(characterLoadMenuAction, SIGNAL(triggered()), this, SLOT(loadCharacter()));
 
 	characterEditorSaveAction = new QAction(tr("&Save Character"), this);
 	connect(characterEditorSaveAction, SIGNAL(triggered()), this, SLOT(characterEditorSave()));
@@ -106,6 +110,7 @@ editscreen::editscreen(char n[])
 
 	characterMenu = new QMenu(tr("&Character"), this);
 	characterMenu->addAction(characterEditorMenuAction);
+	characterMenu->addAction(characterLoadMenuAction);
 
 	characterCreatorMenu = new QMenu(tr("&Character"), this);
 	characterCreatorMenu->addAction(characterEditorMenuAction);
@@ -668,6 +673,49 @@ void editscreen::characterEditorMenu()
 		this->setFixedWidth(400);
 		this->setFixedHeight(500);
 	}
+}
+
+void editscreen::loadCharacter() 
+{
+	currentMenu = "charactereditormenu";
+	menuBar()->clear();
+	menuBar()->addMenu(characterCreatorMenu);
+
+	string charName;
+	int charLevel;
+
+	QDialog characterLoadDialog(this);
+	QFormLayout characterLoadForm(&characterLoadDialog);
+
+	characterLoadForm.addRow(new QLabel("Character Loading Window"));
+
+	QString fileName = "";
+	string characterFileName;
+	QString extension = "/PlayerCharacters";
+	fileName = QFileDialog::getOpenFileName(this, tr("View Character"), QDir::currentPath().append(extension));
+	if (fileName != "")
+	{
+		characterFileName = fileName.toStdString();
+	}
+	while (fileName == "")
+	{
+		fileName = QFileDialog::getOpenFileName(this, tr("View Character"), QDir::currentPath().append(extension));
+		characterFileName = fileName.toStdString();
+	}
+
+	newCharacter = new character();
+	newCharacter->loadFromFile(characterFileName);
+
+	newCharacter->setPlayerCharacter(true);
+
+	characterObserver* charTable = new characterObserver(NULL, newCharacter);
+	characterController* driver = new characterController(newCharacter);
+
+	setCentralWidget(charTable);
+	setWindowTitle(tr("Character"));
+	this->setFixedWidth(400);
+	this->setFixedHeight(500);
+	
 }
 
 void editscreen::characterEditorSave()
