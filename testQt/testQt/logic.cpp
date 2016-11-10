@@ -366,7 +366,7 @@ void logic::mousePressEvent(QMouseEvent *event)
 		}
 		else
 		{
-
+			
 		}
 	}
 }
@@ -638,7 +638,6 @@ void logic::keyPressEvent(QKeyEvent *event)
 				update(rect);
 			}
 		}
-
 		else if (event->key() == Qt::Key_Right) {
 			if (ms.getCurrentX() < ms.getMaxX()-1 && !(ms.isOccupied(ms.getCurrentX() + 1, ms.getCurrentY())) && ms.isPassable(ms.getCurrentX() + 1, ms.getCurrentY()))
 			{

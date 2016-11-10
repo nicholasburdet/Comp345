@@ -151,7 +151,7 @@ void editscreen::editMap()
 	}
 	logicPersistence = false;
 	
-	log->setEditmode(false);
+	log->setEditmode(true);
 	
 	if (choice == 0)
 	{
