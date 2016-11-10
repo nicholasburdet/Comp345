@@ -19,7 +19,35 @@ Bare bones file to show off NPC capability on the editor screen
 #include <set>
 #include <QDebug>
 
+#include <QKeyEvent>
+
 using namespace std;
+
+
+void characterMovement::keyPressEvent(QKeyEvent *event) {
+	if (event->key() == Qt::Key_Left) {
+
+		if (x() != 0)
+			setPos(x() - 50, y());
+
+	}
+
+	else if (event->key() == Qt::Key_Right) {
+		if (x() != 700)
+			setPos(x() + 50, y());
+
+	}
+	else if (event->key() == Qt::Key_Up) {
+		if (y() != 0)
+			setPos(x(), y() - 50);
+
+	}
+	else if (event->key() == Qt::Key_Down) {
+		if (y() != 450)
+			setPos(x(), y() + 50);
+	}
+
+};
 
 character::character() :observers()
 {
