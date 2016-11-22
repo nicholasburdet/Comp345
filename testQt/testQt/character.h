@@ -62,18 +62,24 @@ class character
 {
 public:
 	character();
-	character(int i, std::string n, int l, std::string im);
-	character(int i, std::string n, int l, std::string im, int abilities[6]);
+	character(int i, std::string n, int l, std::string im, std::string subt);
+	character(int i, std::string n, int l, std::string im, std::string subt, int abilities[6]);
 	~character();
 	void initialize(int i, std::string n, int l, std::string im);
 	void setId(int i);
 	void setName(std::string n);
 	void setLevel(int l);
 	void setHP(int hp);
+	void setSubtype(std::string subt) {
+		subtype = subt;
+	}
 	void decHP(int damage);
 	int getArmorBonus();
 	virtual int getDamageBonus();
 	virtual int getAttackBonus();
+	int getAttackPerRound() {
+		return level / 5 + 1;
+	}
 	/*!
 	returns the maximum starting HP for the character's level, class and constitution
 	*/
@@ -112,7 +118,7 @@ public:
 
 	int getX();
 	int getY();
-	abilList generateAbilities();
+	virtual abilList generateAbilities();
 	//int rollDice(int faces); //Replaced with dice class
 	int getMaxRollSum(int faces, int numRolls);
 
@@ -134,6 +140,7 @@ private:
 	int id;
 	string name = "NULL";
 	string charClassName = "fighter";
+	string subtype;
 	int level;
 	int hitDice;
 	//PLACEHOLDERS

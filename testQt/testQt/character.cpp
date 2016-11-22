@@ -55,8 +55,9 @@ character::character() :observers()
 	abilities = generateAbilities();
 	hitDice = 10;
 	HP = getMaxHP();
+	subtype = "Bully";
 }
-character::character(int i, string n, int l, string im) :observers()
+character::character(int i, string n, int l, string im, string subt) :observers()
 {
 	id = i;
 	name = n;
@@ -65,9 +66,11 @@ character::character(int i, string n, int l, string im) :observers()
 	abilities = generateAbilities();
 	hitDice = 10; //Fighter hit dice
 	HP = getMaxHP();
+	subtype = subt;
+
 }
 
-character::character(int i, string n, int l, string im, int abList[6]) :observers()
+character::character(int i, string n, int l, string im, string subt, int abList[6]) :observers()
 {
 	id = i;
 	name = n;
@@ -76,6 +79,7 @@ character::character(int i, string n, int l, string im, int abList[6]) :observer
 	abilities = abilList{ abList[0] % 18,abList[1] % 18,abList[2] % 18,abList[3] % 18,abList[4] % 18,abList[5] % 18 };
 	hitDice = 10;
 	HP = getMaxHP();
+	subtype = subt;
 
 }
 
@@ -169,6 +173,7 @@ string character::getClassName() {
 int character::levelUp(int incAmount = 1) {
 	level += incAmount;
 	HP += getModifier(abilities.constitution)*incAmount;
+
 
 	notifyObservers();
 
