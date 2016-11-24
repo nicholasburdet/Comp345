@@ -491,19 +491,20 @@ void MapScreen::loadNPCs(void)
 	string name;
 	int level;
 	string image;
+	string subtype;
 
-	input >> type >> id >> type >> name >> type >> level >> type >> image;
+	input >> type >> id >> type >> name >> type >> level >> type >> image >> subtype;
 	
 	if (!input.eof())
 	{
-		characterTable[id] = character(id, name, level, image);
+		characterTable[id] = character(id, name, level, image, subtype);
 		numberOfDistinctNPCs++;
 	}
 
 	while (!input.eof())
 	{
-		input >> type >> id >> type >> name >> type >> level >> type >> image;
-		characterTable[id] = character(id, name, level, image);
+		input >> type >> id >> type >> name >> type >> level >> type >> image >> subtype;
+		characterTable[id] = character(id, name, level, image, subtype);
 		numberOfDistinctNPCs++;
 	}
 

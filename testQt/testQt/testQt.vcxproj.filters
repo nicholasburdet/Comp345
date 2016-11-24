@@ -98,6 +98,18 @@
     <ClCompile Include="Dice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="characterBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BullyConcreteBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NimbleConcreteBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TankConcreteBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="testqt.h">
@@ -142,6 +154,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Dice.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="characterBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BullyConcreteBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NimbleConcreteBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TankConcreteBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

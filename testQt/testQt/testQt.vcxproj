@@ -139,8 +139,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BullyConcreteBuilder.cpp" />
     <ClCompile Include="campaign.cpp" />
     <ClCompile Include="character.cpp" />
+    <ClCompile Include="characterBuilder.cpp" />
     <ClCompile Include="characterController.cpp" />
     <ClCompile Include="characterObserver.cpp" />
     <ClCompile Include="Dice.cpp" />
@@ -191,7 +193,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="editscreen.cpp" />
     <ClCompile Include="MapScreen.cpp" />
+    <ClCompile Include="NimbleConcreteBuilder.cpp" />
     <ClCompile Include="observer.cpp" />
+    <ClCompile Include="TankConcreteBuilder.cpp" />
     <ClCompile Include="testqt.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -235,8 +239,10 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BullyConcreteBuilder.h" />
     <ClInclude Include="campaign.h" />
     <ClInclude Include="character.h" />
+    <ClInclude Include="TankConcreteBuilder.h" />
     <CustomBuild Include="characterController.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing characterController.h...</Message>
@@ -255,11 +261,13 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets"</Command>
     </CustomBuild>
+    <ClInclude Include="characterBuilder.h" />
     <ClInclude Include="characterObserver.h" />
     <ClInclude Include="Dice.h" />
     <ClInclude Include="GeneratedFiles\ui_testqt.h" />
     <ClInclude Include="itemContainer.h" />
     <ClInclude Include="MapScreen.h" />
+    <ClInclude Include="NimbleConcreteBuilder.h" />
     <ClInclude Include="observer.h" />
     <CustomBuild Include="logic.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>

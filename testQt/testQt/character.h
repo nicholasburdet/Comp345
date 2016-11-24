@@ -116,11 +116,15 @@ public:
 	virtual int levelUp(int incAmount);
 	string getImage();
 
+	void setAbilities(abilList abili) {
+		abilities = abili;
+	}
+
 	int getX();
 	int getY();
 	virtual abilList generateAbilities();
 	//int rollDice(int faces); //Replaced with dice class
-	int getMaxRollSum(int faces, int numRolls);
+	static int getMaxRollSum(int faces, int numRolls);
 
 
 	//Observer related stuff
