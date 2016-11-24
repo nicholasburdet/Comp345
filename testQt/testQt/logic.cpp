@@ -33,6 +33,7 @@ logic::logic(QWidget *parent) : QWidget(parent)
 	ms.loadNPCs();
 	setFocusPolicy(Qt::ClickFocus);
 	message.setFocusPolicy(Qt::NoFocus);
+	//chatWindow.resize(10); //change later
 }
 
 //Initializes a map object and loads the appropriate campaign
@@ -423,9 +424,20 @@ void logic::paintEvent(QPaintEvent *event)
 		//Draws log background if not in editmode (for gameplay)
 		if (!editMode)
 		{
-			QString textWindow = QString::fromStdString(chatWindow);
+			QString textWindow;
 			painter.drawPixmap(0, yRes, minX*resolution, 3 * resolution, logBackground);
-			painter.drawText(10, (ms.getMaxY()*resolution)+20, textWindow);
+			int logStart = chatLines - 10;
+			if (logStart < 0)
+			{
+				logStart = 0;
+			}
+			int count = 0;
+			for (int i = chatLines; i > logStart; i--)
+			{
+				textWindow = QString::fromStdString(chatWindow[i]);
+				painter.drawText(10, ms.getMaxY()*resolution + 20 + (10 * count), textWindow);
+				count++;
+			}
 		}
 		//Builds the tiles onto the screen from the map object. As of right now, there are only 4 tiles that exist
 		//for the map. Grass->passable, Dirt->not passable, Entrance and Exit.
@@ -638,9 +650,22 @@ void logic::paintEvent(QPaintEvent *event)
 
 	if(textChange)
 	{
-		QString textWindow = QString::fromStdString(chatWindow);
+		QString textWindow;
 		painter.drawPixmap(0, yRes, minX*resolution, 3 * resolution, logBackground);
-		painter.drawText(10, ms.getMaxY()*resolution+20, textWindow);
+		int logStart = chatLines - 10;
+		if (logStart < 0)
+		{
+			logStart = 0;
+		}
+		int count = 0;
+		
+		for (int i = chatLines; i > logStart; i--)
+		{
+			textWindow = QString::fromStdString(chatWindow[i]);
+			painter.drawText(10, ms.getMaxY()*resolution + 20 + (10 * count), textWindow);
+			count++;
+		}
+		
 		textChange = false;
 	}
 }
@@ -649,6 +674,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 {
 	if (!editMode)
 	{
+		bool didPlayerMove = false;
 		oldPlayerX = ms.getCurrentX();
 		oldPlayerY = ms.getCurrentY();
 		if (event->key() == Qt::Key_Left) {
@@ -659,6 +685,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
 				update(rect);
 				playerSteps++; //To keep track of the number of steps
+				didPlayerMove = true;
 			}
 		}
 		else if (event->key() == Qt::Key_Right) {
@@ -669,6 +696,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
 				update(rect);
 				playerSteps++; //To keep track of the number of steps
+				didPlayerMove = true;
 			}
 		}
 		else if (event->key() == Qt::Key_Up) {
@@ -679,6 +707,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
 				update(rect);
 				playerSteps++; //To keep track of the number of steps
+				didPlayerMove = true;
 			}
 		}
 		else if (event->key() == Qt::Key_Down) {
@@ -689,15 +718,30 @@ void logic::keyPressEvent(QKeyEvent *event)
 				QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
 				update(rect);
 				playerSteps++; //To keep track of the number of steps
+				didPlayerMove = true;
 			}
 		}
 
 		
-		QRect rect(0, ms.getMaxY()*resolution, resolution*8, resolution*3);
-		chatWindow = "You have taken ";
-		chatWindow.append(std::to_string(playerSteps));
-		textChange = true;
-		update(rect);
+		if (didPlayerMove)
+		{
+			QRect rect(0, ms.getMaxY()*resolution, resolution * 8, resolution * 3);
+			string chatText = "You have taken ";
+			chatText.append(std::to_string(playerSteps));
+			chatLines++;
+			if (chatLines == 1)
+			{
+				chatWindow.resize(chatWindow.capacity() + 1);
+			}
+			if (chatLines > chatWindow.capacity())
+			{
+				chatWindow.resize(chatWindow.capacity() + 5);
+			}
+			chatWindow.push_back(chatText);
+			qDebug() << "HERE " + QString::fromStdString(chatWindow[chatLines-1]);
+			textChange = true;
+			update(rect);
+		}
 		
 	}
 }

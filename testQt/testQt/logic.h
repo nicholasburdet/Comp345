@@ -16,6 +16,7 @@ Logic header file
 #include "Campaign.h"
 #include <string>
 #include <QMessageBox>
+#include <vector>
 
 using namespace std;
 
@@ -108,7 +109,9 @@ class logic : public QWidget
 		int playerSteps = 0;
 		bool gameSession = false;
 
-		string chatWindow = "Default";
+
+		vector<string> chatWindow;
+		int chatLines = 0;
 };
 
 #endif
