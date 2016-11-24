@@ -390,28 +390,43 @@ void logic::paintEvent(QPaintEvent *event)
 	QPixmap orc("Images/orc.png");
 	QPixmap ogre("Images/ogre.png");
 	QPixmap minotaur("Images/minotaur.png");
+	QPixmap logBackground("Images/log.png");
 
 	QPixmap background("Images/background.jpg");
 
 	QPainter painter(this);
+
+	font = painter.font();
+	font.setPointSize(8);
+	font.setWeight(QFont::DemiBold);
+	painter.setFont(font);
+	painter.setPen(QPen(Qt::black));
+
+	int xRes = ms.getMaxX() * resolution;
+	int yRes = ms.getMaxY() * resolution;
+
+	int minX;
+
+	if (ms.getMaxX() < 8)
+	{
+		minX = 8;
+	}
+	else
+	{
+		minX = ms.getMaxX();
+	}
 	//Start section draws the grid on screen (based on resolution) as well as all tiles on screen based off
 	//current map in the object. Start is set to true each time the screen needs a full update.
 	if (start)
 	{
-		int xRes = ms.getMaxX() * resolution;
-		int yRes = ms.getMaxY() * resolution;
-
-		int minX;
-
-		if (ms.getMaxX() < 7)
-		{
-			minX = 7;
-		}
-		else
-		{
-			minX = ms.getMaxX();
-		}
 		painter.drawPixmap(0, 0, minX*resolution, ((ms.getMaxY()*resolution)+(resolution * 3) + 20), background);
+		//Draws log background if not in editmode (for gameplay)
+		if (!editMode)
+		{
+			QString textWindow = QString::fromStdString(chatWindow);
+			painter.drawPixmap(0, yRes, minX*resolution, 3 * resolution, logBackground);
+			painter.drawText(10, (ms.getMaxY()*resolution)+20, textWindow);
+		}
 		//Builds the tiles onto the screen from the map object. As of right now, there are only 4 tiles that exist
 		//for the map. Grass->passable, Dirt->not passable, Entrance and Exit.
 		//Will have to be reworked to incorporate larger sprite sets and the addition of items and enemies on the map
@@ -620,11 +635,18 @@ void logic::paintEvent(QPaintEvent *event)
 		replacePlayer = true;
 		update(recta);
 	}
+
+	if(textChange)
+	{
+		QString textWindow = QString::fromStdString(chatWindow);
+		painter.drawPixmap(0, yRes, minX*resolution, 3 * resolution, logBackground);
+		painter.drawText(10, ms.getMaxY()*resolution+20, textWindow);
+		textChange = false;
+	}
 }
 
 void logic::keyPressEvent(QKeyEvent *event)
 {
-	qDebug() << "HERE";
 	if (!editMode)
 	{
 		oldPlayerX = ms.getCurrentX();
@@ -636,6 +658,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				movePlayer = true;
 				QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
 				update(rect);
+				playerSteps++; //To keep track of the number of steps
 			}
 		}
 		else if (event->key() == Qt::Key_Right) {
@@ -645,6 +668,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				movePlayer = true;
 				QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
 				update(rect);
+				playerSteps++; //To keep track of the number of steps
 			}
 		}
 		else if (event->key() == Qt::Key_Up) {
@@ -654,6 +678,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				movePlayer = true;
 				QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
 				update(rect);
+				playerSteps++; //To keep track of the number of steps
 			}
 		}
 		else if (event->key() == Qt::Key_Down) {
@@ -663,8 +688,17 @@ void logic::keyPressEvent(QKeyEvent *event)
 				movePlayer = true;
 				QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
 				update(rect);
+				playerSteps++; //To keep track of the number of steps
 			}
 		}
+
+		
+		QRect rect(0, ms.getMaxY()*resolution, resolution*8, resolution*3);
+		chatWindow = "You have taken ";
+		chatWindow.append(std::to_string(playerSteps));
+		textChange = true;
+		update(rect);
+		
 	}
 }
 
@@ -701,3 +735,20 @@ void logic::enterEvent(QEvent * event)
 }
 //Minor issue with contents of screen disappearing after size selection at launch, until user mouses out of window
 //Will look into fixing this issue, but it isn't a glaring issue at this time
+
+//Gameplay heart goes here (for now)
+void logic::playGame()
+{
+	gameSession = true;
+	
+	while (gameSession)
+	{
+		//6 Just for testing purposes
+		if (playerSteps >= 6)
+		{
+			message.setText("You have reached 6 steps.");
+			message.show();
+			gameSession = false;
+		}
+	}
+}

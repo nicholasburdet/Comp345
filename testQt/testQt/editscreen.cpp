@@ -810,7 +810,15 @@ void editscreen::viewMap()
 	setWindowTitle(tr("Map Editor"));
 	int windowResX = width*resolution;
 	
+	int windowDisplayHeightAdd = 3 * resolution;
+	int windowDisplayWidthMinimum = 8 * resolution;
+
+	if (windowResX < windowDisplayWidthMinimum)
+	{
+		windowResX = windowDisplayWidthMinimum;
+	}
+
 	this->setFixedWidth(windowResX);
-	this->setFixedHeight((height*resolution) + addedHeight);
+	this->setFixedHeight((height*resolution) + addedHeight + windowDisplayHeightAdd);
 	log->setFocus();
 }

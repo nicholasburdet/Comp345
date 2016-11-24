@@ -39,6 +39,7 @@ class logic : public QWidget
 		string getFilename();
 		void closeWindow();
 		void setEditmode(bool editM);
+		void playGame();
 	protected:
 		void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 		void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
@@ -52,6 +53,7 @@ class logic : public QWidget
 		QPoint lastPoint = QPoint(0,0);
 		QImage image;
 		QMessageBox message;
+		QFont font;
 
 		//flag to invoke fullscreen painter and initialization (also incase contents of screen disappear)
 		bool start = true;
@@ -87,6 +89,8 @@ class logic : public QWidget
 		//stores if path exists here, default map path exists
 		bool path = true;
 
+		bool textChange = false;
+
 		//values to hold previous entrance or exit when painting new ones to fill in old spaces
 		int oldStartX;
 		int oldStartY;
@@ -99,6 +103,12 @@ class logic : public QWidget
 
 		int wid;
 		int hei;
+
+		//this section will hold some variables pertaining to gameplay ONLY, ignore for non-gameplay related stuff
+		int playerSteps = 0;
+		bool gameSession = false;
+
+		string chatWindow = "Default";
 };
 
 #endif
