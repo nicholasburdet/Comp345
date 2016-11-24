@@ -23,7 +23,11 @@ serve as the UI controller for the entire game project for the most part
 #include <QtWidgets>
 #include <QInputDialog>
 #include <QObject>
-
+#include <QComboBox>
+#include "characterBuilder.h"
+#include "TankConcreteBuilder.h"
+#include "NimbleConcreteBuilder.h"
+#include "BullyConcreteBuilder.h"
 ////Item Editor
 #include <iostream>
 #include <fstream>
@@ -655,6 +659,12 @@ void editscreen::characterEditorMenu()
 	characterForm.addRow(label, lineEdit);
 	characterFields << lineEdit;
 
+	QComboBox *characterType = new QComboBox(&characterCreatorDialog);
+	QString typeLabel = QString("Fighter Type");
+	characterType->addItem(QString("Tank"));
+	characterType->addItem(QString("Nimble"));
+	characterType->addItem(QString("Bully"));
+	characterForm.addRow(typeLabel, characterType);
 
 	QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, &characterCreatorDialog);
 	characterForm.addRow(&buttonBox);
@@ -663,13 +673,29 @@ void editscreen::characterEditorMenu()
 
 
 	if (characterCreatorDialog.exec() == QDialog::Accepted) {
+
+		characterBuilder* builder;
+
+		//TODO: Proper string comparison
+		if (characterType->currentText().toStdString().c_str == "Nimble") {
+			builder = new NimbleConcreteBuilder();
+		}else if (characterType->currentText().toStdString().c_str == "Tank") {
+			builder = new TankConcreteBuilder();
+		}else {
+			builder = new BullyConcreteBuilder();//Default value for now
+		}
+
 		charName = characterFields.value(0)->text().toStdString();
 		charLevel = characterFields.value(1)->text().toInt();
 	
-		newCharacter = new character();
-		newCharacter->initialize(10, charName, charLevel, "");
-		
-		newCharacter->setPlayerCharacter(true);
+		builder->buildName(charName);
+		builder->buildLevel(charLevel);
+		builder->buildPlayerCharacter(true);
+		builder->setSubtype();
+
+		builder->generateAbilities();
+
+		newCharacter = builder->getCharacter();
 
 		characterObserver* charTable = new characterObserver(NULL, newCharacter);
 		characterController* driver = new characterController(newCharacter);
