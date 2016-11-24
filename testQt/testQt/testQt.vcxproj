@@ -192,6 +192,7 @@
     <ClCompile Include="editscreen.cpp" />
     <ClCompile Include="MapScreen.cpp" />
     <ClCompile Include="observer.cpp" />
+    <ClCompile Include="playerLog.cpp" />
     <ClCompile Include="testqt.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -237,6 +238,7 @@
   <ItemGroup>
     <ClInclude Include="campaign.h" />
     <ClInclude Include="character.h" />
+    <ClInclude Include="playerLog.h" />
     <CustomBuild Include="characterController.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing characterController.h...</Message>

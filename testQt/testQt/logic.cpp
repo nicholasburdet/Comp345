@@ -33,7 +33,7 @@ logic::logic(QWidget *parent) : QWidget(parent)
 	ms.loadNPCs();
 	setFocusPolicy(Qt::ClickFocus);
 	message.setFocusPolicy(Qt::NoFocus);
-	//chatWindow.resize(10); //change later
+	combatLog = playerLog();
 }
 
 //Initializes a map object and loads the appropriate campaign
@@ -426,15 +426,16 @@ void logic::paintEvent(QPaintEvent *event)
 		{
 			QString textWindow;
 			painter.drawPixmap(0, yRes, minX*resolution, 3 * resolution, logBackground);
-			int logStart = chatLines - 10;
+			int logStart = combatLog.getLogLength() - 10;
 			if (logStart < 0)
 			{
 				logStart = 0;
 			}
 			int count = 0;
-			for (int i = chatLines; i > logStart; i--)
+
+			for (int i = combatLog.getLogLength(); i > logStart; i--)
 			{
-				textWindow = QString::fromStdString(chatWindow[i]);
+				textWindow = QString::fromStdString(combatLog.readLogEntry(i));
 				painter.drawText(10, ms.getMaxY()*resolution + 20 + (10 * count), textWindow);
 				count++;
 			}
@@ -652,16 +653,16 @@ void logic::paintEvent(QPaintEvent *event)
 	{
 		QString textWindow;
 		painter.drawPixmap(0, yRes, minX*resolution, 3 * resolution, logBackground);
-		int logStart = chatLines - 10;
+		int logStart = combatLog.getLogLength() - 10;
 		if (logStart < 0)
 		{
 			logStart = 0;
 		}
 		int count = 0;
 		
-		for (int i = chatLines; i > logStart; i--)
+		for (int i = combatLog.getLogLength(); i > logStart; i--)
 		{
-			textWindow = QString::fromStdString(chatWindow[i]);
+			textWindow = QString::fromStdString(combatLog.readLogEntry(i));
 			painter.drawText(10, ms.getMaxY()*resolution + 20 + (10 * count), textWindow);
 			count++;
 		}
@@ -677,7 +678,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 		bool didPlayerMove = false;
 		oldPlayerX = ms.getCurrentX();
 		oldPlayerY = ms.getCurrentY();
-		if (event->key() == Qt::Key_Left) {
+		if (event->key() == Qt::Key_Left && playerTurn) {
 			if (ms.getCurrentX() > 0 && !(ms.isOccupied(ms.getCurrentX()-1, ms.getCurrentY())) && ms.isPassable(ms.getCurrentX() - 1, ms.getCurrentY()))
 			{
 				ms.setCurrentX(ms.getCurrentX() - 1);
@@ -688,7 +689,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				didPlayerMove = true;
 			}
 		}
-		else if (event->key() == Qt::Key_Right) {
+		else if (event->key() == Qt::Key_Right && playerTurn) {
 			if (ms.getCurrentX() < ms.getMaxX()-1 && !(ms.isOccupied(ms.getCurrentX() + 1, ms.getCurrentY())) && ms.isPassable(ms.getCurrentX() + 1, ms.getCurrentY()))
 			{
 				ms.setCurrentX(ms.getCurrentX() + 1);
@@ -699,7 +700,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				didPlayerMove = true;
 			}
 		}
-		else if (event->key() == Qt::Key_Up) {
+		else if (event->key() == Qt::Key_Up && playerTurn) {
 			if (ms.getCurrentY() > 0 && !(ms.isOccupied(ms.getCurrentX(), ms.getCurrentY()-1)) && ms.isPassable(ms.getCurrentX(), ms.getCurrentY()-1))
 			{
 				ms.setCurrentY(ms.getCurrentY() - 1);
@@ -710,7 +711,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				didPlayerMove = true;
 			}
 		}
-		else if (event->key() == Qt::Key_Down) {
+		else if (event->key() == Qt::Key_Down && playerTurn) {
 			if (ms.getCurrentY() < ms.getMaxY()-1 && !(ms.isOccupied(ms.getCurrentX(), ms.getCurrentY() + 1)) && ms.isPassable(ms.getCurrentX(), ms.getCurrentY() + 1))
 			{
 				ms.setCurrentY(ms.getCurrentY() + 1);
@@ -721,26 +722,32 @@ void logic::keyPressEvent(QKeyEvent *event)
 				didPlayerMove = true;
 			}
 		}
-
+		else if (event->key() == Qt::Key_N && playerTurn == false) {
+			//Code for next event stuff goes here
+			playerTurn = true;
+			QRect rect(0, ms.getMaxY()*resolution, resolution * 8, resolution * 3);
+			string chatText = "Player turn start!";
+			combatLog.addToLog(chatText);
+			textChange = true;
+			update(rect);
+		}
 		
 		if (didPlayerMove)
 		{
 			QRect rect(0, ms.getMaxY()*resolution, resolution * 8, resolution * 3);
 			string chatText = "You have taken ";
 			chatText.append(std::to_string(playerSteps));
-			chatLines++;
-			if (chatLines == 1)
+			chatText.append(" steps.");
+			if (playerSteps >= 6)
 			{
-				chatWindow.resize(chatWindow.capacity() + 1);
+				playerTurn = false;
+				chatText.append(" End of player turn.");
+				playerSteps = 0;
 			}
-			if (chatLines > chatWindow.capacity())
-			{
-				chatWindow.resize(chatWindow.capacity() + 5);
-			}
-			chatWindow.push_back(chatText);
-			qDebug() << "HERE " + QString::fromStdString(chatWindow[chatLines-1]);
+			combatLog.addToLog(chatText);
 			textChange = true;
 			update(rect);
+			
 		}
 		
 	}
