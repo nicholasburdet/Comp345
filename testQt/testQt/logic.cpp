@@ -724,12 +724,30 @@ void logic::keyPressEvent(QKeyEvent *event)
 		}
 		else if (event->key() == Qt::Key_N && playerTurn == false) {
 			//Code for next event stuff goes here
-			playerTurn = true;
-			QRect rect(0, ms.getMaxY()*resolution, resolution * 8, resolution * 3);
-			string chatText = "Player turn start!";
+
+			string chatText;
+			ms.npcMovement(npcTurn, ms.getCurrentX(), ms.getCurrentY());
+			chatText = "NPC ";
+			chatText.append(std::to_string(npcTurn));
+			chatText.append(" moves to X:");
+			chatText.append(std::to_string(ms.characterEntities[npcTurn].getX()));
+			chatText.append(" Y:");
+			chatText.append(std::to_string(ms.characterEntities[npcTurn].getY()));
 			combatLog.addToLog(chatText);
-			textChange = true;
-			update(rect);
+			npcTurn++;
+			
+			start = true;
+			update();
+			if (npcTurn >= ms.getNumberOfNPCs())
+			{
+				playerTurn = true;
+				QRect rect(0, ms.getMaxY()*resolution, resolution * 8, resolution * 3);
+				chatText = "Player turn start!";
+				npcTurn = -1;
+				combatLog.addToLog(chatText);
+				textChange = true;
+				update(rect);
+			}
 		}
 		
 		if (didPlayerMove)
@@ -743,6 +761,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				playerTurn = false;
 				chatText.append(" End of player turn.");
 				playerSteps = 0;
+				npcTurn = 0;
 			}
 			combatLog.addToLog(chatText);
 			textChange = true;

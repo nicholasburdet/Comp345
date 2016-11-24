@@ -276,6 +276,10 @@ int character::getMaxHP() {
 	return (getModifier(this->abilities.constitution)*((this->level)-1) + this->hitDice + Dice::roll(level-1, this->hitDice, 0));
 }
 
+int character::getMoveSpeed() {
+	return moveSpeed;
+}
+
 bool character::isPlayerCharacter() {
 	return playerCharacter;
 }

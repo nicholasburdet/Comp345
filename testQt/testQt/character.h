@@ -129,6 +129,7 @@ public:
 
 	void saveToFile();
 	void loadFromFile(string filepath);
+	int getMoveSpeed();
 
 private:
 	int id;
@@ -148,6 +149,7 @@ private:
 	int xPosition = -1;
 	int yPosition = -1;
 
+	int moveSpeed = 6;
 	bool playerCharacter = false;
 
 	set<observer*, less<observer*>> observers;

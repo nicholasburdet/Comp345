@@ -112,7 +112,8 @@ class logic : public QWidget
 
 
 		playerLog combatLog;
-		bool playerTurn = false;
+		bool playerTurn = true;
+		int npcTurn = -1;
 };
 
 #endif
