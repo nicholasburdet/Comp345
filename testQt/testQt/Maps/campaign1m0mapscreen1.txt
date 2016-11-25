@@ -43,9 +43,6 @@ space 5 2 1
 space 5 3 1
 space 5 4 1
 space 5 5 1
-numberOfNPCs 5
-npcID 1 xPos 1 yPos 2
-npcID 1 xPos 4 yPos 2
+numberOfNPCs 2
 npcID 0 xPos 0 yPos 5
-npcID 0 xPos 2 yPos 4
 npcID 0 xPos 5 yPos 0

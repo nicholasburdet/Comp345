@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_editscreen_t {
-    QByteArrayData data[20];
-    char stringdata0[234];
+    QByteArrayData data[21];
+    char stringdata0[253];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -46,9 +46,10 @@ QT_MOC_LITERAL(13, 132, 20), // "createCharacterMenus"
 QT_MOC_LITERAL(14, 153, 19), // "characterEditorMenu"
 QT_MOC_LITERAL(15, 173, 19), // "characterEditorSave"
 QT_MOC_LITERAL(16, 193, 13), // "loadCharacter"
-QT_MOC_LITERAL(17, 207, 7), // "viewMap"
-QT_MOC_LITERAL(18, 215, 7), // "newItem"
-QT_MOC_LITERAL(19, 223, 10) // "newGameMap"
+QT_MOC_LITERAL(17, 207, 18), // "viewCharacterStats"
+QT_MOC_LITERAL(18, 226, 7), // "viewMap"
+QT_MOC_LITERAL(19, 234, 7), // "newItem"
+QT_MOC_LITERAL(20, 242, 10) // "newGameMap"
 
     },
     "editscreen\0editMap\0\0openMap\0newMap\0"
@@ -56,7 +57,8 @@ QT_MOC_LITERAL(19, 223, 10) // "newGameMap"
     "newCampaign\0loadCampaign\0createCampaignMenus\0"
     "menuClose\0createCharacterMenus\0"
     "characterEditorMenu\0characterEditorSave\0"
-    "loadCharacter\0viewMap\0newItem\0newGameMap"
+    "loadCharacter\0viewCharacterStats\0"
+    "viewMap\0newItem\0newGameMap"
 };
 #undef QT_MOC_LITERAL
 
@@ -66,7 +68,7 @@ static const uint qt_meta_data_editscreen[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      18,   14, // methods
+      19,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -74,26 +76,28 @@ static const uint qt_meta_data_editscreen[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,  104,    2, 0x0a /* Public */,
-       3,    0,  105,    2, 0x0a /* Public */,
-       4,    0,  106,    2, 0x0a /* Public */,
-       5,    0,  107,    2, 0x0a /* Public */,
-       6,    0,  108,    2, 0x0a /* Public */,
-       7,    0,  109,    2, 0x0a /* Public */,
-       8,    0,  110,    2, 0x0a /* Public */,
-       9,    0,  111,    2, 0x0a /* Public */,
-      10,    0,  112,    2, 0x0a /* Public */,
-      11,    0,  113,    2, 0x0a /* Public */,
-      12,    0,  114,    2, 0x0a /* Public */,
-      13,    0,  115,    2, 0x0a /* Public */,
-      14,    0,  116,    2, 0x0a /* Public */,
-      15,    0,  117,    2, 0x0a /* Public */,
-      16,    0,  118,    2, 0x0a /* Public */,
-      17,    0,  119,    2, 0x0a /* Public */,
-      18,    0,  120,    2, 0x0a /* Public */,
-      19,    0,  121,    2, 0x0a /* Public */,
+       1,    0,  109,    2, 0x0a /* Public */,
+       3,    0,  110,    2, 0x0a /* Public */,
+       4,    0,  111,    2, 0x0a /* Public */,
+       5,    0,  112,    2, 0x0a /* Public */,
+       6,    0,  113,    2, 0x0a /* Public */,
+       7,    0,  114,    2, 0x0a /* Public */,
+       8,    0,  115,    2, 0x0a /* Public */,
+       9,    0,  116,    2, 0x0a /* Public */,
+      10,    0,  117,    2, 0x0a /* Public */,
+      11,    0,  118,    2, 0x0a /* Public */,
+      12,    0,  119,    2, 0x0a /* Public */,
+      13,    0,  120,    2, 0x0a /* Public */,
+      14,    0,  121,    2, 0x0a /* Public */,
+      15,    0,  122,    2, 0x0a /* Public */,
+      16,    0,  123,    2, 0x0a /* Public */,
+      17,    0,  124,    2, 0x0a /* Public */,
+      18,    0,  125,    2, 0x0a /* Public */,
+      19,    0,  126,    2, 0x0a /* Public */,
+      20,    0,  127,    2, 0x0a /* Public */,
 
  // slots: parameters
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -137,9 +141,10 @@ void editscreen::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 12: _t->characterEditorMenu(); break;
         case 13: _t->characterEditorSave(); break;
         case 14: _t->loadCharacter(); break;
-        case 15: _t->viewMap(); break;
-        case 16: _t->newItem(); break;
-        case 17: _t->newGameMap(); break;
+        case 15: _t->viewCharacterStats(); break;
+        case 16: _t->viewMap(); break;
+        case 17: _t->newItem(); break;
+        case 18: _t->newGameMap(); break;
         default: ;
         }
     }
@@ -171,13 +176,13 @@ int editscreen::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 18)
+        if (_id < 19)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 18;
+        _id -= 19;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 18)
+        if (_id < 19)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 18;
+        _id -= 19;
     }
     return _id;
 }

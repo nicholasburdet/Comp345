@@ -28,8 +28,9 @@ Second update now handles campaign functionality
 
 
 //Constructor loads Distinct NPCs into memory for use by editor and maps
-logic::logic(QWidget *parent) : QWidget(parent)
+logic::logic(QWidget *parent, QMainWindow *mw) : QWidget(parent)
 {
+	mainWindow = mw;
 	ms.loadNPCs();
 	setFocusPolicy(Qt::ClickFocus);
 	message.setFocusPolicy(Qt::NoFocus);
@@ -67,8 +68,12 @@ void logic::loadCampaign(string filename)
 	
 	string extension = "Maps/";
 
-	loadMap(extension.append(Campaign.getMapFilename(Campaign.getNumberOfMaps() - 1)));
-	Campaign.setCurrentMapId(Campaign.getNumberOfMaps() - 1);
+	loadMap(extension.append(Campaign.getMapFilename(0)));
+	Campaign.setCurrentMapId(0);
+
+	//This loads last map of campaign
+	//loadMap(extension.append(Campaign.getMapFilename(Campaign.getNumberOfMaps() - 1)));
+	//Campaign.setCurrentMapId(Campaign.getNumberOfMaps() - 1);
 }
 
 //This method is for loading the campaign after a map has been loaded. The previous method
@@ -82,6 +87,11 @@ void logic::loadJustCampaign()
 	f.append(".txt");
 	Campaign.loadCampaign(f);
 	Campaign.setCurrentMapId(ms.getId());
+}
+
+void logic::loadPlayerCharacter(string filename)
+{
+	ms.loadPlayerCharacter(filename);
 }
 
 //Sets resolution for calculations based on size of map. Default is currently 50
@@ -678,6 +688,8 @@ void logic::keyPressEvent(QKeyEvent *event)
 		bool didPlayerMove = false;
 		oldPlayerX = ms.getCurrentX();
 		oldPlayerY = ms.getCurrentY();
+
+		//Up/Down/Left/Right Movement events
 		if (event->key() == Qt::Key_Left && playerTurn) {
 			if (ms.getCurrentX() > 0 && !(ms.isOccupied(ms.getCurrentX()-1, ms.getCurrentY())) && ms.isPassable(ms.getCurrentX() - 1, ms.getCurrentY()))
 			{
@@ -738,7 +750,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 			
 			start = true;
 			update();
-			if (npcTurn >= ms.getNumberOfNPCs())
+			if (npcTurn >= ms.getNumberOfNPCs() || ms.getNumberOfNPCs == 0)
 			{
 				playerTurn = true;
 				QRect rect(0, ms.getMaxY()*resolution, resolution * 8, resolution * 3);
@@ -756,7 +768,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 			string chatText = "You have taken ";
 			chatText.append(std::to_string(playerSteps));
 			chatText.append(" steps.");
-			if (playerSteps >= 6)
+			if (playerSteps >= ms.playerCharacter.getMoveSpeed())
 			{
 				playerTurn = false;
 				chatText.append(" End of player turn.");
@@ -767,6 +779,38 @@ void logic::keyPressEvent(QKeyEvent *event)
 			textChange = true;
 			update(rect);
 			
+			if (ms.getCurrentX() == ms.getEndX() && ms.getCurrentY() == ms.getEndY())
+			{
+				//Code if player reaches exit
+				character pc = ms.playerCharacter;
+				if (nextMap())
+				{
+					string file = Campaign.getMapFilename(Campaign.getCurrentMapId());
+					string extension = "Maps/";
+					ms.loadFromFile(extension.append(file));
+					ms.playerCharacter = pc;
+					resolution = checkResolution(ms.getMaxX(), ms.getMaxY());
+					int windowResX = ms.getMaxX()*resolution;
+
+					int windowDisplayHeightAdd = 3 * resolution;
+					int windowDisplayWidthMinimum = 8 * resolution;
+
+					if (windowResX < windowDisplayWidthMinimum)
+					{
+						windowResX = windowDisplayWidthMinimum;
+					}
+					mainWindow->setFixedWidth(windowResX);
+					mainWindow->setFixedHeight((ms.getMaxY()*resolution) + 20 + windowDisplayHeightAdd);
+					
+
+					start = true;
+					update();
+				}
+				else
+				{
+					//You win code here
+				}
+			}
 		}
 		
 	}
@@ -803,22 +847,46 @@ void logic::enterEvent(QEvent * event)
 	start = true;
 	update();
 }
-//Minor issue with contents of screen disappearing after size selection at launch, until user mouses out of window
-//Will look into fixing this issue, but it isn't a glaring issue at this time
 
-//Gameplay heart goes here (for now)
-void logic::playGame()
+//This section is so that the user can see any size of map on screen (roughly) 100x100 max
+//Reuse of method in editscreen
+int logic::checkResolution(int w, int h)
 {
-	gameSession = true;
-	
-	while (gameSession)
+	if (h > 95)
 	{
-		//6 Just for testing purposes
-		if (playerSteps >= 6)
-		{
-			message.setText("You have reached 6 steps.");
-			message.show();
-			gameSession = false;
-		}
+		return 8;
 	}
+	if (h > 80)
+	{
+		return 10;
+	}
+	if (h > 60)
+	{
+		return 12;
+	}
+	if (w > 80 || h > 40)
+	{
+		return 15;
+	}
+	if (w > 70 || h > 35)
+	{
+		return 20;
+	}
+	if (w > 60 || h > 30)
+	{
+		return 25;
+	}
+	if (w > 50 || h > 25)
+	{
+		return 30;
+	}
+	if (w > 40 || h > 20)
+	{
+		return 35;
+	}
+	if (w > 30 || h > 15)
+	{
+		return 40;
+	}
+	return 50;
 }

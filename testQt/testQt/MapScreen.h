@@ -63,8 +63,10 @@ public:
 	void removeNPC(int xPos, int yPos);
 	character characterTable[10]; //This is a table that holds each individual different type of NPC (for reference)
 	character characterEntities[100]; //This is a table of NPCS that exist on the map
+	character playerCharacter;
 	string getFilename();
 	void npcMovement(int npcID, int destX, int destY);
+	void loadPlayerCharacter(string filename);
 
 private:
 	//current X and Y can be used for the player location (?)

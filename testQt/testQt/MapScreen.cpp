@@ -713,3 +713,8 @@ void MapScreen::npcMovement(int npcID, int destX, int destY)
 		characterEntities[npcID].moveTo(closestSpace.xSpace, closestSpace.ySpace);
 	}
 }
+
+void MapScreen::loadPlayerCharacter(string filename)
+{
+	playerCharacter.loadFromFile(filename);
+}

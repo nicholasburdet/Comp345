@@ -41,6 +41,7 @@ public slots:
 	void characterEditorMenu();
 	void characterEditorSave();
 	void loadCharacter();
+	void viewCharacterStats();
 	void viewMap();
 
 	////For Item && Character movement
@@ -70,6 +71,7 @@ private:
 	QMenu *mapNavigatorMenu;
 	QMenu *characterMenu;
 	QMenu *characterCreatorMenu;
+	QMenu *gameMenu;
 
 	QAction *campaignMenuAction;
 	QAction *newCampaignAction;
@@ -85,6 +87,7 @@ private:
 	QAction *characterEditorMenuAction;
 	QAction *characterLoadMenuAction;
 	QAction *characterEditorSaveAction;
+	QAction *viewCharacterStatsAction;
 	QAction *viewMapAction;
 
 	////Item Action && Character movement

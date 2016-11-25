@@ -18,6 +18,8 @@ Logic header file
 #include <string>
 #include <QMessageBox>
 #include <vector>
+#include "character.h"
+#include <QMainWindow>
 
 using namespace std;
 
@@ -25,11 +27,12 @@ class logic : public QWidget
 {
 	Q_OBJECT;
 	public:
-		logic(QWidget *parent = 0);
+		logic(QWidget *parent = 0, QMainWindow *mw = 0);
 		void initialize(int w, int h, string n);
 		void newCampaign(string cName, int cId);
 		void loadCampaign(string filename);
 		void loadJustCampaign();
+		void loadPlayerCharacter(string filename);
 		void setResolution(int res);
 		void loadMap(string filename);
 		void newMap();
@@ -41,7 +44,7 @@ class logic : public QWidget
 		string getFilename();
 		void closeWindow();
 		void setEditmode(bool editM);
-		void playGame();
+		int checkResolution(int x, int y);
 	protected:
 		void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 		void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
@@ -114,6 +117,7 @@ class logic : public QWidget
 		playerLog combatLog;
 		bool playerTurn = true;
 		int npcTurn = -1;
+		QMainWindow *mainWindow;
 };
 
 #endif

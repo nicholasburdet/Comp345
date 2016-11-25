@@ -1,10 +1,10 @@
 campaignName Campaignofthenight campaignId 4 mapId 0 mapName Section1
 currentX 0
 currentY 0
-startX 0
-startY 0
-endX 9
-endY 9
+startX 2
+startY 3
+endX 7
+endY 6
 maxX 10
 maxY 10
 space 0 0 1
