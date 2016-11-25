@@ -20,6 +20,7 @@ one into the other.
 #include "MapScreen.h"
 #include <string>
 #include <iostream>
+#include <math.h>
 using namespace std;
 
 //This structure, Search, is used for the searching of the map to discover
@@ -101,6 +102,16 @@ int MapScreen::getMaxX()
 int MapScreen::getMaxY()
 {
 	return maxY;
+};
+
+void MapScreen::setCurrentX(int x)
+{
+	currentX = x;
+};
+
+void MapScreen::setCurrentY(int y)
+{
+	currentY = y;
 };
 
 void MapScreen::setStartX(int x)
@@ -579,4 +590,127 @@ string MapScreen::getFilename()
 	fName.append(".txt");
 
 	return fName;
+}
+
+void MapScreen::npcMovement(int npcID, int destX, int destY)
+{
+	//Dead NPCs may get changed to name DEAD to signify dead?
+	if (characterEntities[npcID].getName() != "DEAD" || characterEntities[npcID].getName() != "NULL")
+	{
+		int npcX = characterEntities[npcID].getX();
+		int npcY = characterEntities[npcID].getY();
+
+		struct moveArray
+		{
+			int xSpace;
+			int ySpace;
+			int stepsTaken = -1;
+			bool checked = false;
+			double distance = 1000;
+		};
+
+		vector<moveArray> pathfinding;
+
+		moveArray mv;
+		moveArray checkMoves[100][100];
+		mv.xSpace = npcX;
+		mv.ySpace = npcY;
+		mv.stepsTaken = 0;
+
+		checkMoves[npcX][npcY].stepsTaken = 0;
+		pathfinding.push_back(mv);
+		//Goes through each step
+		for (int i = 1; i <= characterEntities[npcID].getMoveSpeed(); i++)
+		{
+			//Goes through the pathfinding array
+			for (int index = 0; index < pathfinding.size(); index++)
+			{
+				//CHECK IF ADDING TO ARRAY PATHFINDING WHILE ITERATING THROUGH IT CAUSES ISSUES
+				//If it sees a space with current steps - 1, we will check the adjacent squares if it is -1
+				if (pathfinding[index].stepsTaken == (i - 1))
+				{
+					//up
+					if (!(spaces[pathfinding[index].xSpace][pathfinding[index].ySpace - 1].occupied) && spaces[pathfinding[index].xSpace][pathfinding[index].ySpace - 1].passable && (pathfinding[index].ySpace) > 0)
+					{
+						if (checkMoves[pathfinding[index].xSpace][pathfinding[index].ySpace - 1].stepsTaken < 0)
+						{
+							checkMoves[pathfinding[index].xSpace][pathfinding[index].ySpace-1].stepsTaken = i;
+							mv.xSpace = pathfinding[index].xSpace;
+							mv.ySpace = pathfinding[index].ySpace - 1;
+							mv.stepsTaken = i;
+							pathfinding.push_back(mv);
+						}
+					}
+					
+					//down
+					if (!(spaces[pathfinding[index].xSpace][pathfinding[index].ySpace + 1].occupied) && spaces[pathfinding[index].xSpace][pathfinding[index].ySpace + 1].passable && (pathfinding[index].ySpace) < (maxY - 1))
+					{
+						if (checkMoves[pathfinding[index].xSpace][pathfinding[index].ySpace + 1].stepsTaken < 0)
+						{
+							checkMoves[pathfinding[index].xSpace][pathfinding[index].ySpace+1].stepsTaken = i;
+							mv.xSpace = pathfinding[index].xSpace;
+							mv.ySpace = pathfinding[index].ySpace + 1;
+							mv.stepsTaken = i;
+							pathfinding.push_back(mv);
+						}
+					}
+					
+					//left
+					if (!(spaces[pathfinding[index].xSpace - 1][pathfinding[index].ySpace].occupied) && spaces[pathfinding[index].xSpace - 1][pathfinding[index].ySpace].passable && (pathfinding[index].xSpace) > 0)
+					{
+						if (checkMoves[pathfinding[index].xSpace-1][pathfinding[index].ySpace].stepsTaken < 0)
+						{
+							checkMoves[pathfinding[index].xSpace-1][pathfinding[index].ySpace].stepsTaken = i;
+							mv.xSpace = pathfinding[index].xSpace - 1;
+							mv.ySpace = pathfinding[index].ySpace;
+							mv.stepsTaken = i;
+							pathfinding.push_back(mv);
+						}
+					}
+
+					//right
+					if (!(spaces[pathfinding[index].xSpace + 1][pathfinding[index].ySpace].occupied) && spaces[pathfinding[index].xSpace + 1][pathfinding[index].ySpace].passable && (pathfinding[index].xSpace) < (maxX - 1))
+					{
+						if (checkMoves[pathfinding[index].xSpace + 1][pathfinding[index].ySpace].stepsTaken < 0)
+						{
+							checkMoves[pathfinding[index].xSpace + 1][pathfinding[index].ySpace].stepsTaken = i;
+							mv.xSpace = pathfinding[index].xSpace + 1;
+							mv.ySpace = pathfinding[index].ySpace;
+							mv.stepsTaken = i;
+							pathfinding.push_back(mv);
+						}
+					}
+				}
+			}
+		}
+
+		moveArray closestSpace;
+		closestSpace.stepsTaken = 1000;
+		//Now to determine which space is closest to the player
+		for (int index = 0; index < pathfinding.size(); index++)
+		{
+			double length = sqrt((destX - pathfinding[index].xSpace)*(destX - pathfinding[index].xSpace) + (destY - pathfinding[index].ySpace)*(destY - pathfinding[index].ySpace));
+			
+			if (length < closestSpace.distance && length != 0)
+			{
+				closestSpace.stepsTaken = pathfinding[index].stepsTaken;
+				closestSpace.xSpace = pathfinding[index].xSpace;
+				closestSpace.ySpace = pathfinding[index].ySpace;
+				closestSpace.distance = length;
+			}
+			else if(length == closestSpace.distance)
+			{
+				if (pathfinding[index].stepsTaken < closestSpace.stepsTaken)
+				{
+					closestSpace.stepsTaken = pathfinding[index].stepsTaken;
+					closestSpace.xSpace = pathfinding[index].xSpace;
+					closestSpace.ySpace = pathfinding[index].ySpace;
+				}
+			}
+		}
+
+		spaces[characterEntities[npcID].getX()][characterEntities[npcID].getY()].occupied = false;
+		spaces[closestSpace.xSpace][closestSpace.ySpace].occupied = true;
+		characterEntities[npcID].moveTo(closestSpace.xSpace, closestSpace.ySpace);
+	}
 }

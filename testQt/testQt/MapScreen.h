@@ -11,6 +11,7 @@ Campaign functionality added in second update
 
 #pragma once
 #include "character.h"
+#include <vector>
 
 //Occupied refers to whether an entity (item/NPC/character) is in the space
 //Passable refers to if an entity can occupy or pass through the space
@@ -31,6 +32,8 @@ public:
 	int getStartY();
 	int getEndX();
 	int getEndY();
+	void setCurrentX(int x);
+	void setCurrentY(int y);
 	void setStartX(int x);
 	void setStartY(int y);
 	void setEndX(int x);
@@ -61,6 +64,7 @@ public:
 	character characterTable[10]; //This is a table that holds each individual different type of NPC (for reference)
 	character characterEntities[100]; //This is a table of NPCS that exist on the map
 	string getFilename();
+	void npcMovement(int npcID, int destX, int destY);
 
 private:
 	//current X and Y can be used for the player location (?)

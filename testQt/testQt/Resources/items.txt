@@ -13,3 +13,4 @@
 12|Weapon|Dagger|Damage Bonus|5|1d4
 13|Armor|Plate Armor||0|Heavy
 14|Belt|Belt of Undying|Armor Class|4|Medium
+15|Belt|Fashion Belt|None|0|Light

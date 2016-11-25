@@ -40,6 +40,7 @@ editscreen::editscreen(char n[])
 	this->setFixedWidth(400);
 	this->setFixedHeight(200);
 	
+	setFocusPolicy(Qt::NoFocus);
 	
 	newMapAction = new QAction(tr("&New Map"), this);
 	connect(newMapAction, SIGNAL(triggered()), this, SLOT(newMap()));
@@ -87,10 +88,11 @@ editscreen::editscreen(char n[])
 	newMoveableMapAction = new QAction(tr("&Play Default Map"), this);
 	connect(newMoveableMapAction, SIGNAL(triggered()), this, SLOT(newGameMap()));
 	////
+	viewMapAction = new QAction(tr("&View Map"), this);
+	connect(viewMapAction, SIGNAL(triggered()), this, SLOT(viewMap()));
 
-
-	campaignMenuCloseAction = new QAction(tr("&Close Campaign Menu"), this);
-	connect(campaignMenuCloseAction, SIGNAL(triggered()), this, SLOT(campaignMenuClose()));
+	menuCloseAction = new QAction(tr("&Close Menu"), this);
+	connect(menuCloseAction, SIGNAL(triggered()), this, SLOT(menuClose()));
 
 	editMenu = new QMenu(tr("&Main Menu"), this);
 	editMenu->addAction(campaignMenuAction);
@@ -101,6 +103,7 @@ editscreen::editscreen(char n[])
 	////
 	
 	editMenu->addAction(characterMenuAction);
+	editMenu->addAction(viewMapAction);
 
 	mapMenu = new QMenu(tr("&Map File"), this);
 	mapMenu->addAction(newMapAction);
@@ -116,16 +119,26 @@ editscreen::editscreen(char n[])
 	campaignMenu->addAction(newCampaignAction);
 	campaignMenu->addAction(openCampaignAction);
 	campaignMenu->addAction(openMapAction);
-	campaignMenu->addAction(campaignMenuCloseAction);
+	campaignMenu->addAction(menuCloseAction);
 
 	characterMenu = new QMenu(tr("&Character"), this);
 	characterMenu->addAction(characterEditorMenuAction);
 	characterMenu->addAction(characterLoadMenuAction);
+	characterMenu->addAction(menuCloseAction);
 
 	characterCreatorMenu = new QMenu(tr("&Character"), this);
 	characterCreatorMenu->addAction(characterEditorMenuAction);
 	characterCreatorMenu->addAction(characterEditorSaveAction);
+	characterCreatorMenu->addAction(menuCloseAction);
 
+	
+
+	editMenu->setFocusPolicy(Qt::NoFocus);
+	mapMenu->setFocusPolicy(Qt::NoFocus);
+	campaignMenu->setFocusPolicy(Qt::NoFocus);
+	mapNavigatorMenu->setFocusPolicy(Qt::NoFocus);
+	characterMenu->setFocusPolicy(Qt::NoFocus);
+	characterCreatorMenu->setFocusPolicy(Qt::NoFocus);
 
 	createMainMenu();
 }
@@ -152,6 +165,8 @@ void editscreen::editMap()
 		log = new logic;
 	}
 	logicPersistence = false;
+	
+	log->setEditmode(true);
 	
 	if (choice == 0)
 	{
@@ -530,7 +545,7 @@ void editscreen::mapMenuClose()
 	createCampaignMenus();
 }
 
-void editscreen::campaignMenuClose()
+void editscreen::menuClose()
 {
 	createMainMenu();
 }
@@ -784,4 +799,52 @@ void editscreen::newGameMap()
 	QEventLoop loop;
 	connect(this, SIGNAL(destroyed()), &loop, SLOT(quit()));
 	loop.exec();
+}
+
+void editscreen::viewMap()
+{
+	//reusing some code from editMap, should implement function to do similar stuff, but lazy
+	bool ok1;
+	int width, height;
+	int resolution = 50;
+	int addedHeight = 20;
+
+	log = new logic;
+	log->setEditmode(false);
+
+	QString fileName = "";
+	QString extension = "/Maps";
+	fileName = QFileDialog::getOpenFileName(this, tr("Open Map"), QDir::currentPath().append(extension));
+	if (fileName != "")
+	{
+		fName = fileName.toStdString();
+	}
+	while (fileName == "")
+	{
+		fileName = QFileDialog::getOpenFileName(this, tr("Open Map"), QDir::currentPath().append(extension));
+		fName = fileName.toStdString();
+	}
+
+	log->loadMap(fName);
+	width = log->getWidth();
+	height = log->getHeight();
+		
+	resolution = checkResolution(width, height);
+	log->setResolution(resolution);
+
+	setCentralWidget(log);
+	setWindowTitle(tr("Map Editor"));
+	int windowResX = width*resolution;
+	
+	int windowDisplayHeightAdd = 3 * resolution;
+	int windowDisplayWidthMinimum = 8 * resolution;
+
+	if (windowResX < windowDisplayWidthMinimum)
+	{
+		windowResX = windowDisplayWidthMinimum;
+	}
+
+	this->setFixedWidth(windowResX);
+	this->setFixedHeight((height*resolution) + addedHeight + windowDisplayHeightAdd);
+	log->setFocus();
 }

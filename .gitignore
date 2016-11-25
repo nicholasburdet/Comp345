@@ -43,6 +43,10 @@ build/
 *.vcxproj.user
 *.db
 *.log
+*.vcxproj
+*.vcxproj.user
+*.vcxproj.filters
+*.db
 *.vspscc
 *.vssscc
 .builds
