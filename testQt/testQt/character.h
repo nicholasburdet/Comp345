@@ -73,6 +73,9 @@ public:
 	void setSubtype(std::string subt) {
 		subtype = subt;
 	}
+	std::string getSubtype() {
+		return subtype;
+	}
 	void decHP(int damage);
 	int getArmorBonus();
 	virtual int getDamageBonus();

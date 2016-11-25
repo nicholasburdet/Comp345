@@ -661,9 +661,9 @@ void editscreen::characterEditorMenu()
 
 	QComboBox *characterType = new QComboBox(&characterCreatorDialog);
 	QString typeLabel = QString("Fighter Type");
-	characterType->addItem(QString("Tank"));
-	characterType->addItem(QString("Nimble"));
-	characterType->addItem(QString("Bully"));
+	characterType->addItem(QString("Tank"), QVariant(0));
+	characterType->addItem(QString("Nimble"), QVariant(1));
+	characterType->addItem(QString("Bully"), QVariant(2));
 	characterForm.addRow(typeLabel, characterType);
 
 	QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, Qt::Horizontal, &characterCreatorDialog);
@@ -677,9 +677,9 @@ void editscreen::characterEditorMenu()
 		characterBuilder* builder;
 
 		//TODO: Proper string comparison
-		if (characterType->currentText().toStdString().c_str == "Nimble") {
+		if (characterType->currentData().toInt()==1) {
 			builder = new NimbleConcreteBuilder();
-		}else if (characterType->currentText().toStdString().c_str == "Tank") {
+		}else if (characterType->currentData().toInt() == 0) {
 			builder = new TankConcreteBuilder();
 		}else {
 			builder = new BullyConcreteBuilder();//Default value for now
