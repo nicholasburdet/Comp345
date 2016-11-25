@@ -39,6 +39,9 @@ build/
 *.tmp
 *.tmp_proj
 *.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.db
 *.log
 *.vspscc
 *.vssscc
