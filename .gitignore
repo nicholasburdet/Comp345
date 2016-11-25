@@ -38,6 +38,7 @@ build/
 *.tlh
 *.tmp
 *.tmp_proj
+*.vcxproj
 *.log
 *.vspscc
 *.vssscc
