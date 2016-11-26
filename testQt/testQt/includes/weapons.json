@@ -1,0 +1,110 @@
+[
+	{
+		"name" : "Dagger",
+		"description" : "A short ornate blade in a serpentine shape.",
+		"damage":"1d4",
+		"crit":"19-20/x2",
+		"range":"0",
+		"enchantmentTypes":"Attack Bonus, Damage Bonus",
+		"enchantmentBonus":"0"
+	},
+	{
+		"name" : "Dagger +1",
+		"description" : "A short ornate blade in a serpentine shape with a level 1 enchantment.",
+		"damage":"1d4",
+		"crit":"19-20/x2",
+		"range":"0",
+		"enchantmentTypes":"Attack Bonus, Damage Bonus",
+		"enchantmentBonus":"1"
+	},
+	{
+		"name" : "Dagger +2",
+		"description" : "A short ornate blade in a serpentine shape with a level 2 enchantment.",
+		"damage":"1d4",
+		"crit":"19-20/x2",
+		"range":"0",
+		"enchantmentTypes":"Attack Bonus, Damage Bonus",
+		"enchantmentBonus":"2"
+	},
+	{
+		"name" : "Dagger +3",
+		"description" : "A short ornate blade in a serpentine shape with a level 3 enchantment.",
+		"damage":"1d4",
+		"crit":"19-20/x2",
+		"range":"0",
+		"enchantmentTypes":"Attack Bonus, Damage Bonus",
+		"enchantmentBonus":"3"
+	},
+	{
+		"name" : "Dagger +4",
+		"description" : "A short ornate blade in a serpentine shape with a level 4 enchantment.",
+		"damage":"1d4",
+		"crit":"19-20/x2",
+		"range":"0",
+		"enchantmentTypes":"Attack Bonus, Damage Bonus",
+		"enchantmentBonus":"4"
+	},
+	{
+		"name" : "Dagger +5",
+		"description" : "A short ornate blade in a serpentine shape with a level 5 enchantment.",
+		"damage":"1d4",
+		"crit":"19-20/x2",
+		"range":"0",
+		"enchantmentTypes":"Attack Bonus, Damage Bonus",
+		"enchantmentBonus":"5"
+	},
+	{
+		"name" : "Halberd",
+		"description" : "A pike fitted with an axe head.",
+		"damage":"1d8",
+		"crit":"19-20/x3",
+		"range":"1",
+		"enchantmentTypes":"Attack Bonus, Damage Bonus",
+		"enchantmentBonus":"0"
+	},
+	{
+		"name" : "Halberd +1",
+		"description" : "A pike fitted with an axe head with a level 1 enchantment.",
+		"damage":"1d8",
+		"crit":"19-20/x3",
+		"range":"1",
+		"enchantmentTypes":"Attack Bonus, Damage Bonus",
+		"enchantmentBonus":"1"
+	},
+	{
+		"name" : "Halberd +2",
+		"description" : "A pike fitted with an axe head with a level 2 enchantment.",
+		"damage":"1d8",
+		"crit":"19-20/x3",
+		"range":"1",
+		"enchantmentTypes":"Attack Bonus, Damage Bonus",
+		"enchantmentBonus":"2"
+	},
+	{
+		"name" : "Halberd +3",
+		"description" : "A pike fitted with an axe head with a level 3 enchantment.",
+		"damage":"1d8",
+		"crit":"19-20/x3",
+		"range":"1",
+		"enchantmentTypes":"Attack Bonus, Damage Bonus",
+		"enchantmentBonus":"3"
+	},
+	{
+		"name" : "Halberd +4",
+		"description" : "A pike fitted with an axe head with a level 4 enchantment.",
+		"damage":"1d8",
+		"crit":"19-20/x3",
+		"range":"1",
+		"enchantmentTypes":"Attack Bonus, Damage Bonus",
+		"enchantmentBonus":"4"
+	},
+	{
+		"name" : "Halberd +5",
+		"description" : "A pike fitted with an axe head with a level 5 enchantment.",
+		"damage":"1d8",
+		"crit":"19-20/x3",
+		"range":"1",
+		"enchantmentTypes":"Attack Bonus, Damage Bonus",
+		"enchantmentBonus":"5"
+	}
+]

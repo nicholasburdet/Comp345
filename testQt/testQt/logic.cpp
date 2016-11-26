@@ -734,9 +734,8 @@ void logic::keyPressEvent(QKeyEvent *event)
 				didPlayerMove = true;
 			}
 		}
+		//Code for next event stuff goes here (player can advance the game when not his turn by pressing N)
 		else if (event->key() == Qt::Key_N && playerTurn == false) {
-			//Code for next event stuff goes here
-
 			string chatText;
 			ms.npcMovement(npcTurn, ms.getCurrentX(), ms.getCurrentY());
 			chatText = "NPC ";
@@ -761,6 +760,17 @@ void logic::keyPressEvent(QKeyEvent *event)
 				update(rect);
 			}
 		}
+		//Code for stopping player movement during their turn (end movement)
+		else if (event->key() == Qt::Key_S && playerTurn == true)
+		{
+			//Code for player stop goes here NOTE:Fix player movement end ending their turn
+			//Note: Also potentially limit player movement dialog messages to destination ONLY?
+		}
+		//Code for attacking during player turn goes here
+		else if (event->key() == Qt::Key_A && playerTurn == true)
+		{
+			//Note, attacking ends your turn unless you do a single attack (possibly scope out?)
+		}
 		
 		if (didPlayerMove)
 		{
@@ -779,9 +789,9 @@ void logic::keyPressEvent(QKeyEvent *event)
 			textChange = true;
 			update(rect);
 			
+			//Code if player reaches exit
 			if (ms.getCurrentX() == ms.getEndX() && ms.getCurrentY() == ms.getEndY())
 			{
-				//Code if player reaches exit
 				character pc = ms.playerCharacter;
 				if (nextMap())
 				{
@@ -801,7 +811,6 @@ void logic::keyPressEvent(QKeyEvent *event)
 					}
 					mainWindow->setFixedWidth(windowResX);
 					mainWindow->setFixedHeight((ms.getMaxY()*resolution) + 20 + windowDisplayHeightAdd);
-					
 
 					start = true;
 					update();

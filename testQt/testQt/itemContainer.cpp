@@ -87,7 +87,6 @@ string itemContainer::getName(string filePath, int id)
 string itemContainer::getEnchantment(string filePath, int id)
 {
 
-
 	ifstream file(filePath);
 	string str;
 	string file_contents;
@@ -145,11 +144,6 @@ void itemContainer::addItemBackpack(int id)
 	myfile.close();
 
 }
-
-
-
-
-
 
 
 //Accepts the Id of the item to be removed
@@ -233,7 +227,6 @@ void itemContainer::addItemWorn(int id)
 		itemType = 6;
 
 
-
 	ifstream myfile("includes/wornItems.txt");
 	
 	string new1;
@@ -258,16 +251,9 @@ void itemContainer::addItemWorn(int id)
 	ofstream writer("includes/wornItems.txt");
 	writer << fc;
 	writer.close();
-
-
-
-
-
-
-
-
-
 }
+
+
 void itemContainer::removeItemWorn(string file_contents2)
 {
 	
