@@ -277,6 +277,11 @@ int character::getAttackBonus() {
 	return profBonus + abBonus;
 }
 
+int character::getWeaponRange()
+{
+	return weaponRange;
+}
+
 int character::getModifier(int abilityScore) {
 	return (abilityScore - 10) / 2;
 }

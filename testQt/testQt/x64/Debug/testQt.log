@@ -1,5 +1,14 @@
-﻿  MapScreen.cpp
+﻿  moc_characterController.cpp
+  moc_editscreen.cpp
+  moc_logic.cpp
+  MapScreen.cpp
+  campaign.cpp
+  character.cpp
+  characterController.cpp
+  characterObserver.cpp
   editscreen.cpp
+  logic.cpp
+  main.cpp
   Generating Code...
   testQt.vcxproj -> C:\Users\Nick\Documents\Visual Studio 2015\Projects\Comp345\testQt\x64\Debug\testQt.exe
   testQt.vcxproj -> C:\Users\Nick\Documents\Visual Studio 2015\Projects\Comp345\testQt\x64\Debug\testQt.pdb (Full PDB)

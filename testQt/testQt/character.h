@@ -116,6 +116,7 @@ public:
 	//int rollDice(int faces); //Replaced with dice class
 	int getMaxRollSum(int faces, int numRolls);
 
+	int getWeaponRange();
 
 	//Observer related stuff
 

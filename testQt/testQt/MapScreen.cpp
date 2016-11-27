@@ -725,12 +725,59 @@ string MapScreen::playerAttack(int sX, int sY, string dir, bool fullAttack)
 
 	int foundNPC = -1;
 
-	for (int i = 0; i < numberOfNPCs; i++)
+	int weaponRange = playerCharacter.getWeaponRange();
+	bool npcFound = false;
+	bool rangeError = false;
+	int rangeCheck = 1;
+
+	while (!npcFound && rangeCheck <= weaponRange && !rangeError)
 	{
-		if (characterEntities[i].getX() == sX && characterEntities[i].getY() == sY)
+		for (int i = 0; i < numberOfNPCs; i++)
 		{
-			foundNPC = i;
+			if (characterEntities[i].getX() == sX && characterEntities[i].getY() == sY)
+			{
+				foundNPC = i;
+				npcFound = true;
+			}
 		}
+
+		if (weaponRange > 1)
+		{
+			if (dir == "up")
+			{
+				sY--;
+				if (sY < 0)
+				{
+					rangeError = true;
+				}
+			}
+			else if (dir == "down")
+			{
+				sY++;
+				if (sY > maxY-1)
+				{
+					rangeError = true;
+				}
+			}
+			else if (dir == "left")
+			{
+				sX--;
+				if (sX < 0)
+				{
+					rangeError = true;
+				}
+			}
+			else if (dir == "right")
+			{
+				sX++;
+				if (sX > maxX-1)
+				{
+					rangeError = true;
+				}
+			}
+		}
+
+		rangeCheck++;
 	}
 	if (foundNPC == -1)
 	{
