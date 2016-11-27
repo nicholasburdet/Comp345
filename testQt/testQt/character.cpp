@@ -55,6 +55,7 @@ character::character() :observers()
 	abilities = generateAbilities();
 	hitDice = 10;
 	HP = getMaxHP();
+	currentHP = HP;
 	initiative = getModifier(abilities.dexterity);
 }
 character::character(int i, string n, int l, string im) :observers()
@@ -66,6 +67,7 @@ character::character(int i, string n, int l, string im) :observers()
 	abilities = generateAbilities();
 	hitDice = 10; //Fighter hit dice
 	HP = getMaxHP();
+	currentHP = HP;
 	initiative = getModifier(abilities.dexterity);
 }
 
@@ -78,6 +80,7 @@ character::character(int i, string n, int l, string im, int abList[6]) :observer
 	abilities = abilList{ abList[0] % 18,abList[1] % 18,abList[2] % 18,abList[3] % 18,abList[4] % 18,abList[5] % 18 };
 	hitDice = 10;
 	HP = getMaxHP();
+	currentHP = HP;
 	initiative = getModifier(abilities.dexterity);
 
 }
@@ -94,6 +97,7 @@ void character::initialize(int i, string n, int l, string im) {
 	abilities = generateAbilities();
 	hitDice = 10; //Fighter hit dice
 	HP = getMaxHP();
+	currentHP = HP;
 	initiative = getModifier(abilities.dexterity);
 }
 
@@ -173,7 +177,7 @@ string character::getClassName() {
 int character::levelUp(int incAmount = 1) {
 	level += incAmount;
 	HP += getModifier(abilities.constitution)*incAmount;
-
+	currentHP = HP;
 	notifyObservers();
 
 	return HP;
@@ -246,11 +250,12 @@ int character::getHP() {
 
 void character::setHP(int hp) {
 	HP = hp;
+	currentHP = HP;
 	notifyObservers();
 }
 
 void character::decHP(int damage) {
-	HP -= damage;
+	currentHP -= damage;
 }
 
 int character::getArmorBonus() {
@@ -262,13 +267,14 @@ int character::getDamageBonus() {
 }
 
 int character::getAttackBonus() {
-
+	//To be changed
 	int profBonus = ((level - 1) / 4) + 2;
 
 	int abBonus = weaponRange < 1 ? getModifier(abilities.strength) : getModifier(abilities.dexterity);
 
-	return profBonus + abBonus + Dice::roll(1, weaponDice, 0);
-
+	//Dice roll will be done OUTSIDE of this method
+	//return profBonus + abBonus + Dice::roll(1, weaponDice, 0);
+	return profBonus + abBonus;
 }
 
 int character::getModifier(int abilityScore) {
@@ -388,7 +394,8 @@ void character::loadFromFile(string filepath)
 
 		}
 		input.close();
-
+		
+		currentHP = HP;
 		initiative = getModifier(abilities.dexterity);
 	}
 

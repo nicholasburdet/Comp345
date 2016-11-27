@@ -148,6 +148,7 @@ private:
 	int armorBonus = 3;
 	//END PLACEHOLDERS
 	int HP;
+	int currentHP;
 	abilList abilities;
 	string image = "";
 	int xPosition = -1;

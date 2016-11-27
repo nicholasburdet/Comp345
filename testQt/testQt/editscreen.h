@@ -43,6 +43,7 @@ public slots:
 	void loadCharacter();
 	void viewCharacterStats();
 	void viewMap();
+	void viewControls();
 	
 	void viewBackpack();
 	void viewWornItems();
@@ -68,6 +69,8 @@ private:
 	bool viewingMap = false; //For simply viewing the map without edits
 	string currentMenu = "main";
 
+	QMessageBox messageBox;
+
 	QMenu *editMenu;
 	QMenu *mapMenu;
 	QMenu *campaignMenu;
@@ -75,6 +78,7 @@ private:
 	QMenu *characterMenu;
 	QMenu *characterCreatorMenu;
 	QMenu *gameMenu;
+	QMenu *viewControlsMenu;
 
 	QAction *campaignMenuAction;
 	QAction *newCampaignAction;
@@ -92,6 +96,7 @@ private:
 	QAction *characterEditorSaveAction;
 	QAction *viewCharacterStatsAction;
 	QAction *viewMapAction;
+	QAction *viewControlsActions;
 	
 	QAction *viewBackpackAction;
 	QAction *viewWornItemsAction;

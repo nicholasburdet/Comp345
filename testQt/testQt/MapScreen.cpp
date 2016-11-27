@@ -718,3 +718,59 @@ void MapScreen::loadPlayerCharacter(string filename)
 {
 	playerCharacter.loadFromFile(filename);
 }
+
+string MapScreen::playerAttack(int sX, int sY, string dir, bool fullAttack)
+{
+	string combatText = "";
+
+	int foundNPC = -1;
+
+	for (int i = 0; i < numberOfNPCs; i++)
+	{
+		if (characterEntities[i].getX() == sX && characterEntities[i].getY() == sY)
+		{
+			foundNPC = i;
+		}
+	}
+	if (foundNPC == -1)
+	{
+		return "You attack into an empty space! Nothing happens.";
+	}
+	else
+	{
+		//Combat rolls and stuff goes here
+		int roll = Dice::roll(1, 20, 0);
+		combatText.append("Attack roll (d20): ");
+		combatText.append(std::to_string(roll));
+		if (roll == 1)
+		{
+			combatText.append(". Critical miss!");
+			return combatText;
+		}
+		else if (roll == 20)
+		{
+			combatText.append(". Critical hit!");
+			combatText.append(" DAMAGE TEXT GOES HERE.");
+			return combatText;
+		}
+		else
+		{
+			if ((roll + playerCharacter.getAttackBonus() > characterEntities[foundNPC].getArmorBonus()))
+			{
+				combatText.append("+");
+				combatText.append(std::to_string(playerCharacter.getAttackBonus()));
+				combatText.append(". Enemy hit!");
+				combatText.append(" DAMAGE TEXT GOES HERE.");
+				return combatText;
+			}
+			else
+			{
+				combatText.append("+");
+				combatText.append(std::to_string(playerCharacter.getAttackBonus()));
+				combatText.append(". Enemy dodges your attack!");
+				return combatText;
+			}
+		}
+	}
+	return combatText;
+}

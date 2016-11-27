@@ -699,7 +699,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 		if (!mapStart)
 		{
 			//Up/Down/Left/Right Movement events
-			if (event->key() == Qt::Key_Left && playerTurn && playerMove) {
+			if (event->key() == Qt::Key_Left && playerTurn && playerMove && playerAttacking == false) {
 				if (ms.getCurrentX() > 0 && !(ms.isOccupied(ms.getCurrentX() - 1, ms.getCurrentY())) && ms.isPassable(ms.getCurrentX() - 1, ms.getCurrentY()))
 				{
 					ms.setCurrentX(ms.getCurrentX() - 1);
@@ -710,7 +710,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 					didPlayerMove = true;
 				}
 			}
-			else if (event->key() == Qt::Key_Right && playerTurn && playerMove) {
+			else if (event->key() == Qt::Key_Right && playerTurn && playerMove && playerAttacking == false) {
 				if (ms.getCurrentX() < ms.getMaxX() - 1 && !(ms.isOccupied(ms.getCurrentX() + 1, ms.getCurrentY())) && ms.isPassable(ms.getCurrentX() + 1, ms.getCurrentY()))
 				{
 					ms.setCurrentX(ms.getCurrentX() + 1);
@@ -721,7 +721,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 					didPlayerMove = true;
 				}
 			}
-			else if (event->key() == Qt::Key_Up && playerTurn && playerMove) {
+			else if (event->key() == Qt::Key_Up && playerTurn && playerMove && playerAttacking == false) {
 				if (ms.getCurrentY() > 0 && !(ms.isOccupied(ms.getCurrentX(), ms.getCurrentY() - 1)) && ms.isPassable(ms.getCurrentX(), ms.getCurrentY() - 1))
 				{
 					ms.setCurrentY(ms.getCurrentY() - 1);
@@ -732,7 +732,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 					didPlayerMove = true;
 				}
 			}
-			else if (event->key() == Qt::Key_Down && playerTurn && playerMove) {
+			else if (event->key() == Qt::Key_Down && playerTurn && playerMove && playerAttacking == false) {
 				if (ms.getCurrentY() < ms.getMaxY() - 1 && !(ms.isOccupied(ms.getCurrentX(), ms.getCurrentY() + 1)) && ms.isPassable(ms.getCurrentX(), ms.getCurrentY() + 1))
 				{
 					ms.setCurrentY(ms.getCurrentY() + 1);
@@ -775,7 +775,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				}
 			}
 			//Code for stopping player movement during their turn (end movement)
-			else if (event->key() == Qt::Key_S && playerTurn == true)
+			else if (event->key() == Qt::Key_S && playerTurn == true && playerAttacking == false)
 			{
 				//Code for player stop goes here NOTE:Fix player movement end ending their turn
 				//Note: Also potentially limit player movement dialog messages to destination ONLY?
@@ -790,9 +790,147 @@ void logic::keyPressEvent(QKeyEvent *event)
 				update(rect);
 			}
 			//Code for attacking during player turn goes here
-			else if (event->key() == Qt::Key_A && playerTurn == true)
+			else if (event->key() == Qt::Key_A && playerTurn == true && playerAttacking == false)
 			{
-				//Note, attacking ends your turn unless you do a single attack (possibly scope out?)
+				playerAttacking = true;
+				//Checks to see if player will use 1 attack or full attack
+				string chatText;
+				if (playerSteps == 0)
+				{
+					fullAttack = true;
+					chatText = "You prepare a full attack! Choose a direction to attack.";
+				}
+				else
+				{
+					fullAttack = false;
+					chatText = "You declare an attack! Choose a direction to attack.";
+				}
+				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+				
+				combatLog.addToLog(chatText);
+				textChange = true;
+				update(rect);
+			}
+
+			//Code for each attack direction goes here!
+			else if (event->key() == Qt::Key_Up && playerTurn == true && playerAttacking == true)
+			{
+				string attackMessage;
+				int adjX = ms.getCurrentX();
+				int adjY = ms.getCurrentY() - 1;
+				string dir = "up";
+				//Checks bounds
+				if (adjY > 0)
+				{
+					attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
+				}
+				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+				combatLog.addToLog(attackMessage);
+				textChange = true;
+				update(rect);
+
+				string chatText = "Player turn has ended.";
+				npcTurn++;
+				if (npcTurn > ms.getNumberOfNPCs())
+				{
+					npcTurn = 0;
+				}
+				playerTurn = false;
+				playerAttacking = false;
+				combatLog.addToLog(chatText);
+				textChange = true;
+				update(rect);
+			}
+			else if (event->key() == Qt::Key_Down && playerTurn == true && playerAttacking == true)
+			{
+				string attackMessage;
+				int adjX = ms.getCurrentX();
+				int adjY = ms.getCurrentY() + 1;
+				//Checks bounds
+				string dir = "down";
+				if (adjY < ms.getMaxY()-1)
+				{
+					attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
+				}
+				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+				combatLog.addToLog(attackMessage);
+				textChange = true;
+				update(rect);
+
+				string chatText = "Player turn has ended.";
+				npcTurn++;
+				if (npcTurn > ms.getNumberOfNPCs())
+				{
+					npcTurn = 0;
+				}
+				playerTurn = false;
+				playerAttacking = false;
+				combatLog.addToLog(chatText);
+				textChange = true;
+				update(rect);
+			}
+			else if (event->key() == Qt::Key_Left && playerTurn == true && playerAttacking == true)
+			{
+				string attackMessage;
+				int adjX = ms.getCurrentX() - 1;
+				int adjY = ms.getCurrentY();
+				string dir = "left";
+				//Checks bounds
+				if (adjX > 0)
+				{
+					attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
+				}
+				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+				combatLog.addToLog(attackMessage);
+				textChange = true;
+				update(rect);
+
+				string chatText = "Player turn has ended.";
+				npcTurn++;
+				if (npcTurn > ms.getNumberOfNPCs())
+				{
+					npcTurn = 0;
+				}
+				playerTurn = false;
+				playerAttacking = false;
+				combatLog.addToLog(chatText);
+				textChange = true;
+				update(rect);
+			}
+			else if (event->key() == Qt::Key_Right && playerTurn == true && playerAttacking == true)
+			{
+				string attackMessage;
+				int adjX = ms.getCurrentX() + 1;
+				int adjY = ms.getCurrentY();
+				string dir = "right";
+				//Checks bounds
+				if (adjX < ms.getMaxX() - 1)
+				{
+					attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
+				}
+				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+				combatLog.addToLog(attackMessage);
+				textChange = true;
+				update(rect);
+
+				string chatText = "Player turn has ended.";
+				npcTurn++;
+				if (npcTurn > ms.getNumberOfNPCs())
+				{
+					npcTurn = 0;
+				}
+				playerTurn = false;
+				playerAttacking = false;
+				combatLog.addToLog(chatText);
+				textChange = true;
+				update(rect);
+			}
+			//End of attack direction code above ^^^^^^
+
+			//Code for looting during player turn goes here
+			else if (event->key() == Qt::Key_L && playerTurn == true)
+			{
+				
 			}
 			else if (event->key() == Qt::Key_E && playerTurn == true)
 			{
@@ -805,6 +943,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 					npcTurn = 0;
 				}
 				playerTurn = false;
+				playerAttacking = false;
 				combatLog.addToLog(chatText);
 				textChange = true;
 				update(rect);

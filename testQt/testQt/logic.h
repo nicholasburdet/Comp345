@@ -118,6 +118,10 @@ class logic : public QWidget
 		playerLog combatLog;
 		bool playerTurn = true;
 		bool playerMove = false;
+
+		bool playerAttacking = false;
+		bool fullAttack = false;
+
 		int npcTurn = -1;
 		QMainWindow *mainWindow;
 		bool mapStart = true;

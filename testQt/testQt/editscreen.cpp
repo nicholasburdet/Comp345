@@ -80,6 +80,8 @@ editscreen::editscreen(char n[])
 	viewCharacterStatsAction = new QAction(tr("&View Character Stats"), this);
 	connect(characterEditorSaveAction, SIGNAL(triggered()), this, SLOT(viewCharacterStats()));
 
+	viewControlsActions = new QAction(tr("&View Controls"), this);
+	connect(viewControlsActions, SIGNAL(triggered()), this, SLOT(viewControls()));
 	
 	//// VIEW INVENTORY AND WORN ITEMS
 
@@ -107,7 +109,7 @@ editscreen::editscreen(char n[])
 	editMenu = new QMenu(tr("&Main Menu"), this);
 	editMenu->addAction(campaignMenuAction);
 	
-	
+
 	
 	//// Item Generator && Character Movement
 	editMenu->addAction(newItemAction);
@@ -150,6 +152,9 @@ editscreen::editscreen(char n[])
 	gameMenu->addAction(viewBackpackAction);
 	gameMenu->addAction(viewWornItemsAction);
 	////
+
+	viewControlsMenu = new QMenu(tr("View Controls"), this);
+	viewControlsMenu->addAction(viewControlsActions);
 
 	editMenu->setFocusPolicy(Qt::NoFocus);
 	mapMenu->setFocusPolicy(Qt::NoFocus);
@@ -868,10 +873,17 @@ void editscreen::viewMap()
 	currentMenu = "gamemenu";
 	menuBar()->clear();
 	menuBar()->addMenu(gameMenu);
+	menuBar()->addMenu(viewControlsMenu);
 
 	this->setFixedWidth(windowResX);
 	this->setFixedHeight((height*resolution) + addedHeight + windowDisplayHeightAdd);
 	log->setFocus();
+}
+
+void editscreen::viewControls()
+{
+	messageBox.setText("Use the arrow keys to move during your turn.\n-Can move up to player's movement speed-\n\nPress (N) to advance game when NPC(s) turn.\nDuring Player turn:\n(S) Stops player movement if any move is available.\n(E) Immediately Ends player turn.\n(A) Attack an enemy. (Functionality not fully implemented)\n(L) Loot an adjacent item or chest (Functionality not fully implemented)\n\nCan only do a full attack if the player has not moved.\n\nOnce attack (A) has been selected, pick a direction (arrows) to attack.");
+	messageBox.exec();
 }
 
 void editscreen::viewCharacterStats()

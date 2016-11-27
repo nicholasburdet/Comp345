@@ -68,7 +68,7 @@ public:
 	string getFilename();
 	void npcMovement(int npcID, int destX, int destY);
 	void loadPlayerCharacter(string filename);
-	
+	string playerAttack(int sX, int sY, string dir, bool fullAttack);
 
 private:
 	//current X and Y can be used for the player location (?)
