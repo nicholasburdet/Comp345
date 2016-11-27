@@ -55,6 +55,7 @@ character::character() :observers()
 	abilities = generateAbilities();
 	hitDice = 10;
 	HP = getMaxHP();
+	initiative = getModifier(abilities.dexterity);
 }
 character::character(int i, string n, int l, string im) :observers()
 {
@@ -65,6 +66,7 @@ character::character(int i, string n, int l, string im) :observers()
 	abilities = generateAbilities();
 	hitDice = 10; //Fighter hit dice
 	HP = getMaxHP();
+	initiative = getModifier(abilities.dexterity);
 }
 
 character::character(int i, string n, int l, string im, int abList[6]) :observers()
@@ -76,6 +78,7 @@ character::character(int i, string n, int l, string im, int abList[6]) :observer
 	abilities = abilList{ abList[0] % 18,abList[1] % 18,abList[2] % 18,abList[3] % 18,abList[4] % 18,abList[5] % 18 };
 	hitDice = 10;
 	HP = getMaxHP();
+	initiative = getModifier(abilities.dexterity);
 
 }
 
@@ -91,6 +94,7 @@ void character::initialize(int i, string n, int l, string im) {
 	abilities = generateAbilities();
 	hitDice = 10; //Fighter hit dice
 	HP = getMaxHP();
+	initiative = getModifier(abilities.dexterity);
 }
 
 void character::setId(int i)
@@ -280,6 +284,20 @@ int character::getMoveSpeed() {
 	return moveSpeed;
 }
 
+int character::getInitiative() {
+	return initiative;
+}
+
+void character::setCurrentInitiativeRoll(int initRoll)
+{
+	currentInitiativeRoll = initRoll;
+}
+
+int character::getCurrentInitiativeRoll()
+{
+	return currentInitiativeRoll;
+}
+
 bool character::isPlayerCharacter() {
 	return playerCharacter;
 }
@@ -371,6 +389,7 @@ void character::loadFromFile(string filepath)
 		}
 		input.close();
 
+		initiative = getModifier(abilities.dexterity);
 	}
 
 

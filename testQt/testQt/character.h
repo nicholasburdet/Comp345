@@ -129,7 +129,11 @@ public:
 
 	void saveToFile();
 	void loadFromFile(string filepath);
+
 	int getMoveSpeed();
+	int getInitiative();
+	void setCurrentInitiativeRoll(int initRoll);
+	int getCurrentInitiativeRoll();
 
 private:
 	int id;
@@ -150,6 +154,8 @@ private:
 	int yPosition = -1;
 
 	int moveSpeed = 6;
+	int initiative = 0;
+	int currentInitiativeRoll = 0;
 	bool playerCharacter = false;
 
 	set<observer*, less<observer*>> observers;

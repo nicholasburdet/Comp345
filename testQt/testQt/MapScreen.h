@@ -12,6 +12,7 @@ Campaign functionality added in second update
 #pragma once
 #include "character.h"
 #include <vector>
+#include "dice.h"
 
 //Occupied refers to whether an entity (item/NPC/character) is in the space
 //Passable refers to if an entity can occupy or pass through the space
@@ -67,6 +68,7 @@ public:
 	string getFilename();
 	void npcMovement(int npcID, int destX, int destY);
 	void loadPlayerCharacter(string filename);
+	
 
 private:
 	//current X and Y can be used for the player location (?)
@@ -97,6 +99,6 @@ private:
 	//consequence.
 	int campaignId;
 	string campaignName;
-
+	
 };
 #pragma once

@@ -20,6 +20,7 @@ Logic header file
 #include <vector>
 #include "character.h"
 #include <QMainWindow>
+#include "dice.h"
 
 using namespace std;
 
@@ -116,8 +117,12 @@ class logic : public QWidget
 
 		playerLog combatLog;
 		bool playerTurn = true;
+		bool playerMove = false;
 		int npcTurn = -1;
 		QMainWindow *mainWindow;
+		bool mapStart = true;
+
+		vector<int> turnOrder;
 };
 
 #endif
