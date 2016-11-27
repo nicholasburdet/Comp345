@@ -507,7 +507,6 @@ void editscreen::newItem()
 }
 ////
 
-
 //Navigates to previous map in campaign. Displays error if reached beginning
 void editscreen::previousMap()
 {
@@ -598,39 +597,39 @@ void editscreen::loadCampaign()
 //This section is so that the user can see any size of map on screen (roughly) 100x100 max
 int editscreen::checkResolution(int w, int h)
 {
-	if (h > 95)
+	if (h > 80)
 	{
 		return 8;
 	}
-	if (h > 80)
+	if (h > 70)
 	{
 		return 10;
 	}
-	if (h > 60)
+	if (h > 50)
 	{
 		return 12;
 	}
-	if (w > 80 || h > 40)
+	if (w > 80 || h > 35)
 	{
 		return 15;
 	}
-	if (w > 70 || h > 35)
+	if (w > 70 || h > 30)
 	{
 		return 20;
 	}
-	if (w > 60 || h > 30)
+	if (w > 60 || h > 25)
 	{
 		return 25;
 	}
-	if (w > 50 || h > 25)
+	if (w > 50 || h > 20)
 	{
 		return 30;
 	}
-	if (w > 40 || h > 20)
+	if (w > 40 || h > 15)
 	{
 		return 35;
 	}
-	if (w > 30 || h > 15)
+	if (w > 30 || h > 12)
 	{
 		return 40;
 	}
@@ -798,6 +797,11 @@ void editscreen::newGameMap()
 	loop.exec();
 }
 
+//**********************************************
+//
+// GAME START IS HERE IN VIEW MAP
+//
+//**********************************************
 void editscreen::viewMap()
 {
 	//Main implementation of game start code
@@ -811,7 +815,7 @@ void editscreen::viewMap()
 
 	QString fileName = "";
 	QString extension = "/Campaigns";
-	//Asks user which map to load (eventually will be campaign)
+	//Asks user which campaign to load
 	fileName = QFileDialog::getOpenFileName(this, tr("Open Campaign"), QDir::currentPath().append(extension));
 	if (fileName != "")
 	{
@@ -822,8 +826,6 @@ void editscreen::viewMap()
 		fileName = QFileDialog::getOpenFileName(this, tr("Open Campaign"), QDir::currentPath().append(extension));
 		fName = fileName.toStdString();
 	}
-
-
 
 	log->loadCampaign(fName);
 	width = log->getWidth();
@@ -853,7 +855,7 @@ void editscreen::viewMap()
 	setWindowTitle(tr("Map Editor"));
 	int windowResX = width*resolution;
 	
-	int windowDisplayHeightAdd = 3 * resolution;
+	int windowDisplayHeightAdd = 3 * 50;
 	int windowDisplayWidthMinimum = 8 * resolution;
 
 	if (windowResX < windowDisplayWidthMinimum)

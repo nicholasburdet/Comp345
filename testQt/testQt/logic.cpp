@@ -408,6 +408,7 @@ void logic::paintEvent(QPaintEvent *event)
 	QPainter painter(this);
 
 	font = painter.font();
+	
 	font.setPointSize(8);
 	font.setWeight(QFont::DemiBold);
 	painter.setFont(font);
@@ -435,8 +436,8 @@ void logic::paintEvent(QPaintEvent *event)
 		if (!editMode)
 		{
 			QString textWindow;
-			painter.drawPixmap(0, yRes, minX*resolution, 3 * resolution, logBackground);
-			int logStart = combatLog.getLogLength() - 10;
+			painter.drawPixmap(0, yRes, minX*resolution, 150, logBackground);
+			int logStart = combatLog.getLogLength() - 13;
 			if (logStart < 0)
 			{
 				logStart = 0;
@@ -446,7 +447,7 @@ void logic::paintEvent(QPaintEvent *event)
 			for (int i = combatLog.getLogLength(); i > logStart; i--)
 			{
 				textWindow = QString::fromStdString(combatLog.readLogEntry(i));
-				painter.drawText(10, ms.getMaxY()*resolution + 20 + (10 * count), textWindow);
+				painter.drawText(12, ms.getMaxY()*resolution + 20 + (10 * count), textWindow);
 				count++;
 			}
 		}
@@ -662,8 +663,8 @@ void logic::paintEvent(QPaintEvent *event)
 	if(textChange)
 	{
 		QString textWindow;
-		painter.drawPixmap(0, yRes, minX*resolution, 3 * resolution, logBackground);
-		int logStart = combatLog.getLogLength() - 10;
+		painter.drawPixmap(0, yRes, minX*resolution, 150, logBackground);
+		int logStart = combatLog.getLogLength() - 13;
 		if (logStart < 0)
 		{
 			logStart = 0;
@@ -673,7 +674,7 @@ void logic::paintEvent(QPaintEvent *event)
 		for (int i = combatLog.getLogLength(); i > logStart; i--)
 		{
 			textWindow = QString::fromStdString(combatLog.readLogEntry(i));
-			painter.drawText(10, ms.getMaxY()*resolution + 20 + (10 * count), textWindow);
+			painter.drawText(12, ms.getMaxY()*resolution + 20 + (10 * count), textWindow);
 			count++;
 		}
 		
@@ -749,10 +750,10 @@ void logic::keyPressEvent(QKeyEvent *event)
 			
 			start = true;
 			update();
-			if (npcTurn >= ms.getNumberOfNPCs() || ms.getNumberOfNPCs == 0)
+			if (npcTurn >= ms.getNumberOfNPCs() || ms.getNumberOfNPCs() == 0)
 			{
 				playerTurn = true;
-				QRect rect(0, ms.getMaxY()*resolution, resolution * 8, resolution * 3);
+				QRect rect(0, ms.getMaxY()*resolution, resolution * 8, 50 * 3);
 				chatText = "Player turn start!";
 				npcTurn = -1;
 				combatLog.addToLog(chatText);
@@ -774,7 +775,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 		
 		if (didPlayerMove)
 		{
-			QRect rect(0, ms.getMaxY()*resolution, resolution * 8, resolution * 3);
+			QRect rect(0, ms.getMaxY()*resolution, resolution * 8, 50 * 3);
 			string chatText = "You have taken ";
 			chatText.append(std::to_string(playerSteps));
 			chatText.append(" steps.");
@@ -802,7 +803,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 					resolution = checkResolution(ms.getMaxX(), ms.getMaxY());
 					int windowResX = ms.getMaxX()*resolution;
 
-					int windowDisplayHeightAdd = 3 * resolution;
+					int windowDisplayHeightAdd = 3 * 50;
 					int windowDisplayWidthMinimum = 8 * resolution;
 
 					if (windowResX < windowDisplayWidthMinimum)
@@ -861,39 +862,39 @@ void logic::enterEvent(QEvent * event)
 //Reuse of method in editscreen
 int logic::checkResolution(int w, int h)
 {
-	if (h > 95)
+	if (h > 80)
 	{
 		return 8;
 	}
-	if (h > 80)
+	if (h > 70)
 	{
 		return 10;
 	}
-	if (h > 60)
+	if (h > 50)
 	{
 		return 12;
 	}
-	if (w > 80 || h > 40)
+	if (w > 80 || h > 35)
 	{
 		return 15;
 	}
-	if (w > 70 || h > 35)
+	if (w > 70 || h > 30)
 	{
 		return 20;
 	}
-	if (w > 60 || h > 30)
+	if (w > 60 || h > 25)
 	{
 		return 25;
 	}
-	if (w > 50 || h > 25)
+	if (w > 50 || h > 20)
 	{
 		return 30;
 	}
-	if (w > 40 || h > 20)
+	if (w > 40 || h > 15)
 	{
 		return 35;
 	}
-	if (w > 30 || h > 15)
+	if (w > 30 || h > 12)
 	{
 		return 40;
 	}
