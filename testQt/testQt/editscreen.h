@@ -43,6 +43,9 @@ public slots:
 	void loadCharacter();
 	void viewCharacterStats();
 	void viewMap();
+	
+	void viewBackpack();
+	void viewWornItems();
 
 	////For Item && Character movement
 	void newItem();
@@ -89,6 +92,9 @@ private:
 	QAction *characterEditorSaveAction;
 	QAction *viewCharacterStatsAction;
 	QAction *viewMapAction;
+	
+	QAction *viewBackpackAction;
+	QAction *viewWornItemsAction;
 
 	////Item Action && Character movement
 	QAction *newItemAction;
