@@ -882,7 +882,7 @@ void editscreen::viewMap()
 
 void editscreen::viewControls()
 {
-	messageBox.setText("Use the arrow keys to move during your turn.\n-Can move up to player's movement speed-\n\nPress (N) to advance game when NPC(s) turn.\nDuring Player turn:\n(S) Stops player movement if any move is available.\n(E) Immediately Ends player turn.\n(A) Attack an enemy. (Functionality not fully implemented)\n(L) Loot an adjacent item or chest (Functionality not fully implemented)\n\nCan only do a full attack if the player has not moved.\n\nOnce attack (A) has been selected, pick a direction (arrows) to attack.");
+	messageBox.setText("Use the arrow keys to move during your turn.\n-Can move up to player's movement speed-\n\nPress (N) to advance game when NPC(s) turn.\nDuring Player turn:\n(S) Stops player movement if any move is available.\n(E) Immediately Ends player turn.\n(A) Attack an enemy. (Functionality not fully implemented)\n(L) Loot an adjacent item or chest (Functionality not fully implemented)\n\nCan only do a full attack if the player has not moved.\n\nOnce attack (A) has been selected, pick a direction (arrows) to attack.\nRanged attacks need to be in line with target to attack.");
 	messageBox.exec();
 }
 

@@ -741,6 +741,12 @@ string MapScreen::playerAttack(int sX, int sY, string dir, bool fullAttack)
 			}
 		}
 
+		if (spaces[sX][sY].passable == false)
+		{
+			foundNPC = -2;
+			rangeError = true;
+		}
+
 		if (weaponRange > 1)
 		{
 			if (dir == "up")
@@ -776,12 +782,16 @@ string MapScreen::playerAttack(int sX, int sY, string dir, bool fullAttack)
 				}
 			}
 		}
-
+		
 		rangeCheck++;
 	}
 	if (foundNPC == -1)
 	{
 		return "You attack into an empty space! Nothing happens.";
+	}
+	else if (foundNPC == -2)
+	{
+		return "You attack a wall! Nothing happens.";
 	}
 	else
 	{
