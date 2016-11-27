@@ -895,6 +895,55 @@ void editscreen::viewCharacterStats()
 void editscreen::viewBackpack()
 {
 	//Add Interface to view backpack
+	
+	QDialog * d = new QDialog();
+	d->setWindowTitle("Backpack");
+	QLabel *spaceLabel = new QLabel("");
+
+	QVBoxLayout * vbox = new QVBoxLayout();
+
+
+	QFile myTextFile("Resources/backpack.txt");
+	QStringList myStringList;
+
+	if (!myTextFile.open(QIODevice::ReadOnly))
+	{
+		QMessageBox::information(0, "Error opening file", myTextFile.errorString());
+	}
+	else
+	{
+		while (!myTextFile.atEnd())
+		{
+			myStringList.append(myTextFile.readLine());
+		}
+
+		myTextFile.close();
+	}
+
+
+	QListWidget * backpack = new QListWidget();
+
+	backpack->addItems(myStringList);
+
+	QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
+	buttonBox->button(QDialogButtonBox::Ok)->setText("Back");
+
+	QObject::connect(buttonBox, SIGNAL(accepted()), d, SLOT(accept()));
+
+	vbox->addWidget(backpack);
+
+	vbox->addWidget(spaceLabel);
+	vbox->addWidget(buttonBox);
+
+	d->setLayout(vbox);
+
+	int result = d->exec();
+	if (result == QDialog::Accepted)
+	{
+		//Return to Game
+	}
+	
+	
 }
 
 void editscreen::viewWornItems()
