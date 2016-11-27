@@ -80,6 +80,17 @@ editscreen::editscreen(char n[])
 	viewCharacterStatsAction = new QAction(tr("&View Character Stats"), this);
 	connect(characterEditorSaveAction, SIGNAL(triggered()), this, SLOT(viewCharacterStats()));
 
+	
+	//// VIEW INVENTORY AND WORN ITEMS
+
+	viewBackpackAction = new QAction(tr("&View Backpack"), this);
+	connect(viewBackpackAction, SIGNAL(triggered()), this, SLOT(viewBackpack()));
+
+	viewWornItemsAction = new QAction(tr("&View Worn Items"), this);
+	connect(viewWornItemsAction, SIGNAL(triggered()), this, SLOT(viewWornItems()));
+
+	/////
+	
 	////Item Editor && Character Movement
 	newItemAction = new QAction(tr("&New Item"), this);
 	connect(newItemAction, SIGNAL(triggered()), this, SLOT(newItem()));
@@ -95,6 +106,8 @@ editscreen::editscreen(char n[])
 
 	editMenu = new QMenu(tr("&Main Menu"), this);
 	editMenu->addAction(campaignMenuAction);
+	
+	
 	
 	//// Item Generator && Character Movement
 	editMenu->addAction(newItemAction);
@@ -132,6 +145,11 @@ editscreen::editscreen(char n[])
 
 	gameMenu = new QMenu(tr("&Game Menu"), this);
 	gameMenu->addAction(viewCharacterStatsAction);
+	
+	////Add backpack and worn items to menu
+	gameMenu->addAction(viewBackpackAction);
+	gameMenu->addAction(viewWornItemsAction);
+	////
 
 	editMenu->setFocusPolicy(Qt::NoFocus);
 	mapMenu->setFocusPolicy(Qt::NoFocus);
@@ -857,4 +875,15 @@ void editscreen::viewMap()
 void editscreen::viewCharacterStats()
 {
 	//Add code to view player stats here (needs to load a seperate widget to see stats possibly)
+}
+
+
+void editscreen::viewBackpack()
+{
+	//Add Interface to view backpack
+}
+
+void editscreen::viewWornItems()
+{
+	//Add Interface to view worn Items
 }
