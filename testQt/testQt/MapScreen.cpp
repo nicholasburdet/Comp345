@@ -485,6 +485,7 @@ void MapScreen::loadFromFile(string filename)
 		characterEntities[x] = characterTable[i];
 		characterEntities[x].setX(xP);
 		characterEntities[x].setY(yP);
+		characterEntities[x].setType("hostile"); //This can be changed later
 		spaces[xP][yP].occupied = true;
 	}
 
@@ -815,13 +816,11 @@ string MapScreen::playerAttack(int sX, int sY, string dir, bool fullAttack)
 		if (roll == 1)
 		{
 			combatText.append(". Critical miss!");
-			return combatText;
 		}
 		else if (roll == 20)
 		{
 			combatText.append(". Critical hit!");
 			combatText.append(" DAMAGE TEXT GOES HERE.");
-			return combatText;
 		}
 		else
 		{
@@ -831,15 +830,19 @@ string MapScreen::playerAttack(int sX, int sY, string dir, bool fullAttack)
 				combatText.append(std::to_string(playerCharacter.getAttackBonus()));
 				combatText.append(". Enemy hit!");
 				combatText.append(" DAMAGE TEXT GOES HERE.");
-				return combatText;
 			}
 			else
 			{
 				combatText.append("+");
 				combatText.append(std::to_string(playerCharacter.getAttackBonus()));
 				combatText.append(". Enemy dodges your attack!");
-				return combatText;
 			}
+		}
+		//NPCs that are friendly will become hostile when attacked
+		if (characterEntities[foundNPC].getType() == "friendly")
+		{
+			characterEntities[foundNPC].setType("hostile");
+			combatText.append(" Enemy is now hostile!");
 		}
 	}
 	return combatText;

@@ -419,9 +419,9 @@ void logic::paintEvent(QPaintEvent *event)
 
 	int minX;
 
-	if (ms.getMaxX() < 10)
+	if (ms.getMaxX() < 12)
 	{
-		minX = 10;
+		minX = 12;
 	}
 	else
 	{
@@ -691,9 +691,9 @@ void logic::keyPressEvent(QKeyEvent *event)
 		oldPlayerY = ms.getCurrentY();
 
 		int minXReso = ms.getMaxX();
-		if (ms.getMaxX() < 10)
+		if (ms.getMaxX() < 12)
 		{
-			minXReso = 10;
+			minXReso = 12;
 		}
 
 		if (!mapStart)
@@ -767,7 +767,11 @@ void logic::keyPressEvent(QKeyEvent *event)
 				}
 
 				//NPC Attack goes here
-				chatText = ms.npcAttack(turnOrder[npcTurn], moved);
+				chatText = "Nothing";
+				if (ms.characterEntities[turnOrder[npcTurn]].getType() == "hostile")
+				{
+					chatText = ms.npcAttack(turnOrder[npcTurn], moved);
+				}
 				if (chatText != "Nothing")
 				{
 					combatLog.addToLog(chatText);
@@ -1015,7 +1019,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 							int windowResX = ms.getMaxX()*resolution;
 
 							int windowDisplayHeightAdd = 3 * 50;
-							int windowDisplayWidthMinimum = 10 * resolution;
+							int windowDisplayWidthMinimum = 12 * resolution;
 
 							if (windowResX < windowDisplayWidthMinimum)
 							{

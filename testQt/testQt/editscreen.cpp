@@ -861,7 +861,7 @@ void editscreen::viewMap()
 	int windowResX = width*resolution;
 	
 	int windowDisplayHeightAdd = 3 * 50;
-	int windowDisplayWidthMinimum = 10 * resolution;
+	int windowDisplayWidthMinimum = 12 * resolution;
 
 	if (windowResX < windowDisplayWidthMinimum)
 	{

@@ -309,6 +309,16 @@ int character::getCurrentInitiativeRoll()
 	return currentInitiativeRoll;
 }
 
+void character::setType(string t)
+{
+	type = t;
+}
+
+string character::getType()
+{
+	return type;
+}
+
 bool character::isPlayerCharacter() {
 	return playerCharacter;
 }
