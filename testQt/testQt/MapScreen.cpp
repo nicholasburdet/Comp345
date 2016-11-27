@@ -18,6 +18,7 @@ one into the other.
 
 #include <fstream>
 #include "MapScreen.h"
+#include <QDebug>
 #include <string>
 #include <iostream>
 #include <math.h>
@@ -591,8 +592,10 @@ string MapScreen::getFilename()
 	return fName;
 }
 
-void MapScreen::npcMovement(int npcID, int destX, int destY)
+bool MapScreen::npcMovement(int npcID, int destX, int destY)
 {
+	int beginX = characterEntities[npcID].getX();
+	int beginY = characterEntities[npcID].getY();
 	//Dead NPCs may get changed to name DEAD to signify dead?
 	if (characterEntities[npcID].getName() != "DEAD" || characterEntities[npcID].getName() != "NULL")
 	{
@@ -711,7 +714,17 @@ void MapScreen::npcMovement(int npcID, int destX, int destY)
 		spaces[characterEntities[npcID].getX()][characterEntities[npcID].getY()].occupied = false;
 		spaces[closestSpace.xSpace][closestSpace.ySpace].occupied = true;
 		characterEntities[npcID].moveTo(closestSpace.xSpace, closestSpace.ySpace);
+		if (beginX == characterEntities[npcID].getX() && beginY == characterEntities[npcID].getY())
+		{
+			return false; //did not move
+		}
+		else
+		{
+			return true; //moved
+		}
 	}
+
+	return false;
 }
 
 void MapScreen::loadPlayerCharacter(string filename)
@@ -825,6 +838,75 @@ string MapScreen::playerAttack(int sX, int sY, string dir, bool fullAttack)
 				combatText.append("+");
 				combatText.append(std::to_string(playerCharacter.getAttackBonus()));
 				combatText.append(". Enemy dodges your attack!");
+				return combatText;
+			}
+		}
+	}
+	return combatText;
+}
+
+string MapScreen::npcAttack(int npcID, bool moved)
+{
+	string combatText = "Nothing";
+
+	int npcX = characterEntities[npcID].getX();
+	int npcY = characterEntities[npcID].getY();
+	bool attack = false;
+
+	for (int i = 1; i <= characterEntities[npcID].getWeaponRange(); i++)
+	{
+		//Check up
+		if (npcX == currentX && (npcY-i) == currentY)
+		{
+			attack = true;
+		}
+		//Check down
+		if (npcX == currentX && (npcY+i) == currentY)
+		{
+			attack = true;
+		}
+		//Check left
+		if ((npcX - i) == currentX && npcY == currentY)
+		{
+			attack = true;
+		}
+		//Check right
+		if ((npcX + i) == currentX && npcY == currentY)
+		{
+			attack = true;
+		}
+	}
+
+	if (attack)
+	{
+		combatText = "NPC ";
+		combatText.append(std::to_string(npcID));
+		combatText.append(" attacks!");
+
+		//Combat rolls and stuff goes here
+		int roll = Dice::roll(1, 20, 0);
+		if (roll == 1)
+		{
+			combatText.append(" Critical miss!");
+			return combatText;
+		}
+		else if (roll == 20)
+		{
+			combatText.append(" Critical hit!");
+			combatText.append(" DAMAGE TEXT GOES HERE.");
+			return combatText;
+		}
+		else
+		{
+			if ((roll + characterEntities[npcID].getAttackBonus() > playerCharacter.getArmorBonus()))
+			{
+				combatText.append(" You were hit!");
+				combatText.append(" DAMAGE TEXT GOES HERE.");
+				return combatText;
+			}
+			else
+			{
+				combatText.append(" You dodge the enemy attack!");
 				return combatText;
 			}
 		}

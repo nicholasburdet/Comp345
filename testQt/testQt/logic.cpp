@@ -746,14 +746,36 @@ void logic::keyPressEvent(QKeyEvent *event)
 			//Code for next event stuff goes here (player can advance the game when not his turn by pressing N)
 			else if (event->key() == Qt::Key_N && playerTurn == false) {
 				string chatText;
-				ms.npcMovement(turnOrder[npcTurn], ms.getCurrentX(), ms.getCurrentY());
-				chatText = "NPC ";
-				chatText.append(std::to_string(turnOrder[npcTurn]));
-				chatText.append(" moves to X:");
-				chatText.append(std::to_string(ms.characterEntities[turnOrder[npcTurn]].getX()));
-				chatText.append(" Y:");
-				chatText.append(std::to_string(ms.characterEntities[turnOrder[npcTurn]].getY()));
-				combatLog.addToLog(chatText);
+				QRect rect(0, ms.getMaxY()*resolution, minXReso * resolution, 50 * 3);
+				bool moved = ms.npcMovement(turnOrder[npcTurn], ms.getCurrentX(), ms.getCurrentY());
+				if(moved)
+				{
+					chatText = "NPC ";
+					chatText.append(std::to_string(turnOrder[npcTurn]));
+					chatText.append(" moves to X:");
+					chatText.append(std::to_string(ms.characterEntities[turnOrder[npcTurn]].getX()));
+					chatText.append(" Y:");
+					chatText.append(std::to_string(ms.characterEntities[turnOrder[npcTurn]].getY()));
+					combatLog.addToLog(chatText);
+				}
+				else
+				{
+					chatText = "NPC ";
+					chatText.append(std::to_string(turnOrder[npcTurn]));
+					chatText.append(" does not move.");
+					combatLog.addToLog(chatText);
+				}
+
+				//NPC Attack goes here
+				chatText = ms.npcAttack(turnOrder[npcTurn], moved);
+				if (chatText != "Nothing")
+				{
+					combatLog.addToLog(chatText);
+				}
+
+				textChange = true;
+				update(rect);
+
 				npcTurn++;
 				if (npcTurn > ms.getNumberOfNPCs())
 				{
@@ -767,7 +789,6 @@ void logic::keyPressEvent(QKeyEvent *event)
 					playerTurn = true;
 					playerMove = true;
 					playerSteps = 0;
-					QRect rect(0, ms.getMaxY()*resolution, minXReso * resolution, 50 * 3);
 					chatText = "Player turn start!";
 					combatLog.addToLog(chatText);
 					textChange = true;
@@ -775,7 +796,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				}
 			}
 			//Code for stopping player movement during their turn (end movement)
-			else if (event->key() == Qt::Key_S && playerTurn == true && playerAttacking == false)
+			else if (event->key() == Qt::Key_S && playerMove == true && playerTurn == true && playerAttacking == false)
 			{
 				//Code for player stop goes here NOTE:Fix player movement end ending their turn
 				//Note: Also potentially limit player movement dialog messages to destination ONLY?
@@ -930,7 +951,19 @@ void logic::keyPressEvent(QKeyEvent *event)
 			//Code for looting during player turn goes here
 			else if (event->key() == Qt::Key_L && playerTurn == true)
 			{
-				
+				//ADD LOOTING FUNCTIONALITY HERE
+				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+				string chatText = "You looted around you! (Feature not implemented) Player turn has ended.";
+				npcTurn++;
+				if (npcTurn > ms.getNumberOfNPCs())
+				{
+					npcTurn = 0;
+				}
+				playerTurn = false;
+				playerAttacking = false;
+				combatLog.addToLog(chatText);
+				textChange = true;
+				update(rect);
 			}
 			else if (event->key() == Qt::Key_E && playerTurn == true)
 			{

@@ -66,9 +66,10 @@ public:
 	character characterEntities[100]; //This is a table of NPCS that exist on the map
 	character playerCharacter;
 	string getFilename();
-	void npcMovement(int npcID, int destX, int destY);
+	bool npcMovement(int npcID, int destX, int destY);
 	void loadPlayerCharacter(string filename);
 	string playerAttack(int sX, int sY, string dir, bool fullAttack);
+	string npcAttack(int npcID, bool moved);
 
 private:
 	//current X and Y can be used for the player location (?)

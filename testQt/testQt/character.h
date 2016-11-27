@@ -160,6 +160,8 @@ private:
 	int currentInitiativeRoll = 0;
 	bool playerCharacter = false;
 
+	string type; //Will eventually be "player", "friendly" or "hostile"
+
 	set<observer*, less<observer*>> observers;
 
 };
