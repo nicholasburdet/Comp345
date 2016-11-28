@@ -13,7 +13,7 @@ Menu commands are generally handled here, allowing the user to choose between pr
 serve as the UI controller for the entire game project for the most part
 */
 #include "editscreen.h"
-
+#include "itemContainer.h"
 
 #include "logic.h"
 #include <QDebug>
