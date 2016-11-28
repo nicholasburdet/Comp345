@@ -1,13 +1,7 @@
 ﻿  Moc'ing logic.h...
-  Moc'ing editscreen.h...
-  moc_characterController.cpp
-  moc_editscreen.cpp
   moc_logic.cpp
-  characterController.cpp
-  characterObserver.cpp
   editscreen.cpp
-  itemContainer.cpp
-  playerLog.cpp
+  logic.cpp
   Generating Code...
   testQt.vcxproj -> C:\Users\Nick\Documents\Visual Studio 2015\Projects\Comp345\testQt\x64\Debug\testQt.exe
   testQt.vcxproj -> C:\Users\Nick\Documents\Visual Studio 2015\Projects\Comp345\testQt\x64\Debug\testQt.pdb (Full PDB)

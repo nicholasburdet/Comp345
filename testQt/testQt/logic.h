@@ -127,6 +127,24 @@ class logic : public QWidget
 		bool mapStart = true;
 
 		vector<int> turnOrder;
+
+		QPixmap grass = QPixmap("Images/grass.png");
+		QPixmap dirt = QPixmap("Images/dirt.jpg");
+		QPixmap entranceDoor = QPixmap("Images/start.png");
+		QPixmap exitDoor = QPixmap("Images/end.png");
+		QPixmap checkButton = QPixmap("Images/button.png");
+		QPixmap errorButton = QPixmap("Images/redbutton.jpg");
+		QPixmap saveButton = QPixmap("Images/save.png");
+		QPixmap playerImage = QPixmap("Resources/player.png");
+
+		QPixmap orc = QPixmap("Images/orc.png");
+		QPixmap ogre = QPixmap("Images/ogre.png");
+		QPixmap minotaur = QPixmap("Images/minotaur.png");
+		QPixmap logBackground = QPixmap("Images/log.png");
+
+		QPixmap background = QPixmap("Images/background.jpg");
+		QPixmap item = QPixmap("Images/item.png");
+		QPixmap chest = QPixmap("Images/chest.png");
 };
 
 #endif

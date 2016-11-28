@@ -388,23 +388,6 @@ void logic::mousePressEvent(QMouseEvent *event)
 //are the only part of the screen that will receive an update.
 void logic::paintEvent(QPaintEvent *event)
 {
-	//Images are loaded into QPixmap, this should probably be done in the header, to be done at a later date
-	QPixmap grass("Images/grass.png");
-	QPixmap dirt("Images/dirt.jpg");
-	QPixmap entranceDoor("Images/start.png");
-	QPixmap exitDoor("Images/end.png");
-	QPixmap checkButton("Images/button.png");
-	QPixmap errorButton("Images/redbutton.jpg");
-	QPixmap saveButton("Images/save.png");
-	QPixmap playerImage("Resources/player.png");
-
-	QPixmap orc("Images/orc.png");
-	QPixmap ogre("Images/ogre.png");
-	QPixmap minotaur("Images/minotaur.png");
-	QPixmap logBackground("Images/log.png");
-
-	QPixmap background("Images/background.jpg");
-
 	QPainter painter(this);
 
 	font = painter.font();
@@ -431,7 +414,7 @@ void logic::paintEvent(QPaintEvent *event)
 	//current map in the object. Start is set to true each time the screen needs a full update.
 	if (start)
 	{
-		painter.drawPixmap(0, 0, minX*resolution, ((ms.getMaxY()*resolution)+(resolution * 3) + 20), background);
+		painter.drawPixmap(0, 0, minX*resolution, ((ms.getMaxY()*resolution)+(resolution * 4) + 20), background);
 		//Draws log background if not in editmode (for gameplay)
 		if (!editMode)
 		{
@@ -542,6 +525,9 @@ void logic::paintEvent(QPaintEvent *event)
 					painter.drawPixmap(resolution*i, yRes + resolution * 2, resolution, resolution, npc);
 				}
 			}
+			//Item buttons drawn here
+			painter.drawPixmap(0, yRes + resolution*3, resolution, resolution, item);
+			painter.drawPixmap(resolution * 1, yRes + resolution*3, resolution, resolution, chest);
 		}
 		else
 		{

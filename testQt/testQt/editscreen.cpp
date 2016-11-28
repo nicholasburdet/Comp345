@@ -278,7 +278,7 @@ void editscreen::editMap()
 
 	//This code allows it so the window cannot be resized by the user
 	this->setFixedWidth(windowResX);
-	this->setFixedHeight((height*resolution) + (resolution * 3) + addedHeight);
+	this->setFixedHeight((height*resolution) + (resolution * 4) + addedHeight);
 	//Creates map editor menu if coming from a higher menu
 	if (currentMenu != "mapeditor")
 	{
