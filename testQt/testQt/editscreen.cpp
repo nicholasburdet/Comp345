@@ -949,4 +949,151 @@ void editscreen::viewBackpack()
 void editscreen::viewWornItems()
 {
 	//Add Interface to view worn Items
+	QDialog * d = new QDialog();
+	d->setWindowTitle("Worn Items");
+	QLabel *spaceLabel = new QLabel("");
+
+	QVBoxLayout * vbox = new QVBoxLayout();
+
+
+	QFile myTextFile("Resources/backpack.txt");
+	QStringList myStringList;
+
+	if (!myTextFile.open(QIODevice::ReadOnly))
+	{
+		QMessageBox::information(0, "Error opening file", myTextFile.errorString());
+	}
+	else
+	{
+
+		while (!myTextFile.atEnd())
+		{
+			myStringList.append(myTextFile.readLine());
+		}
+
+		myTextFile.close();
+	}
+
+	
+	QLabel *helmetLabel = new QLabel("Helmet");
+	QComboBox * comboBoxHelmet = new QComboBox();
+	comboBoxHelmet->addItems(myStringList);
+
+
+	QLabel *armorLabel = new QLabel("Armor");
+	QComboBox * comboBoxArmor = new QComboBox();
+	comboBoxArmor->addItems(myStringList);
+
+	QLabel *shieldLabel = new QLabel("Shield");
+	QComboBox * comboBoxShield = new QComboBox();
+	comboBoxShield->addItems(myStringList);
+
+	QLabel *ringLabel = new QLabel("Ring");
+	QComboBox * comboBoxRing = new QComboBox();
+	comboBoxRing->addItems(myStringList);
+
+	QLabel *beltLabel = new QLabel("Belt");
+	QComboBox * comboBoxBelt = new QComboBox();
+	comboBoxBelt->addItems(myStringList);
+
+
+	QLabel *bootsLabel = new QLabel("Boots");
+	QComboBox * comboBoxBoots = new QComboBox();
+	comboBoxBoots->addItems(myStringList);
+
+	QLabel *weaponLabel = new QLabel("Weapon");
+	QComboBox * comboBoxWeapon = new QComboBox();
+	comboBoxWeapon->addItems(myStringList);
+
+
+	QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
+		| QDialogButtonBox::Cancel);
+
+	QObject::connect(buttonBox, SIGNAL(accepted()), d, SLOT(accept()));
+	QObject::connect(buttonBox, SIGNAL(rejected()), d, SLOT(reject()));
+
+	buttonBox->button(QDialogButtonBox::Ok)->setText("Equip");
+	buttonBox->button(QDialogButtonBox::Cancel)->setText("Back");
+
+	comboBoxHelmet->setMinimumHeight(30);
+	comboBoxArmor->setMinimumHeight(30);
+	comboBoxShield->setMinimumHeight(30);
+	comboBoxRing->setMinimumHeight(30);
+	comboBoxBelt->setMinimumHeight(30);
+	comboBoxBoots->setMinimumHeight(30);
+	comboBoxWeapon->setMinimumHeight(30);
+
+	vbox->addWidget(helmetLabel);
+	vbox->addWidget(comboBoxHelmet);
+
+	vbox->addWidget(armorLabel);
+	vbox->addWidget(comboBoxArmor);
+
+	
+	vbox->addWidget(shieldLabel);
+	vbox->addWidget(comboBoxShield);
+
+	vbox->addWidget(ringLabel);
+	vbox->addWidget(comboBoxRing);
+
+	
+	vbox->addWidget(beltLabel);
+	vbox->addWidget(comboBoxBelt);
+
+	vbox->addWidget(bootsLabel);
+	vbox->addWidget(comboBoxBoots);
+
+	vbox->addWidget(weaponLabel);
+	vbox->addWidget(comboBoxWeapon);
+
+	vbox->addWidget(spaceLabel);
+	vbox->addWidget(buttonBox);
+
+	d->setLayout(vbox);
+
+	int result = d->exec();
+	if (result == QDialog::Accepted)
+	{
+
+		itemContainer ic;
+
+		std::string lineHelmet = comboBoxHelmet->currentText().toUtf8().constData();
+		size_t found = lineHelmet.find("|");
+		lineHelmet = lineHelmet.substr(0, found);
+
+		std::string lineArmor = comboBoxArmor->currentText().toUtf8().constData();
+		found = lineArmor.find("|");
+		lineArmor = lineArmor.substr(0, found);
+
+		std::string lineShield = comboBoxShield->currentText().toUtf8().constData();
+		found = lineShield.find("|");
+		lineShield = lineShield.substr(0, found);
+
+		std::string lineRing = comboBoxRing->currentText().toUtf8().constData();
+		found = lineRing.find("|");
+		lineRing = lineRing.substr(0, found);
+
+		std::string lineBelt = comboBoxBelt->currentText().toUtf8().constData();
+		found = lineBelt.find("|");
+		lineBelt = lineBelt.substr(0, found);
+
+		std::string lineBoots = comboBoxBoots->currentText().toUtf8().constData();
+		found = lineBoots.find("|");
+		lineBoots = lineBoots.substr(0, found);
+
+		std::string lineWeapon = comboBoxWeapon->currentText().toUtf8().constData();
+		found = lineWeapon.find("|");
+		lineWeapon = lineWeapon.substr(0, found);
+
+
+		ic.addItemWorn(stoi(lineHelmet));
+		ic.addItemWorn(stoi(lineArmor));
+		ic.addItemWorn(stoi(lineShield));
+		ic.addItemWorn(stoi(lineRing));
+		ic.addItemWorn(stoi(lineBelt));
+		ic.addItemWorn(stoi(lineBoots));
+		ic.addItemWorn(stoi(lineWeapon));
+
+	}
+	
 }
