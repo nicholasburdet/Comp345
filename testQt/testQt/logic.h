@@ -46,6 +46,8 @@ class logic : public QWidget
 		void closeWindow();
 		void setEditmode(bool editM);
 		int checkResolution(int x, int y);
+		string addItem();
+		void viewItems();
 	protected:
 		void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 		void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
@@ -82,12 +84,14 @@ class logic : public QWidget
 		//This will be in coupling with the mode, the determining factor for the NPC
 		int npcId = 0;
 
-		//flags to indicate the user is drawing entrance or exit
+		//flags to indicate what the painter should be drawing
 		bool drawStart = false; 
 		bool drawEnd = false;
 		bool drawNPC = false;
 		bool movePlayer = false;
 		bool replacePlayer = false;
+		bool drawItem = false;
+		bool drawChest = false;
 
 		//flag to check path status
 		bool checkStatus = true;

@@ -111,3 +111,7 @@ numberOfNPCs 3
 npcID 0 xPos 1 yPos 8
 npcID 0 xPos 8 yPos 1
 npcID 2 xPos 6 yPos 6
+numberOfItems 3
+itemX 4 itemY 3 itemID 7
+itemX 2 itemY 6 itemID 5
+itemX 8 itemY 4 itemID 5

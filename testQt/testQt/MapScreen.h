@@ -22,6 +22,22 @@ struct Space
 	bool occupied = false;
 };
 
+
+struct Items
+{
+	int itemX;
+	int itemY;
+	int itemID;
+	string itemName = "NULL";
+};
+
+struct Chests
+{
+	int chestX;
+	int chestY;
+	vector<string> items;
+};
+
 class MapScreen
 {
 public:
@@ -70,6 +86,12 @@ public:
 	void loadPlayerCharacter(string filename);
 	string playerAttack(int sX, int sY, string dir, bool fullAttack);
 	string npcAttack(int npcID, bool moved);
+	void addItem(int x, int y, string itemText);
+	void removeItem(int x, int y);
+	int getNumberOfItems();
+	vector<Items> mapItems;
+	vector<Chests> mapChests;
+	string viewItems();
 
 private:
 	//current X and Y can be used for the player location (?)
@@ -92,6 +114,9 @@ private:
 	int numberOfNPCs = 0;
 	int numberOfDistinctNPCs = 0; //This is just for id tracking
 	
+	int numberOfItems = 0;
+	int numberOfChests = 0;
+
 	int mapId;
 	string mapName;
 
@@ -100,6 +125,8 @@ private:
 	//consequence.
 	int campaignId;
 	string campaignName;
+
+	
 	
 };
 #pragma once

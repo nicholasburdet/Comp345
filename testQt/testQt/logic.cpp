@@ -305,6 +305,24 @@ void logic::mousePressEvent(QMouseEvent *event)
 							}
 						}
 					}
+					if (mode == 6) {
+						//Mode 6 is ITEM placement
+						if (ms.isPassable(currentX / resolution, currentY / resolution))
+						{
+							string selectedItem = addItem();
+							drawItem = true;
+							update(rect);
+							ms.addItem(currentX / resolution, currentY / resolution, selectedItem);
+						}
+					}
+					if (mode == 7) {
+						//Mode 7 is CHEST placement
+						if (ms.isPassable(currentX / resolution, currentY / resolution))
+						{
+							drawChest = true;
+							update(rect);
+						}
+					}
 				}
 			}
 
@@ -374,6 +392,18 @@ void logic::mousePressEvent(QMouseEvent *event)
 				const char * c = im.c_str();
 				currentTile = QPixmap(c);
 				mode = 5;
+			}
+			else if ((currentY == (ms.getMaxY() * resolution) + resolution * 3) && currentX == 0)
+			{
+				//General item
+				currentTile = item;
+				mode = 6;
+			}
+			else if ((currentY == (ms.getMaxY() * resolution) + resolution * 3) && currentX == 1 * resolution)
+			{
+				//Item chest container
+				currentTile = chest;
+				mode = 7;
 			}
 		}
 		else
@@ -483,6 +513,23 @@ void logic::paintEvent(QPaintEvent *event)
 			index++;
 		}
 
+		//Paints Items onto screen
+		max = ms.getNumberOfItems();
+		count = 0;
+		index = 0;
+		while (count < max)
+		{
+			if (ms.mapItems[index].itemName != "NULL")
+			{
+				int x, y;
+				x = ms.mapItems[index].itemX;
+				y = ms.mapItems[index].itemY;
+				painter.drawPixmap(x*resolution, y*resolution, resolution, resolution, item);
+				count++;
+			}
+			index++;
+		}
+
 		//This section draws all vertical and horizontal lines
 		for (int y = 0; y <= yRes; y += resolution)
 		{
@@ -574,6 +621,28 @@ void logic::paintEvent(QPaintEvent *event)
 		painter.drawRect(rect);
 		painter.drawLine(currentX, currentY + resolution, currentX + resolution, currentY + resolution);
 		drawNPC = false;
+	}
+
+	if (drawItem) {
+		//This draws a grass tile and then draws the ITEM
+		QRect rect(currentX, currentY, resolution, resolution);
+		painter.drawPixmap(rect, grass);
+		painter.drawRect(rect);
+		painter.drawPixmap(rect, currentTile);
+		painter.drawRect(rect);
+		painter.drawLine(currentX, currentY + resolution, currentX + resolution, currentY + resolution);
+		drawItem = false;
+	}
+
+	if (drawChest) {
+		//This draws a grass tile and then draws the CHEST
+		QRect rect(currentX, currentY, resolution, resolution);
+		painter.drawPixmap(rect, grass);
+		painter.drawRect(rect);
+		painter.drawPixmap(rect, currentTile);
+		painter.drawRect(rect);
+		painter.drawLine(currentX, currentY + resolution, currentX + resolution, currentY + resolution);
+		drawChest = false;
 	}
 
 	if (checkStatus)
@@ -1189,4 +1258,60 @@ int logic::checkResolution(int w, int h)
 		return 40;
 	}
 	return 50;
+}
+
+string logic::addItem() {
+	//Add Interface to view backpack
+
+	QDialog * d = new QDialog();
+	d->setWindowTitle("Add Which Item?");
+	QLabel *spaceLabel = new QLabel("");
+
+	QVBoxLayout * vbox = new QVBoxLayout();
+
+	QFile myTextFile("Resources/items.txt");
+	QStringList myStringList;
+
+	if (!myTextFile.open(QIODevice::ReadOnly))
+	{
+		QMessageBox::information(0, "Error opening file", myTextFile.errorString());
+	}
+	else
+	{
+		while (!myTextFile.atEnd())
+		{
+			myStringList.append(myTextFile.readLine());
+		}
+		myTextFile.close();
+	}
+
+	QListWidget * itemList = new QListWidget();
+
+	itemList->addItems(myStringList);
+
+	QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
+	buttonBox->button(QDialogButtonBox::Ok)->setText("Add");
+
+	QObject::connect(buttonBox, SIGNAL(accepted()), d, SLOT(accept()));
+
+	vbox->addWidget(itemList);
+
+	vbox->addWidget(spaceLabel);
+	vbox->addWidget(buttonBox);
+
+	d->setLayout(vbox);
+
+	int result = d->exec();
+	if (result == QDialog::Accepted)
+	{
+		//Return to Game
+		return itemList->currentItem()->text().toStdString();
+	}
+	return "";
+}
+
+void logic::viewItems()
+{
+	message.setText(QString::fromStdString(ms.viewItems()));
+	message.exec();
 }

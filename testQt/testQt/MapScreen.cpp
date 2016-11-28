@@ -22,6 +22,7 @@ one into the other.
 #include <string>
 #include <iostream>
 #include <math.h>
+#include <sstream>
 using namespace std;
 
 //This structure, Search, is used for the searching of the map to discover
@@ -436,12 +437,37 @@ void MapScreen::saveToFile()
 		index++;
 	}
 
+	output << "numberOfItems" << " " << numberOfItems << endl;
+
+	count = 0;
+	index = 0;
+	while (count < numberOfItems)
+	{
+		if (mapItems[index].itemName != "NULL")
+		{
+			output << "itemX" << " " << mapItems[index].itemX << " " << "itemY" << " " << mapItems[index].itemY << " " << "itemID" << mapItems[index].itemID << endl; 
+			count++;
+		}
+		index++;
+	}
+
 	output.close();
 }
 
 
 void MapScreen::loadFromFile(string filename)
 {
+	vector<string> itemsFromFile;
+
+	ifstream itemInput("Resources/items.txt");
+
+	for (string itemline; getline(itemInput, itemline);)
+	{
+		itemsFromFile.push_back(itemline);
+	}
+
+	itemInput.close();
+
 	ifstream input;
 	input.open(filename, ios::in);
 
@@ -489,6 +515,18 @@ void MapScreen::loadFromFile(string filename)
 		spaces[xP][yP].occupied = true;
 	}
 
+	
+	input >> type >> i;
+	string itemText;
+	int itemID;
+	
+	for (int x = 0; x < i; x++)
+	{
+		input >> type >> xP >> type >> yP >> type >> itemID;
+		itemText = itemsFromFile[itemID];
+		addItem(xP, yP, itemText);
+	}
+	
 	input.close();
 }
 
@@ -915,4 +953,62 @@ string MapScreen::npcAttack(int npcID, bool moved)
 		}
 	}
 	return combatText;
+}
+
+void MapScreen::addItem(int x, int y, string itemText)
+{
+	Items tempItem;
+	tempItem.itemX = x;
+	tempItem.itemY = y;
+	tempItem.itemName = itemText;
+
+	std::istringstream idS(itemText);
+	string sID;
+	std::getline(idS, sID, '|');
+
+	tempItem.itemID = atoi(sID.c_str());
+
+	mapItems.push_back(tempItem);
+	numberOfItems++;
+}
+
+void MapScreen::removeItem(int x, int y)
+{
+	int index = -1;
+	for (int i = 0; i < mapItems.size(); i++)
+	{
+		if (mapItems[i].itemX == x && mapItems[i].itemY == y)
+		{
+			index = i;
+		}
+	}
+	if (index != -1)
+	{
+		mapItems.erase(mapItems.begin()+index);
+		numberOfItems--;
+	}
+}
+
+int MapScreen::getNumberOfItems()
+{
+	return numberOfItems;
+}
+
+string MapScreen::viewItems()
+{
+	string itemList = "";
+
+	for (int i = 0; i < mapItems.size(); i++)
+	{
+		itemList.append("X: ");
+		itemList.append(std::to_string(mapItems[i].itemX));
+		itemList.append(" Y: ");
+		itemList.append(std::to_string(mapItems[i].itemY));
+		itemList.append(" ItemID: ");
+		itemList.append(std::to_string(mapItems[i].itemID));
+		itemList.append(" Item: ");
+		itemList.append(mapItems[i].itemName);
+		itemList.append("\n");
+	}
+	return itemList;
 }

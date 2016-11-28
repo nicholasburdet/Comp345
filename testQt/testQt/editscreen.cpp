@@ -82,6 +82,9 @@ editscreen::editscreen(char n[])
 
 	viewControlsActions = new QAction(tr("&View Controls"), this);
 	connect(viewControlsActions, SIGNAL(triggered()), this, SLOT(viewControls()));
+
+	viewItemsAction = new QAction(tr("&View Items"), this);
+	connect(viewItemsAction, SIGNAL(triggered()), this, SLOT(viewItems()));
 	
 	//// VIEW INVENTORY AND WORN ITEMS
 
@@ -124,6 +127,7 @@ editscreen::editscreen(char n[])
 	mapMenu->addAction(openMapAction);
 	mapMenu->addAction(resetMapAction);
 	mapMenu->addAction(mapMenuCloseAction);
+	mapMenu->addAction(viewItemsAction);
 	
 	mapNavigatorMenu = new QMenu(tr("&Navigate Maps"), this);
 	mapNavigatorMenu->addAction(nextMapAction);
@@ -886,6 +890,11 @@ void editscreen::viewControls()
 	messageBox.exec();
 }
 
+void editscreen::viewItems()
+{
+	log->viewItems();
+}
+
 void editscreen::viewCharacterStats()
 {
 	//Add code to view player stats here (needs to load a seperate widget to see stats possibly)
@@ -942,8 +951,6 @@ void editscreen::viewBackpack()
 	{
 		//Return to Game
 	}
-	
-	
 }
 
 void editscreen::viewWornItems()
