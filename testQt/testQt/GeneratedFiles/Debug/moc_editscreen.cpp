@@ -20,7 +20,6 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_editscreen_t {
     QByteArrayData data[20];
-
     char stringdata0[234];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
@@ -50,7 +49,6 @@ QT_MOC_LITERAL(16, 193, 13), // "loadCharacter"
 QT_MOC_LITERAL(17, 207, 7), // "viewMap"
 QT_MOC_LITERAL(18, 215, 7), // "newItem"
 QT_MOC_LITERAL(19, 223, 10) // "newGameMap"
-
 
     },
     "editscreen\0editMap\0\0openMap\0newMap\0"
@@ -94,7 +92,6 @@ static const uint qt_meta_data_editscreen[] = {
       17,    0,  119,    2, 0x0a /* Public */,
       18,    0,  120,    2, 0x0a /* Public */,
       19,    0,  121,    2, 0x0a /* Public */,
-
 
  // slots: parameters
     QMetaType::Void,
@@ -181,7 +178,6 @@ int editscreen::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         if (_id < 18)
             *reinterpret_cast<int*>(_a[0]) = -1;
         _id -= 18;
-
     }
     return _id;
 }

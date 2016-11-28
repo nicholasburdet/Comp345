@@ -1,15 +1,15 @@
 #pragma once
 
 /*
-Author: Nicholas Burdet
-Id: 29613773
-Course: COMP 345
-Assignment 2 Part 3: Map Editor
 
-Character header file
+Alexis Grondin
+ID:26639569
 
-Bare bones file to show off NPC capability on the editor screen
+COMP 345 Assignment 3: Character Builder
+
+
 */
+
 
 
 #pragma once
@@ -18,6 +18,7 @@ Bare bones file to show off NPC capability on the editor screen
 #include <set>
 #include <memory>
 #include "Dice.h"
+#include <vector>
 
 #include <QGraphicsRectItem>
 
@@ -79,9 +80,14 @@ public:
 	void decHP(int damage);
 	int getArmorBonus();
 	virtual int getDamageBonus();
-	virtual int getAttackBonus();
+	virtual int getAttackBonus(int attackNum=0);
+
+	std::vector<int> getAttackBonusList();
+
+	std::string getAttackBonusLstString();
+
 	int getAttackPerRound() {
-		return level / 5 + 1;
+		return (level-1) / 5 + 1;
 	}
 	/*!
 	returns the maximum starting HP for the character's level, class and constitution

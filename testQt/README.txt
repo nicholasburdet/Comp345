@@ -1,20 +1,20 @@
-COMP 345 Fall 2016 Intermediate Project Delivery
-Dungeons and Dragons Game Project
+COMP 345
 
-Team #8
-Nicholas Burdet
-Nathan Lacasse
-Shihao Ning
-Alexi Grondin
+Assignment 3 Part 1: Character Builder
 
-Implemented features:
--Map editor with NPC support
--Map entrance to exit pathfinding
--Campaign editor with map linking
--Character movement on map
--Character editor
--Character viewer
--Item generation
--Item container code (developped but not integrated)
--Map/Character/Campaign loading from file
--UI navigation between menus
+The files related to this specific assignment are:
+
+-Character.cpp/.h
+
+-characterBuilder.cpp/.h
+
+-NimbleConcreteBuilder.cpp/.h
+
+-TankConcreteBuilder.cpp/.h
+
+-BullyConcreteBuilder.cpp/.h
+
+-CharacterObserver.cpp/.h (for display)
+
+-editScreen.cpp (from where the observer and builder are used to create new characters)
+

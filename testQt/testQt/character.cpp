@@ -1,15 +1,16 @@
 #pragma once
 
+
 /*
-Author: Nicholas Burdet
-Id: 29613773
-Course: COMP 345
-Assignment 2 Part 3: Map Editor
 
-Character cpp file
+Alexis Grondin
+ID:26639569
 
-Bare bones file to show off NPC capability on the editor screen
+COMP 345 Assignment 3: Character Builder
+
+
 */
+
 
 #include "character.h"
 #include <fstream>
@@ -18,6 +19,7 @@ Bare bones file to show off NPC capability on the editor screen
 #include <iostream>
 #include <set>
 #include <QDebug>
+#include <sstream>
 
 #include <QKeyEvent>
 
@@ -262,13 +264,60 @@ int character::getDamageBonus() {
 	return getModifier(abilities.strength);
 }
 
-int character::getAttackBonus() {
+/*!
+	parameter: the index (starting at 0) of the attack 
+	returns: -1 if index >= max number of attacks, else attack bonus
+*/
+int character::getAttackBonus(int attackNum)
+{
+	if (attackNum >= getAttackPerRound()) {
+		return -1;
+	}
 
-	int profBonus = ((level - 1) / 4) + 2;
+	//int profBonus = ((level - (attackNum)*5 - 1) / 4) + 2;
+
+	int levBonus = level - (attackNum * 5);
 
 	int abBonus = weaponRange < 1 ? getModifier(abilities.strength) : getModifier(abilities.dexterity);
 
-	return profBonus + abBonus + Dice::roll(1, weaponDice, 0);
+	return levBonus + abBonus + Dice::roll(1, weaponDice, 0);
+
+	//return 0;
+}
+
+/*!
+	Returns a vector containing the attack bonuses in order 
+*/
+std::vector<int> character::getAttackBonusList()
+{
+	int n_attack = getAttackPerRound();
+
+	std::vector<int> attackBonuses=vector<int>();
+
+	for (int i = 0; i < n_attack; i++) {
+		attackBonuses.push_back(getAttackBonus(i));
+	}
+
+	return attackBonuses;
+}
+
+/*!
+	Returns the attack bonuses as a string of format [0-9]+(/[0-9]+)*
+*/
+std::string character::getAttackBonusLstString() {
+
+	std::stringstream ss=std::stringstream();
+
+	std::vector<int> bonuses = getAttackBonusList();
+
+	for (int i = 0; i < bonuses.size(); i++) {
+		if (i != 0) {
+			ss << "/";
+		}
+		ss << std::to_string(bonuses[i]);
+	}
+
+	return ss.str();
 
 }
 

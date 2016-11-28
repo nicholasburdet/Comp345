@@ -13,7 +13,7 @@ Logic header file
 #include <QPoint>
 #include <QWidget>
 #include "MapScreen.h"
-#include "playerLog.h"
+#include "player_Log.h"
 #include "Campaign.h"
 #include <string>
 #include <QMessageBox>
@@ -111,7 +111,7 @@ class logic : public QWidget
 		bool gameSession = false;
 
 
-		playerLog combatLog;
+		player_Log combatLog;
 		bool playerTurn = true;
 		int npcTurn = -1;
 };

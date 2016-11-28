@@ -105,7 +105,7 @@ void characterObserver::initialize()
 		cTable->setItem(11, 0, new QTableWidgetItem("Damage Bonus"));
 		cTable->setItem(11, 1, new QTableWidgetItem(std::to_string(subject->getDamageBonus()).c_str()));
 		cTable->setItem(12, 0, new QTableWidgetItem("Attack Bonus"));
-		cTable->setItem(12, 1, new QTableWidgetItem(std::to_string(subject->getAttackBonus()).c_str()));
+		cTable->setItem(12, 1, new QTableWidgetItem(subject->getAttackBonusLstString().c_str()));
 
 		for (int i = 0; i < 12; i++) {
 			cTable->item(i, 0)->setFlags(cTable->item(i, 0)->flags() ^ Qt::ItemIsEditable);
@@ -128,7 +128,7 @@ void characterObserver::updateTable() {
 	cTable->item(9, 1)->setText(std::to_string(subject->getAbilities().constitution).c_str());
 	cTable->item(10, 1)->setText(std::to_string(subject->getAbilities().charisma).c_str());
 	cTable->item(11, 1)->setText(std::to_string(subject->getDamageBonus()).c_str());
-	cTable->item(12, 1)->setText(std::to_string(subject->getAttackBonus()).c_str());
+	cTable->item(12, 1)->setText(subject->getAttackBonusLstString().c_str());
 
 
 	cTable->update();

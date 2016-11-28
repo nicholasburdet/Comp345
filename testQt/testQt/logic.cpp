@@ -33,7 +33,7 @@ logic::logic(QWidget *parent) : QWidget(parent)
 	ms.loadNPCs();
 	setFocusPolicy(Qt::ClickFocus);
 	message.setFocusPolicy(Qt::NoFocus);
-	combatLog = playerLog();
+	combatLog = player_Log();
 }
 
 //Initializes a map object and loads the appropriate campaign
