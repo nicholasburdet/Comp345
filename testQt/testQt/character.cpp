@@ -113,7 +113,13 @@ void character::setName(string n)
 }
 void character::setLevel(int l)
 {
-	if (l <= 20) {
+	if (l > 20) {
+		level = 20;
+	}
+	else if (l < 0) {
+		level = 1;
+	}
+	else {
 		level = l;
 	}
 

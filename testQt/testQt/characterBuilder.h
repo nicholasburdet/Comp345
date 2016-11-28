@@ -47,7 +47,8 @@ public:
 		toBuild->setId(i);
 	};
 	virtual void buildLevel(int l) {
-		toBuild->setLevel(l);
+		int lev = l > 0 ? l : 1;
+		toBuild->setLevel(lev);
 	};
 
 	virtual void buildImage(std::string im) {
