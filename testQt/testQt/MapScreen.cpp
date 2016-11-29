@@ -1019,3 +1019,46 @@ string MapScreen::viewItems()
 	}
 	return itemList;
 }
+
+//Check if item exists at X,Y
+bool MapScreen::checkItem(int x, int y)
+{
+	bool found = false;
+	for (int i = 0; i < mapItems.size(); i++)
+	{
+		if (mapItems[i].itemX == x && mapItems[i].itemY == y)
+		{
+			found = true;
+		}
+	}
+	return found;
+}
+
+//Get item at X,Y
+string MapScreen::getItem(int x, int y)
+{
+	string foundItem = "";
+	for (int i = 0; i < mapItems.size(); i++)
+	{
+		if (mapItems[i].itemX == x && mapItems[i].itemY == y)
+		{
+			foundItem = mapItems[i].itemName;
+		}
+	}
+	return foundItem;
+}
+
+//Loot item at X,Y (return item and remove from map)
+string MapScreen::lootItems(int x, int y)
+{
+	string lootedItems = "NULL";
+	string tempText;
+
+	if (checkItem(x, y))
+	{
+		lootedItems = getItem(x, y);
+		removeItem(x, y);
+	}
+
+	return lootedItems;
+}

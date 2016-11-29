@@ -1021,9 +1021,76 @@ void logic::keyPressEvent(QKeyEvent *event)
 			//Code for looting during player turn goes here
 			else if (event->key() == Qt::Key_L && playerTurn == true)
 			{
-				//ADD LOOTING FUNCTIONALITY HERE
 				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
-				string chatText = "You looted around you! (Feature not implemented) Player turn has ended.";
+				string chatText = "You looted around you!";
+				combatLog.addToLog(chatText);
+				//Loot all around you
+				string itemUp = ms.lootItems(ms.getCurrentX(), ms.getCurrentY() - 1);
+				string itemDown = ms.lootItems(ms.getCurrentX(), ms.getCurrentY() + 1);
+				string itemLeft = ms.lootItems(ms.getCurrentX() - 1, ms.getCurrentY());
+				string itemRight = ms.lootItems(ms.getCurrentX() + 1, ms.getCurrentY());
+
+				/********************************************************************
+				Add to appropriate BACKPACK here when its ready!!
+				********************************************************************/
+
+				//Prints this if nothing is returned
+				if (itemUp == "NULL" && itemDown == "NULL" && itemLeft == "NULL" && itemRight == "NULL")
+				{
+					chatText.append("You found nothing!");
+					combatLog.addToLog(chatText);
+				}
+				//Checks each item to display multiple found if at all
+				if (itemUp != "NULL")
+				{
+					std::istringstream idS(itemUp);
+					string sID;
+					std::getline(idS, sID, '|');
+					std::getline(idS, sID, '|');
+					std::getline(idS, sID, '|');
+					chatText = "You found ";
+					chatText.append(sID);
+					chatText.append(".");
+					combatLog.addToLog(chatText);
+				}
+				if (itemDown != "NULL")
+				{
+					std::istringstream idS(itemDown);
+					string sID;
+					std::getline(idS, sID, '|');
+					std::getline(idS, sID, '|');
+					std::getline(idS, sID, '|');
+					chatText = "You found ";
+					chatText.append(sID);
+					chatText.append(".");
+					combatLog.addToLog(chatText);
+				}
+				if (itemLeft != "NULL")
+				{
+					std::istringstream idS(itemLeft);
+					string sID;
+					std::getline(idS, sID, '|');
+					std::getline(idS, sID, '|');
+					std::getline(idS, sID, '|');
+					chatText = "You found ";
+					chatText.append(sID);
+					chatText.append(".");
+					combatLog.addToLog(chatText);
+				}
+				if (itemRight != "NULL")
+				{
+					std::istringstream idS(itemRight);
+					string sID;
+					std::getline(idS, sID, '|');
+					std::getline(idS, sID, '|');
+					std::getline(idS, sID, '|');
+					chatText = "You found ";
+					chatText.append(sID);
+					chatText.append(".");
+					combatLog.addToLog(chatText);
+				}
+
+				chatText = "Player turn has ended.";
 				npcTurn++;
 				if (npcTurn > ms.getNumberOfNPCs())
 				{
@@ -1032,8 +1099,8 @@ void logic::keyPressEvent(QKeyEvent *event)
 				playerTurn = false;
 				playerAttacking = false;
 				combatLog.addToLog(chatText);
-				textChange = true;
-				update(rect);
+				start = true;
+				update();
 			}
 			else if (event->key() == Qt::Key_E && playerTurn == true)
 			{

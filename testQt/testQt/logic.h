@@ -21,6 +21,8 @@ Logic header file
 #include "character.h"
 #include <QMainWindow>
 #include "dice.h"
+#include <iostream>
+#include <sstream>
 
 using namespace std;
 
