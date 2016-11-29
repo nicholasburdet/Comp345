@@ -1,2 +1,0 @@
-dwd 0 numberOfMaps 1
-id 0 fname dwd0m0wef.txt

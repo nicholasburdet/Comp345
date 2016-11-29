@@ -28,8 +28,9 @@ Second update now handles campaign functionality
 
 
 //Constructor loads Distinct NPCs into memory for use by editor and maps
-logic::logic(QWidget *parent) : QWidget(parent)
+logic::logic(QWidget *parent, QMainWindow *mw) : QWidget(parent)
 {
+	mainWindow = mw;
 	ms.loadNPCs();
 	setFocusPolicy(Qt::ClickFocus);
 	message.setFocusPolicy(Qt::NoFocus);
@@ -67,8 +68,12 @@ void logic::loadCampaign(string filename)
 	
 	string extension = "Maps/";
 
-	loadMap(extension.append(Campaign.getMapFilename(Campaign.getNumberOfMaps() - 1)));
-	Campaign.setCurrentMapId(Campaign.getNumberOfMaps() - 1);
+	loadMap(extension.append(Campaign.getMapFilename(0)));
+	Campaign.setCurrentMapId(0);
+
+	//This loads last map of campaign
+	//loadMap(extension.append(Campaign.getMapFilename(Campaign.getNumberOfMaps() - 1)));
+	//Campaign.setCurrentMapId(Campaign.getNumberOfMaps() - 1);
 }
 
 //This method is for loading the campaign after a map has been loaded. The previous method
@@ -82,6 +87,11 @@ void logic::loadJustCampaign()
 	f.append(".txt");
 	Campaign.loadCampaign(f);
 	Campaign.setCurrentMapId(ms.getId());
+}
+
+void logic::loadPlayerCharacter(string filename)
+{
+	ms.loadPlayerCharacter(filename);
 }
 
 //Sets resolution for calculations based on size of map. Default is currently 50
@@ -223,6 +233,7 @@ void logic::mousePressEvent(QMouseEvent *event)
 						if (ms.isOccupied(currentX / resolution, currentY / resolution))
 						{
 							ms.removeNPC(currentX / resolution, currentY / resolution);
+							ms.removeItem(currentX / resolution, currentY / resolution);
 						}
 						update(rect);
 						clicked = true;
@@ -233,6 +244,7 @@ void logic::mousePressEvent(QMouseEvent *event)
 						if (ms.isOccupied(currentX / resolution, currentY / resolution))
 						{
 							ms.removeNPC(currentX / resolution, currentY / resolution);
+							ms.removeItem(currentX / resolution, currentY / resolution);
 						}
 						update(rect);
 						clicked = true;
@@ -245,6 +257,7 @@ void logic::mousePressEvent(QMouseEvent *event)
 						if (ms.isOccupied(currentX / resolution, currentY / resolution))
 						{
 							ms.removeNPC(currentX / resolution, currentY / resolution);
+							ms.removeItem(currentX / resolution, currentY / resolution);
 						}
 						rect = QRect(ms.getStartX()*resolution, ms.getStartY()*resolution, resolution + 1, resolution + 1);
 						oldStartX = ms.getStartX()*resolution;
@@ -266,6 +279,7 @@ void logic::mousePressEvent(QMouseEvent *event)
 						if (ms.isOccupied(currentX / resolution, currentY / resolution))
 						{
 							ms.removeNPC(currentX / resolution, currentY / resolution);
+							ms.removeItem(currentX / resolution, currentY / resolution);
 						}
 						rect = QRect(ms.getEndX()*resolution, ms.getEndY()*resolution, resolution + 1, resolution + 1);
 						oldEndX = ms.getEndX()*resolution;
@@ -288,11 +302,36 @@ void logic::mousePressEvent(QMouseEvent *event)
 								if (ms.isOccupied(currentX / resolution, currentY / resolution))
 								{
 									ms.removeNPC(currentX / resolution, currentY / resolution);
+									ms.removeItem(currentX / resolution, currentY / resolution);
 								}
 								ms.addNPC(npcId, currentX / resolution, currentY / resolution);
 								drawNPC = true;
 								update(rect);
 							}
+						}
+					}
+					if (mode == 6) {
+						//Mode 6 is ITEM placement
+						if (ms.isPassable(currentX / resolution, currentY / resolution))
+						{
+							if (ms.isOccupied(currentX / resolution, currentY / resolution))
+							{
+								ms.removeNPC(currentX / resolution, currentY / resolution);
+								ms.removeItem(currentX / resolution, currentY / resolution);
+							}
+							string selectedItem = addItem();
+							drawItem = true;
+							update(rect);
+							ms.addItem(currentX / resolution, currentY / resolution, selectedItem);
+						}
+					}
+					if (mode == 7) {
+						//Mode 7 is CHEST placement
+						if (ms.isPassable(currentX / resolution, currentY / resolution))
+						{
+							//Disabled for now
+							//drawChest = true;
+							//update(rect);
 						}
 					}
 				}
@@ -365,6 +404,18 @@ void logic::mousePressEvent(QMouseEvent *event)
 				currentTile = QPixmap(c);
 				mode = 5;
 			}
+			else if ((currentY == (ms.getMaxY() * resolution) + resolution * 3) && currentX == 0)
+			{
+				//General item
+				currentTile = item;
+				mode = 6;
+			}
+			else if ((currentY == (ms.getMaxY() * resolution) + resolution * 3) && currentX == 1 * resolution)
+			{
+				//Item chest container
+				currentTile = chest;
+				mode = 7;
+			}
 		}
 		else
 		{
@@ -378,26 +429,10 @@ void logic::mousePressEvent(QMouseEvent *event)
 //are the only part of the screen that will receive an update.
 void logic::paintEvent(QPaintEvent *event)
 {
-	//Images are loaded into QPixmap, this should probably be done in the header, to be done at a later date
-	QPixmap grass("Images/grass.png");
-	QPixmap dirt("Images/dirt.jpg");
-	QPixmap entranceDoor("Images/start.png");
-	QPixmap exitDoor("Images/end.png");
-	QPixmap checkButton("Images/button.png");
-	QPixmap errorButton("Images/redbutton.jpg");
-	QPixmap saveButton("Images/save.png");
-	QPixmap playerImage("Resources/player.png");
-
-	QPixmap orc("Images/orc.png");
-	QPixmap ogre("Images/ogre.png");
-	QPixmap minotaur("Images/minotaur.png");
-	QPixmap logBackground("Images/log.png");
-
-	QPixmap background("Images/background.jpg");
-
 	QPainter painter(this);
 
 	font = painter.font();
+	
 	font.setPointSize(8);
 	font.setWeight(QFont::DemiBold);
 	painter.setFont(font);
@@ -408,9 +443,9 @@ void logic::paintEvent(QPaintEvent *event)
 
 	int minX;
 
-	if (ms.getMaxX() < 8)
+	if (ms.getMaxX() < 12)
 	{
-		minX = 8;
+		minX = 12;
 	}
 	else
 	{
@@ -420,13 +455,13 @@ void logic::paintEvent(QPaintEvent *event)
 	//current map in the object. Start is set to true each time the screen needs a full update.
 	if (start)
 	{
-		painter.drawPixmap(0, 0, minX*resolution, ((ms.getMaxY()*resolution)+(resolution * 3) + 20), background);
+		painter.drawPixmap(0, 0, minX*resolution, ((ms.getMaxY()*resolution)+(resolution * 4) + 20), background);
 		//Draws log background if not in editmode (for gameplay)
 		if (!editMode)
 		{
 			QString textWindow;
-			painter.drawPixmap(0, yRes, minX*resolution, 3 * resolution, logBackground);
-			int logStart = combatLog.getLogLength() - 10;
+			painter.drawPixmap(0, yRes, minX*resolution, 150, logBackground);
+			int logStart = combatLog.getLogLength() - 13;
 			if (logStart < 0)
 			{
 				logStart = 0;
@@ -436,7 +471,7 @@ void logic::paintEvent(QPaintEvent *event)
 			for (int i = combatLog.getLogLength(); i > logStart; i--)
 			{
 				textWindow = QString::fromStdString(combatLog.readLogEntry(i));
-				painter.drawText(10, ms.getMaxY()*resolution + 20 + (10 * count), textWindow);
+				painter.drawText(12, ms.getMaxY()*resolution + 20 + (10 * count), textWindow);
 				count++;
 			}
 		}
@@ -489,6 +524,23 @@ void logic::paintEvent(QPaintEvent *event)
 			index++;
 		}
 
+		//Paints Items onto screen
+		max = ms.getNumberOfItems();
+		count = 0;
+		index = 0;
+		while (count < max)
+		{
+			if (ms.mapItems[index].itemName != "NULL")
+			{
+				int x, y;
+				x = ms.mapItems[index].itemX;
+				y = ms.mapItems[index].itemY;
+				painter.drawPixmap(x*resolution, y*resolution, resolution, resolution, item);
+				count++;
+			}
+			index++;
+		}
+
 		//This section draws all vertical and horizontal lines
 		for (int y = 0; y <= yRes; y += resolution)
 		{
@@ -531,6 +583,9 @@ void logic::paintEvent(QPaintEvent *event)
 					painter.drawPixmap(resolution*i, yRes + resolution * 2, resolution, resolution, npc);
 				}
 			}
+			//Item buttons drawn here
+			painter.drawPixmap(0, yRes + resolution*3, resolution, resolution, item);
+			painter.drawPixmap(resolution * 1, yRes + resolution*3, resolution, resolution, chest);
 		}
 		else
 		{
@@ -577,6 +632,28 @@ void logic::paintEvent(QPaintEvent *event)
 		painter.drawRect(rect);
 		painter.drawLine(currentX, currentY + resolution, currentX + resolution, currentY + resolution);
 		drawNPC = false;
+	}
+
+	if (drawItem) {
+		//This draws a grass tile and then draws the ITEM
+		QRect rect(currentX, currentY, resolution, resolution);
+		painter.drawPixmap(rect, grass);
+		painter.drawRect(rect);
+		painter.drawPixmap(rect, currentTile);
+		painter.drawRect(rect);
+		painter.drawLine(currentX, currentY + resolution, currentX + resolution, currentY + resolution);
+		drawItem = false;
+	}
+
+	if (drawChest) {
+		//This draws a grass tile and then draws the CHEST
+		QRect rect(currentX, currentY, resolution, resolution);
+		painter.drawPixmap(rect, grass);
+		painter.drawRect(rect);
+		painter.drawPixmap(rect, currentTile);
+		painter.drawRect(rect);
+		painter.drawLine(currentX, currentY + resolution, currentX + resolution, currentY + resolution);
+		drawChest = false;
 	}
 
 	if (checkStatus)
@@ -652,8 +729,8 @@ void logic::paintEvent(QPaintEvent *event)
 	if(textChange)
 	{
 		QString textWindow;
-		painter.drawPixmap(0, yRes, minX*resolution, 3 * resolution, logBackground);
-		int logStart = combatLog.getLogLength() - 10;
+		painter.drawPixmap(0, yRes, minX*resolution, 150, logBackground);
+		int logStart = combatLog.getLogLength() - 13;
 		if (logStart < 0)
 		{
 			logStart = 0;
@@ -663,7 +740,7 @@ void logic::paintEvent(QPaintEvent *event)
 		for (int i = combatLog.getLogLength(); i > logStart; i--)
 		{
 			textWindow = QString::fromStdString(combatLog.readLogEntry(i));
-			painter.drawText(10, ms.getMaxY()*resolution + 20 + (10 * count), textWindow);
+			painter.drawText(12, ms.getMaxY()*resolution + 20 + (10 * count), textWindow);
 			count++;
 		}
 		
@@ -678,97 +755,445 @@ void logic::keyPressEvent(QKeyEvent *event)
 		bool didPlayerMove = false;
 		oldPlayerX = ms.getCurrentX();
 		oldPlayerY = ms.getCurrentY();
-		if (event->key() == Qt::Key_Left && playerTurn) {
-			if (ms.getCurrentX() > 0 && !(ms.isOccupied(ms.getCurrentX()-1, ms.getCurrentY())) && ms.isPassable(ms.getCurrentX() - 1, ms.getCurrentY()))
-			{
-				ms.setCurrentX(ms.getCurrentX() - 1);
-				movePlayer = true;
-				QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
-				update(rect);
-				playerSteps++; //To keep track of the number of steps
-				didPlayerMove = true;
-			}
-		}
-		else if (event->key() == Qt::Key_Right && playerTurn) {
-			if (ms.getCurrentX() < ms.getMaxX()-1 && !(ms.isOccupied(ms.getCurrentX() + 1, ms.getCurrentY())) && ms.isPassable(ms.getCurrentX() + 1, ms.getCurrentY()))
-			{
-				ms.setCurrentX(ms.getCurrentX() + 1);
-				movePlayer = true;
-				QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
-				update(rect);
-				playerSteps++; //To keep track of the number of steps
-				didPlayerMove = true;
-			}
-		}
-		else if (event->key() == Qt::Key_Up && playerTurn) {
-			if (ms.getCurrentY() > 0 && !(ms.isOccupied(ms.getCurrentX(), ms.getCurrentY()-1)) && ms.isPassable(ms.getCurrentX(), ms.getCurrentY()-1))
-			{
-				ms.setCurrentY(ms.getCurrentY() - 1);
-				movePlayer = true;
-				QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
-				update(rect);
-				playerSteps++; //To keep track of the number of steps
-				didPlayerMove = true;
-			}
-		}
-		else if (event->key() == Qt::Key_Down && playerTurn) {
-			if (ms.getCurrentY() < ms.getMaxY()-1 && !(ms.isOccupied(ms.getCurrentX(), ms.getCurrentY() + 1)) && ms.isPassable(ms.getCurrentX(), ms.getCurrentY() + 1))
-			{
-				ms.setCurrentY(ms.getCurrentY() + 1);
-				movePlayer = true;
-				QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
-				update(rect);
-				playerSteps++; //To keep track of the number of steps
-				didPlayerMove = true;
-			}
-		}
-		else if (event->key() == Qt::Key_N && playerTurn == false) {
-			//Code for next event stuff goes here
 
-			string chatText;
-			ms.npcMovement(npcTurn, ms.getCurrentX(), ms.getCurrentY());
-			chatText = "NPC ";
-			chatText.append(std::to_string(npcTurn));
-			chatText.append(" moves to X:");
-			chatText.append(std::to_string(ms.characterEntities[npcTurn].getX()));
-			chatText.append(" Y:");
-			chatText.append(std::to_string(ms.characterEntities[npcTurn].getY()));
-			combatLog.addToLog(chatText);
-			npcTurn++;
-			
-			start = true;
-			update();
-			if (npcTurn >= ms.getNumberOfNPCs())
+		int minXReso = ms.getMaxX();
+		if (ms.getMaxX() < 12)
+		{
+			minXReso = 12;
+		}
+
+		if (!mapStart)
+		{
+			//Up/Down/Left/Right Movement events
+			if (event->key() == Qt::Key_Left && playerTurn && playerMove && playerAttacking == false) {
+				if (ms.getCurrentX() > 0 && !(ms.isOccupied(ms.getCurrentX() - 1, ms.getCurrentY())) && ms.isPassable(ms.getCurrentX() - 1, ms.getCurrentY()))
+				{
+					ms.setCurrentX(ms.getCurrentX() - 1);
+					movePlayer = true;
+					QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
+					update(rect);
+					playerSteps++; //To keep track of the number of steps
+					didPlayerMove = true;
+				}
+			}
+			else if (event->key() == Qt::Key_Right && playerTurn && playerMove && playerAttacking == false) {
+				if (ms.getCurrentX() < ms.getMaxX() - 1 && !(ms.isOccupied(ms.getCurrentX() + 1, ms.getCurrentY())) && ms.isPassable(ms.getCurrentX() + 1, ms.getCurrentY()))
+				{
+					ms.setCurrentX(ms.getCurrentX() + 1);
+					movePlayer = true;
+					QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
+					update(rect);
+					playerSteps++; //To keep track of the number of steps
+					didPlayerMove = true;
+				}
+			}
+			else if (event->key() == Qt::Key_Up && playerTurn && playerMove && playerAttacking == false) {
+				if (ms.getCurrentY() > 0 && !(ms.isOccupied(ms.getCurrentX(), ms.getCurrentY() - 1)) && ms.isPassable(ms.getCurrentX(), ms.getCurrentY() - 1))
+				{
+					ms.setCurrentY(ms.getCurrentY() - 1);
+					movePlayer = true;
+					QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
+					update(rect);
+					playerSteps++; //To keep track of the number of steps
+					didPlayerMove = true;
+				}
+			}
+			else if (event->key() == Qt::Key_Down && playerTurn && playerMove && playerAttacking == false) {
+				if (ms.getCurrentY() < ms.getMaxY() - 1 && !(ms.isOccupied(ms.getCurrentX(), ms.getCurrentY() + 1)) && ms.isPassable(ms.getCurrentX(), ms.getCurrentY() + 1))
+				{
+					ms.setCurrentY(ms.getCurrentY() + 1);
+					movePlayer = true;
+					QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
+					update(rect);
+					playerSteps++; //To keep track of the number of steps
+					didPlayerMove = true;
+				}
+			}
+			//Code for next event stuff goes here (player can advance the game when not his turn by pressing N)
+			else if (event->key() == Qt::Key_N && playerTurn == false) {
+				string chatText;
+				QRect rect(0, ms.getMaxY()*resolution, minXReso * resolution, 50 * 3);
+				bool moved = ms.npcMovement(turnOrder[npcTurn], ms.getCurrentX(), ms.getCurrentY());
+				if(moved)
+				{
+					chatText = "NPC ";
+					chatText.append(std::to_string(turnOrder[npcTurn]));
+					chatText.append(" moves to X:");
+					chatText.append(std::to_string(ms.characterEntities[turnOrder[npcTurn]].getX()));
+					chatText.append(" Y:");
+					chatText.append(std::to_string(ms.characterEntities[turnOrder[npcTurn]].getY()));
+					combatLog.addToLog(chatText);
+				}
+				else
+				{
+					chatText = "NPC ";
+					chatText.append(std::to_string(turnOrder[npcTurn]));
+					chatText.append(" does not move.");
+					combatLog.addToLog(chatText);
+				}
+
+				//NPC Attack goes here
+				chatText = "Nothing";
+				if (ms.characterEntities[turnOrder[npcTurn]].getType() == "hostile")
+				{
+					chatText = ms.npcAttack(turnOrder[npcTurn], moved);
+				}
+				if (chatText != "Nothing")
+				{
+					combatLog.addToLog(chatText);
+				}
+
+				textChange = true;
+				update(rect);
+
+				npcTurn++;
+				if (npcTurn > ms.getNumberOfNPCs())
+				{
+					npcTurn = 0;
+				}
+
+				start = true;
+				update();
+				if (turnOrder[npcTurn] == -1 || ms.getNumberOfNPCs() == 0)
+				{
+					playerTurn = true;
+					playerMove = true;
+					playerSteps = 0;
+					chatText = "Player turn start!";
+					combatLog.addToLog(chatText);
+					textChange = true;
+					update(rect);
+				}
+			}
+			//Code for stopping player movement during their turn (end movement)
+			else if (event->key() == Qt::Key_S && playerMove == true && playerTurn == true && playerAttacking == false)
 			{
-				playerTurn = true;
-				QRect rect(0, ms.getMaxY()*resolution, resolution * 8, resolution * 3);
-				chatText = "Player turn start!";
-				npcTurn = -1;
+				//Code for player stop goes here NOTE:Fix player movement end ending their turn
+				//Note: Also potentially limit player movement dialog messages to destination ONLY?
+				
+				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+				string chatText = "Movement for turn ended.";
+				chatText.append(" Attack (A), Loot Item (L) or End Turn (E)");
+				playerMove = false;
+				
 				combatLog.addToLog(chatText);
 				textChange = true;
 				update(rect);
 			}
-		}
-		
-		if (didPlayerMove)
-		{
-			QRect rect(0, ms.getMaxY()*resolution, resolution * 8, resolution * 3);
-			string chatText = "You have taken ";
-			chatText.append(std::to_string(playerSteps));
-			chatText.append(" steps.");
-			if (playerSteps >= 6)
+			//Code for attacking during player turn goes here
+			else if (event->key() == Qt::Key_A && playerTurn == true && playerAttacking == false)
 			{
-				playerTurn = false;
-				chatText.append(" End of player turn.");
-				playerSteps = 0;
-				npcTurn = 0;
+				playerAttacking = true;
+				//Checks to see if player will use 1 attack or full attack
+				string chatText;
+				if (playerSteps == 0)
+				{
+					fullAttack = true;
+					chatText = "You prepare a full attack! Choose a direction to attack.";
+				}
+				else
+				{
+					fullAttack = false;
+					chatText = "You declare an attack! Choose a direction to attack.";
+				}
+				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+				
+				combatLog.addToLog(chatText);
+				textChange = true;
+				update(rect);
 			}
+
+			//Code for each attack direction goes here!
+			else if (event->key() == Qt::Key_Up && playerTurn == true && playerAttacking == true)
+			{
+				string attackMessage;
+				int adjX = ms.getCurrentX();
+				int adjY = ms.getCurrentY() - 1;
+				string dir = "up";
+				//Checks bounds
+				if (adjY > 0)
+				{
+					attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
+				}
+				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+				combatLog.addToLog(attackMessage);
+				textChange = true;
+				update(rect);
+
+				string chatText = "Player turn has ended.";
+				npcTurn++;
+				if (npcTurn > ms.getNumberOfNPCs())
+				{
+					npcTurn = 0;
+				}
+				playerTurn = false;
+				playerAttacking = false;
+				combatLog.addToLog(chatText);
+				textChange = true;
+				update(rect);
+			}
+			else if (event->key() == Qt::Key_Down && playerTurn == true && playerAttacking == true)
+			{
+				string attackMessage;
+				int adjX = ms.getCurrentX();
+				int adjY = ms.getCurrentY() + 1;
+				//Checks bounds
+				string dir = "down";
+				if (adjY < ms.getMaxY()-1)
+				{
+					attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
+				}
+				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+				combatLog.addToLog(attackMessage);
+				textChange = true;
+				update(rect);
+
+				string chatText = "Player turn has ended.";
+				npcTurn++;
+				if (npcTurn > ms.getNumberOfNPCs())
+				{
+					npcTurn = 0;
+				}
+				playerTurn = false;
+				playerAttacking = false;
+				combatLog.addToLog(chatText);
+				textChange = true;
+				update(rect);
+			}
+			else if (event->key() == Qt::Key_Left && playerTurn == true && playerAttacking == true)
+			{
+				string attackMessage;
+				int adjX = ms.getCurrentX() - 1;
+				int adjY = ms.getCurrentY();
+				string dir = "left";
+				//Checks bounds
+				if (adjX > 0)
+				{
+					attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
+				}
+				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+				combatLog.addToLog(attackMessage);
+				textChange = true;
+				update(rect);
+
+				string chatText = "Player turn has ended.";
+				npcTurn++;
+				if (npcTurn > ms.getNumberOfNPCs())
+				{
+					npcTurn = 0;
+				}
+				playerTurn = false;
+				playerAttacking = false;
+				combatLog.addToLog(chatText);
+				textChange = true;
+				update(rect);
+			}
+			else if (event->key() == Qt::Key_Right && playerTurn == true && playerAttacking == true)
+			{
+				string attackMessage;
+				int adjX = ms.getCurrentX() + 1;
+				int adjY = ms.getCurrentY();
+				string dir = "right";
+				//Checks bounds
+				if (adjX < ms.getMaxX() - 1)
+				{
+					attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
+				}
+				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+				combatLog.addToLog(attackMessage);
+				textChange = true;
+				update(rect);
+
+				string chatText = "Player turn has ended.";
+				npcTurn++;
+				if (npcTurn > ms.getNumberOfNPCs())
+				{
+					npcTurn = 0;
+				}
+				playerTurn = false;
+				playerAttacking = false;
+				combatLog.addToLog(chatText);
+				textChange = true;
+				update(rect);
+			}
+			//End of attack direction code above ^^^^^^
+
+			//Code for looting during player turn goes here
+			else if (event->key() == Qt::Key_L && playerTurn == true)
+			{
+				//ADD LOOTING FUNCTIONALITY HERE
+				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+				string chatText = "You looted around you! (Feature not implemented) Player turn has ended.";
+				npcTurn++;
+				if (npcTurn > ms.getNumberOfNPCs())
+				{
+					npcTurn = 0;
+				}
+				playerTurn = false;
+				playerAttacking = false;
+				combatLog.addToLog(chatText);
+				textChange = true;
+				update(rect);
+			}
+			else if (event->key() == Qt::Key_E && playerTurn == true)
+			{
+				//End player turn
+				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+				string chatText = "Player turn has ended.";
+				npcTurn++;
+				if (npcTurn > ms.getNumberOfNPCs())
+				{
+					npcTurn = 0;
+				}
+				playerTurn = false;
+				playerAttacking = false;
+				combatLog.addToLog(chatText);
+				textChange = true;
+				update(rect);
+			}
+
+			if (didPlayerMove)
+			{
+				if (playerSteps <= ms.playerCharacter.getMoveSpeed())
+				{
+					QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+					string chatText = "You have ";
+					chatText.append(std::to_string(ms.playerCharacter.getMoveSpeed() - playerSteps));
+					chatText.append(" steps remaining.");
+
+					if (playerSteps == ms.playerCharacter.getMoveSpeed())
+					{
+						chatText.append(" Attack (A), Loot Item (L) or End Turn (E)");
+						playerMove = false;
+					}
+
+					combatLog.addToLog(chatText);
+					textChange = true;
+					update(rect);
+
+					//Code if player reaches exit
+					if (ms.getCurrentX() == ms.getEndX() && ms.getCurrentY() == ms.getEndY())
+					{
+						character pc = ms.playerCharacter;
+						if (nextMap())
+						{
+							string file = Campaign.getMapFilename(Campaign.getCurrentMapId());
+							string extension = "Maps/";
+							ms.loadFromFile(extension.append(file));
+							ms.playerCharacter = pc;
+							resolution = checkResolution(ms.getMaxX(), ms.getMaxY());
+							int windowResX = ms.getMaxX()*resolution;
+
+							int windowDisplayHeightAdd = 3 * 50;
+							int windowDisplayWidthMinimum = 12 * resolution;
+
+							if (windowResX < windowDisplayWidthMinimum)
+							{
+								windowResX = windowDisplayWidthMinimum;
+							}
+							mainWindow->setFixedWidth(windowResX);
+							mainWindow->setFixedHeight((ms.getMaxY()*resolution) + 20 + windowDisplayHeightAdd);
+
+							start = true;
+							update();
+							mapStart = true;
+						}
+						else
+						{
+							message.setText("Congratulations! You have reached the end of the campaign!");
+							message.exec();
+						}
+					}
+				}
+			}
+		}
+		//This handles the code if player enters a map for the first time
+		else
+		{
+			npcTurn = 0;
+			int pcInit = ms.playerCharacter.getInitiative();
+			int roll = Dice::roll(1, 20, 0);
+
+			QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+			string chatText = "You roll a d20. Result: ";
+			chatText.append(std::to_string(roll));
+			chatText.append(". Your initiative is ");
+			chatText.append(std::to_string(roll+pcInit));
+			chatText.append(" for this map.");
+
 			combatLog.addToLog(chatText);
 			textChange = true;
 			update(rect);
-			
+
+			//Handling initiative order
+			turnOrder.clear();
+			int npcQuantity = ms.getNumberOfNPCs();
+
+			vector<int> npcOrder;
+
+			for (int i = 0; i < npcQuantity; i++)
+			{
+				ms.characterEntities[i].setCurrentInitiativeRoll(Dice::roll(1, 20, 0) + ms.characterEntities[i].getInitiative());
+				npcOrder.push_back(ms.characterEntities[i].getCurrentInitiativeRoll());
+			}
+
+			int highestInit = -100;
+			int highestCharacter;
+			bool pcHighest = false;
+			bool pcOrdered = false; //boolean to keep track if pc has been sorted
+			int pcPosition;
+
+			for (int index = 0; index < (npcQuantity + 1); index++)
+			{
+				highestInit = -100;
+				highestCharacter = -1; //reset
+				if (!pcOrdered)
+				{
+					highestInit = pcInit + roll;
+					pcHighest = true;
+				}
+				for (int i = 0; i < npcQuantity; i++)
+				{
+					if (npcOrder[i] > highestInit)
+					{
+						highestInit = npcOrder[i];
+						highestCharacter = i;
+						pcHighest = false;
+					}
+				}
+				if (pcHighest)
+				{
+					turnOrder.push_back(-1); //-1 signifies the player
+					pcOrdered = true;
+					pcPosition = index;
+				}
+				else
+				{
+					turnOrder.push_back(highestCharacter);
+					npcOrder[highestCharacter] = -1;
+				}
+			}
+
+			chatText = "You turn order: ";
+			chatText.append(std::to_string(pcPosition+1));
+
+			combatLog.addToLog(chatText);
+			textChange = true;
+			update(rect);
+
+			if (pcPosition == 0)
+			{
+				playerTurn = true;
+				playerMove = true;
+			}
+			else
+			{
+				playerTurn = false;
+				playerMove = false;
+			}
+			playerSteps = 0;
+			mapStart = false;
 		}
-		
 	}
 }
 
@@ -803,22 +1228,102 @@ void logic::enterEvent(QEvent * event)
 	start = true;
 	update();
 }
-//Minor issue with contents of screen disappearing after size selection at launch, until user mouses out of window
-//Will look into fixing this issue, but it isn't a glaring issue at this time
 
-//Gameplay heart goes here (for now)
-void logic::playGame()
+//This section is so that the user can see any size of map on screen (roughly) 100x100 max
+//Reuse of method in editscreen
+int logic::checkResolution(int w, int h)
 {
-	gameSession = true;
-	
-	while (gameSession)
+	if (h > 80)
 	{
-		//6 Just for testing purposes
-		if (playerSteps >= 6)
-		{
-			message.setText("You have reached 6 steps.");
-			message.show();
-			gameSession = false;
-		}
+		return 8;
 	}
+	if (h > 70)
+	{
+		return 10;
+	}
+	if (h > 50)
+	{
+		return 12;
+	}
+	if (w > 80 || h > 35)
+	{
+		return 15;
+	}
+	if (w > 70 || h > 30)
+	{
+		return 20;
+	}
+	if (w > 60 || h > 25)
+	{
+		return 25;
+	}
+	if (w > 50 || h > 20)
+	{
+		return 30;
+	}
+	if (w > 40 || h > 15)
+	{
+		return 35;
+	}
+	if (w > 30 || h > 12)
+	{
+		return 40;
+	}
+	return 50;
+}
+
+string logic::addItem() {
+	//Add Interface to view backpack
+
+	QDialog * d = new QDialog();
+	d->setWindowTitle("Add Which Item?");
+	QLabel *spaceLabel = new QLabel("");
+
+	QVBoxLayout * vbox = new QVBoxLayout();
+
+	QFile myTextFile("Resources/items.txt");
+	QStringList myStringList;
+
+	if (!myTextFile.open(QIODevice::ReadOnly))
+	{
+		QMessageBox::information(0, "Error opening file", myTextFile.errorString());
+	}
+	else
+	{
+		while (!myTextFile.atEnd())
+		{
+			myStringList.append(myTextFile.readLine());
+		}
+		myTextFile.close();
+	}
+
+	QListWidget * itemList = new QListWidget();
+
+	itemList->addItems(myStringList);
+
+	QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
+	buttonBox->button(QDialogButtonBox::Ok)->setText("Add");
+
+	QObject::connect(buttonBox, SIGNAL(accepted()), d, SLOT(accept()));
+
+	vbox->addWidget(itemList);
+
+	vbox->addWidget(spaceLabel);
+	vbox->addWidget(buttonBox);
+
+	d->setLayout(vbox);
+
+	int result = d->exec();
+	if (result == QDialog::Accepted)
+	{
+		//Return to Game
+		return itemList->currentItem()->text().toStdString();
+	}
+	return "";
+}
+
+void logic::viewItems()
+{
+	message.setText(QString::fromStdString(ms.viewItems()));
+	message.exec();
 }

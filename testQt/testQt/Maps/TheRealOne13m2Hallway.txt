@@ -1,0 +1,56 @@
+campaignName TheRealOne campaignId 13 mapId 2 mapName Hallway
+currentX 1
+currentY 0
+startX 2
+startY 0
+endX 12
+endY 0
+maxX 14
+maxY 3
+space 0 0 0
+space 0 1 1
+space 0 2 1
+space 1 0 0
+space 1 1 1
+space 1 2 1
+space 2 0 1
+space 2 1 1
+space 2 2 1
+space 3 0 0
+space 3 1 1
+space 3 2 1
+space 4 0 0
+space 4 1 1
+space 4 2 1
+space 5 0 0
+space 5 1 1
+space 5 2 1
+space 6 0 0
+space 6 1 1
+space 6 2 1
+space 7 0 0
+space 7 1 1
+space 7 2 1
+space 8 0 0
+space 8 1 1
+space 8 2 1
+space 9 0 0
+space 9 1 1
+space 9 2 1
+space 10 0 0
+space 10 1 1
+space 10 2 1
+space 11 0 0
+space 11 1 1
+space 11 2 1
+space 12 0 1
+space 12 1 1
+space 12 2 1
+space 13 0 0
+space 13 1 1
+space 13 2 1
+numberOfNPCs 1
+npcID 2 xPos 8 yPos 2
+numberOfItems 2
+itemX 13 itemY 2 itemID 9
+itemX 0 itemY 2 itemID 1

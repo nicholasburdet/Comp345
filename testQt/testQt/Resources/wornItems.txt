@@ -1,0 +1,7 @@
+1|Helmet|Full Helmet|Wisdom|4|Heavy
+2|Armor|Half Platebody||0|Heavy
+7|Shield|Kiteshield|Armor Class|3|Heavy
+5|Ring|Ruby Ring|Armor Class|2|Light
+8|Belt|Titanium Belt|Strength|1|Heavy
+9|Boots|Rugged boots||0|Heavy
+3|Weapon|Sword||0|1d4

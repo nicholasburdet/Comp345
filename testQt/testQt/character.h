@@ -135,6 +135,7 @@ public:
 	//int rollDice(int faces); //Replaced with dice class
 	static int getMaxRollSum(int faces, int numRolls);
 
+	int getWeaponRange();
 
 	//Observer related stuff
 
@@ -148,7 +149,13 @@ public:
 
 	void saveToFile();
 	void loadFromFile(string filepath);
+
 	int getMoveSpeed();
+	int getInitiative();
+	void setCurrentInitiativeRoll(int initRoll);
+	int getCurrentInitiativeRoll();
+	void setType(string t);
+	string getType();
 
 private:
 	int id;
@@ -164,13 +171,18 @@ private:
 	int armorBonus = 3;
 	//END PLACEHOLDERS
 	int HP;
+	int currentHP;
 	abilList abilities;
 	string image = "";
 	int xPosition = -1;
 	int yPosition = -1;
 
 	int moveSpeed = 6;
+	int initiative = 0;
+	int currentInitiativeRoll = 0;
 	bool playerCharacter = false;
+
+	string type = ""; //Will eventually be "player", "friendly" or "hostile"
 
 	set<observer*, less<observer*>> observers;
 

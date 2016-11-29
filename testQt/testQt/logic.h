@@ -18,6 +18,9 @@ Logic header file
 #include <string>
 #include <QMessageBox>
 #include <vector>
+#include "character.h"
+#include <QMainWindow>
+#include "dice.h"
 
 using namespace std;
 
@@ -25,11 +28,12 @@ class logic : public QWidget
 {
 	Q_OBJECT;
 	public:
-		logic(QWidget *parent = 0);
+		logic(QWidget *parent = 0, QMainWindow *mw = 0);
 		void initialize(int w, int h, string n);
 		void newCampaign(string cName, int cId);
 		void loadCampaign(string filename);
 		void loadJustCampaign();
+		void loadPlayerCharacter(string filename);
 		void setResolution(int res);
 		void loadMap(string filename);
 		void newMap();
@@ -41,7 +45,9 @@ class logic : public QWidget
 		string getFilename();
 		void closeWindow();
 		void setEditmode(bool editM);
-		void playGame();
+		int checkResolution(int x, int y);
+		string addItem();
+		void viewItems();
 	protected:
 		void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 		void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
@@ -78,12 +84,14 @@ class logic : public QWidget
 		//This will be in coupling with the mode, the determining factor for the NPC
 		int npcId = 0;
 
-		//flags to indicate the user is drawing entrance or exit
+		//flags to indicate what the painter should be drawing
 		bool drawStart = false; 
 		bool drawEnd = false;
 		bool drawNPC = false;
 		bool movePlayer = false;
 		bool replacePlayer = false;
+		bool drawItem = false;
+		bool drawChest = false;
 
 		//flag to check path status
 		bool checkStatus = true;
@@ -113,7 +121,34 @@ class logic : public QWidget
 
 		player_Log combatLog;
 		bool playerTurn = true;
+		bool playerMove = false;
+
+		bool playerAttacking = false;
+		bool fullAttack = false;
+
 		int npcTurn = -1;
+		QMainWindow *mainWindow;
+		bool mapStart = true;
+
+		vector<int> turnOrder;
+
+		QPixmap grass = QPixmap("Images/grass.png");
+		QPixmap dirt = QPixmap("Images/dirt.jpg");
+		QPixmap entranceDoor = QPixmap("Images/start.png");
+		QPixmap exitDoor = QPixmap("Images/end.png");
+		QPixmap checkButton = QPixmap("Images/button.png");
+		QPixmap errorButton = QPixmap("Images/redbutton.jpg");
+		QPixmap saveButton = QPixmap("Images/save.png");
+		QPixmap playerImage = QPixmap("Resources/player.png");
+
+		QPixmap orc = QPixmap("Images/orc.png");
+		QPixmap ogre = QPixmap("Images/ogre.png");
+		QPixmap minotaur = QPixmap("Images/minotaur.png");
+		QPixmap logBackground = QPixmap("Images/log.png");
+
+		QPixmap background = QPixmap("Images/background.jpg");
+		QPixmap item = QPixmap("Images/item.png");
+		QPixmap chest = QPixmap("Images/chest.png");
 };
 
 #endif
