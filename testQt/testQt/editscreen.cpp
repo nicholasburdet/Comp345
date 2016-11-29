@@ -72,6 +72,9 @@ editscreen::editscreen(char n[])
 	characterMenuAction = new QAction(tr("&Character Menu"), this);
 	connect(characterMenuAction, SIGNAL(triggered()), this, SLOT(createCharacterMenus()));
 
+	characterCloseMenuAction = new QAction(tr("&Close Character Menu"), this);
+	connect(characterCloseMenuAction, SIGNAL(triggered()), this, SLOT(characterMenuClose()));
+
 	characterEditorMenuAction = new QAction(tr("&Create New Player Character"), this);
 	connect(characterEditorMenuAction, SIGNAL(triggered()), this, SLOT(characterEditorMenu()));
 
@@ -146,12 +149,12 @@ editscreen::editscreen(char n[])
 	characterMenu = new QMenu(tr("&Character"), this);
 	characterMenu->addAction(characterEditorMenuAction);
 	characterMenu->addAction(characterLoadMenuAction);
-	characterMenu->addAction(menuCloseAction);
+	characterMenu->addAction(characterCloseMenuAction);
 
 	characterCreatorMenu = new QMenu(tr("&Character"), this);
 	characterCreatorMenu->addAction(characterEditorMenuAction);
 	characterCreatorMenu->addAction(characterEditorSaveAction);
-	characterCreatorMenu->addAction(menuCloseAction);
+	characterCreatorMenu->addAction(characterCloseMenuAction);
 
 	gameMenu = new QMenu(tr("&Game Menu"), this);
 	gameMenu->addAction(viewCharacterStatsAction);
@@ -570,6 +573,14 @@ void editscreen::resetMap()
 	editMap();
 }
 
+void editscreen::characterMenuClose()
+{
+	setCentralWidget(NULL);
+	setWindowTitle(tr("Dungeon and Dragons"));
+
+	createMainMenu();
+}
+
 void editscreen::mapMenuClose()
 {
 	log->closeWindow();
@@ -748,6 +759,7 @@ void editscreen::characterEditorMenu()
 
 		setCentralWidget(charTable);
 		setWindowTitle(tr("Character"));
+
 		this->setFixedWidth(400);
 		this->setFixedHeight(500);
 	}

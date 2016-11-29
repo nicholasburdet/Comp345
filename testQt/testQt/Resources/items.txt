@@ -8,3 +8,4 @@
 7|Shield|Kiteshield|Armor Class|3|Heavy
 8|Belt|Titanium Belt|Strength|1|Heavy
 9|Boots|Rugged boots||0|Heavy
+10|Shield|shield|Armor Class|4|Medium

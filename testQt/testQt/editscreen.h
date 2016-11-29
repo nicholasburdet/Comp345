@@ -32,6 +32,7 @@ public slots:
 	void nextMap();
 	void previousMap();
 	void resetMap();
+	void characterMenuClose();
 	void mapMenuClose();
 	void newCampaign();
 	void loadCampaign();
@@ -92,6 +93,7 @@ private:
 	QAction *mapMenuCloseAction;
 	QAction *menuCloseAction;
 	QAction *characterMenuAction;
+	QAction *characterCloseMenuAction;
 	QAction *characterEditorMenuAction;
 	QAction *characterLoadMenuAction;
 	QAction *characterEditorSaveAction;

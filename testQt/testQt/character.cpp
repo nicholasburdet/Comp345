@@ -284,7 +284,7 @@ int character::getDamageBonus() {
 	parameter: the index (starting at 0) of the attack 
 	returns: -1 if index >= max number of attacks, else attack bonus
 */
-int character::getAttackBonus(int attackNum=0)
+int character::getAttackBonus(int attackNum)
 {
 	if (attackNum >= getAttackPerRound()) {
 		return -1;
