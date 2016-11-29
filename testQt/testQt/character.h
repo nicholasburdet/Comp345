@@ -157,6 +157,16 @@ public:
 	void setType(string t);
 	string getType();
 
+	void setNumberOfWeaponDice(int n);
+	void setWeaponDice(int d);
+	void setWeaponRange(int r);
+	void setShieldBonus(int s);
+	void setArmorBonus(int a);
+
+	int getNumberOfWeaponDice();
+	int getWeaponDice();
+	int getShieldBonus();
+
 private:
 	int id;
 	string name = "NULL";
@@ -165,6 +175,7 @@ private:
 	int level;
 	int hitDice;
 	//PLACEHOLDERS
+	int numberOfWeaponDice = 1;
 	int weaponDice = 4;
 	int weaponRange = 1;
 	int shieldBonus = 1;

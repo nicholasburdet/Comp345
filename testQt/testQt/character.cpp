@@ -343,6 +343,11 @@ int character::getWeaponRange()
 	return weaponRange;
 }
 
+int character::getShieldBonus()
+{
+	return shieldBonus;
+}
+
 int character::getModifier(int abilityScore) {
 	return (abilityScore - 10) / 2;
 }
@@ -380,6 +385,41 @@ string character::getType()
 	return type;
 }
 
+void character::setNumberOfWeaponDice(int n)
+{
+	numberOfWeaponDice = n;
+}
+
+void character::setWeaponDice(int d)
+{
+	weaponDice = d;
+}
+
+void character::setWeaponRange(int r)
+{
+	weaponRange = r;
+}
+
+void character::setShieldBonus(int s)
+{
+	shieldBonus = s;
+}
+
+void character::setArmorBonus(int a)
+{
+	armorBonus = a;
+}
+
+int character::getNumberOfWeaponDice()
+{
+	return numberOfWeaponDice;
+}
+
+int character::getWeaponDice()
+{
+	return weaponDice;
+}
+
 bool character::isPlayerCharacter() {
 	return playerCharacter;
 }
@@ -403,7 +443,7 @@ void character::saveToFile()
 
 		output << "id" << " " << id << endl;
 		output << "name" << " " << name << endl;
-		output << "level" << " " << id << endl;
+		output << "level" << " " << level << endl;
 		output << "hp" << " " << HP << endl;
 		output << "hitdice" << " " << hitDice << endl;
 		output << "className" << " " << charClassName << endl;

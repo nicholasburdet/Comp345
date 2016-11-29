@@ -780,6 +780,19 @@ string MapScreen::playerAttack(int sX, int sY, string dir, bool fullAttack)
 	string combatText = "";
 
 	int foundNPC = -1;
+	int numberOfAttacks = 1;
+	vector<int> *attackBonuses;
+	int damageRoll;
+	int weaponDice = playerCharacter.getWeaponDice();
+	int numberOfWeaponDice = playerCharacter.getNumberOfWeaponDice();
+	int damageDone = 0;
+	int damageModifier = playerCharacter.getDamageBonus();
+
+	if (fullAttack)
+	{
+		numberOfAttacks = playerCharacter.getAttackPerRound();
+	}
+	attackBonuses = &playerCharacter.getAttackBonusList();
 
 	int weaponRange = playerCharacter.getWeaponRange();
 	bool npcFound = false;
@@ -853,16 +866,19 @@ string MapScreen::playerAttack(int sX, int sY, string dir, bool fullAttack)
 	{
 		//Combat rolls and stuff goes here
 		int roll = Dice::roll(1, 20, 0);
-		combatText.append("Attack roll (d20): ");
+		combatText.append("Atk roll d20: ");
 		combatText.append(std::to_string(roll));
+		damageRoll = (Dice::roll(numberOfWeaponDice, weaponDice, damageModifier));
 		if (roll == 1)
 		{
 			combatText.append(". Critical miss!");
 		}
 		else if (roll == 20)
 		{
-			combatText.append(". Critical hit!");
-			combatText.append(" DAMAGE TEXT GOES HERE.");
+			combatText.append(". Critical! ");
+			damageRoll = damageRoll * 2;
+			combatText.append(std::to_string(numberOfWeaponDice)).append("d").append(std::to_string(weaponDice)).append("+").append(std::to_string(damageModifier));
+			combatText.append(": ").append(std::to_string(damageRoll)).append(" dmg!");
 		}
 		else
 		{
@@ -870,14 +886,15 @@ string MapScreen::playerAttack(int sX, int sY, string dir, bool fullAttack)
 			{
 				combatText.append("+");
 				combatText.append(std::to_string(playerCharacter.getAttackBonus()));
-				combatText.append(". Enemy hit!");
-				combatText.append(" DAMAGE TEXT GOES HERE.");
+				combatText.append(". Hit!");
+				combatText.append(std::to_string(numberOfWeaponDice)).append("d").append(std::to_string(weaponDice)).append("+").append(std::to_string(damageModifier));
+				combatText.append(": ").append(std::to_string(damageRoll)).append(" dmg!");
 			}
 			else
 			{
 				combatText.append("+");
 				combatText.append(std::to_string(playerCharacter.getAttackBonus()));
-				combatText.append(". Enemy dodges your attack!");
+				combatText.append(". Enemy dodge!");
 			}
 		}
 		//NPCs that are friendly will become hostile when attacked

@@ -747,6 +747,7 @@ void editscreen::characterEditorMenu()
 	
 		builder->buildName(charName);
 		builder->buildLevel(charLevel);
+		builder->buildHP(builder->getCharacter()->getMaxHP());
 		builder->buildPlayerCharacter(true);
 		builder->setSubtype();
 

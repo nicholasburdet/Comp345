@@ -9,3 +9,4 @@
 8|Belt|Titanium Belt|Strength|1|Heavy
 9|Boots|Rugged boots||0|Heavy
 10|Shield|shield|Armor Class|4|Medium
+11|Weapon|Bastard Sword|Attack Bonus|2|1d12

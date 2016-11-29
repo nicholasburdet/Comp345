@@ -61,15 +61,15 @@ space 5 0 0
 space 5 1 0
 space 5 2 0
 space 5 3 0
-space 5 4 0
-space 5 5 1
+space 5 4 1
+space 5 5 0
 space 5 6 0
 space 5 7 0
 space 5 8 0
 space 5 9 0
-space 6 0 1
+space 6 0 0
 space 6 1 1
-space 6 2 0
+space 6 2 1
 space 6 3 1
 space 6 4 1
 space 6 5 1
@@ -77,9 +77,9 @@ space 6 6 1
 space 6 7 1
 space 6 8 0
 space 6 9 1
-space 7 0 1
+space 7 0 0
 space 7 1 1
-space 7 2 0
+space 7 2 1
 space 7 3 1
 space 7 4 1
 space 7 5 1
@@ -87,9 +87,9 @@ space 7 6 1
 space 7 7 1
 space 7 8 0
 space 7 9 1
-space 8 0 1
+space 8 0 0
 space 8 1 1
-space 8 2 0
+space 8 2 1
 space 8 3 1
 space 8 4 1
 space 8 5 1
@@ -97,8 +97,8 @@ space 8 6 1
 space 8 7 1
 space 8 8 0
 space 8 9 1
-space 9 0 1
-space 9 1 1
+space 9 0 0
+space 9 1 0
 space 9 2 0
 space 9 3 0
 space 9 4 0
@@ -107,6 +107,7 @@ space 9 6 0
 space 9 7 0
 space 9 8 0
 space 9 9 1
-numberOfNPCs 0
+numberOfNPCs 1
+npcID 1 xPos 8 yPos 7
 numberOfItems 1
 itemX 1 itemY 7 itemID 2

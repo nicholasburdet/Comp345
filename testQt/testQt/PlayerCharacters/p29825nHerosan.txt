@@ -1,0 +1,12 @@
+id 29825
+name Herosan
+level 12
+hp 91
+hitdice 10
+className fighter
+strength 11
+dexterity 15
+constitution 16
+intelligence 11
+wisdom 8
+charisma 11

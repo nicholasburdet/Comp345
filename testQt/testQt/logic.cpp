@@ -926,6 +926,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				{
 					npcTurn = 0;
 				}
+				fullAttack = false;
 				playerTurn = false;
 				playerAttacking = false;
 				combatLog.addToLog(chatText);
@@ -954,6 +955,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				{
 					npcTurn = 0;
 				}
+				fullAttack = false;
 				playerTurn = false;
 				playerAttacking = false;
 				combatLog.addToLog(chatText);
@@ -982,6 +984,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				{
 					npcTurn = 0;
 				}
+				fullAttack = false;
 				playerTurn = false;
 				playerAttacking = false;
 				combatLog.addToLog(chatText);
@@ -1010,6 +1013,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				{
 					npcTurn = 0;
 				}
+				fullAttack = false;
 				playerTurn = false;
 				playerAttacking = false;
 				combatLog.addToLog(chatText);
@@ -1112,6 +1116,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				{
 					npcTurn = 0;
 				}
+				fullAttack = false;
 				playerTurn = false;
 				playerAttacking = false;
 				combatLog.addToLog(chatText);
