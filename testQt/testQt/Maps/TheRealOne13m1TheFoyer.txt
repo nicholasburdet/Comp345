@@ -1,0 +1,27 @@
+campaignName TheRealOne campaignId 13 mapId 1 mapName TheFoyer
+currentX 0
+currentY 0
+startX 1
+startY 0
+endX 1
+endY 4
+maxX 3
+maxY 5
+space 0 0 1
+space 0 1 1
+space 0 2 1
+space 0 3 1
+space 0 4 1
+space 1 0 1
+space 1 1 1
+space 1 2 0
+space 1 3 1
+space 1 4 1
+space 2 0 1
+space 2 1 1
+space 2 2 1
+space 2 3 1
+space 2 4 1
+numberOfNPCs 0
+numberOfItems 1
+itemX 2 itemY 0 itemID 4

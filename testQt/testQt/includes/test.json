@@ -1,0 +1,11 @@
+[
+    {
+        "crit": "19-20/x2",
+        "damage": "1d4",
+        "description": "A short ornate blade in a serpentine shape.",
+        "enchantmentBonus": "0",
+        "enchantmentTypes": "Attack Bonus,Damage Bonus",
+        "name": "Dagger",
+        "range": "1"
+    }
+]

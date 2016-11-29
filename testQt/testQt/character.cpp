@@ -58,6 +58,8 @@ character::character() :observers()
 	hitDice = 10;
 	HP = getMaxHP();
 	subtype = "Bully";
+	currentHP = HP;
+	initiative = getModifier(abilities.dexterity);
 }
 character::character(int i, string n, int l, string im, string subt) :observers()
 {
@@ -70,6 +72,8 @@ character::character(int i, string n, int l, string im, string subt) :observers(
 	HP = getMaxHP();
 	subtype = subt;
 
+	currentHP = HP;
+	initiative = getModifier(abilities.dexterity);
 }
 
 character::character(int i, string n, int l, string im, string subt, int abList[6]) :observers()
@@ -82,6 +86,8 @@ character::character(int i, string n, int l, string im, string subt, int abList[
 	hitDice = 10;
 	HP = getMaxHP();
 	subtype = subt;
+	currentHP = HP;
+	initiative = getModifier(abilities.dexterity);
 
 }
 
@@ -97,6 +103,8 @@ void character::initialize(int i, string n, int l, string im) {
 	abilities = generateAbilities();
 	hitDice = 10; //Fighter hit dice
 	HP = getMaxHP();
+	currentHP = HP;
+	initiative = getModifier(abilities.dexterity);
 }
 
 void character::setId(int i)
@@ -183,6 +191,7 @@ int character::levelUp(int incAmount = 1) {
 	HP += getModifier(abilities.constitution)*incAmount;
 
 
+	currentHP = HP;
 	notifyObservers();
 
 	return HP;
@@ -255,11 +264,12 @@ int character::getHP() {
 
 void character::setHP(int hp) {
 	HP = hp;
+	currentHP = HP;
 	notifyObservers();
 }
 
 void character::decHP(int damage) {
-	HP -= damage;
+	currentHP -= damage;
 }
 
 int character::getArmorBonus() {
@@ -274,21 +284,18 @@ int character::getDamageBonus() {
 	parameter: the index (starting at 0) of the attack 
 	returns: -1 if index >= max number of attacks, else attack bonus
 */
-int character::getAttackBonus(int attackNum)
+int character::getAttackBonus(int attackNum=0)
 {
 	if (attackNum >= getAttackPerRound()) {
 		return -1;
 	}
 
-	//int profBonus = ((level - (attackNum)*5 - 1) / 4) + 2;
-
 	int levBonus = level - (attackNum * 5);
 
 	int abBonus = weaponRange < 1 ? getModifier(abilities.strength) : getModifier(abilities.dexterity);
 
-	return levBonus + abBonus + Dice::roll(1, weaponDice, 0);
+	return levBonus + abBonus;
 
-	//return 0;
 }
 
 /*!
@@ -324,7 +331,11 @@ std::string character::getAttackBonusLstString() {
 	}
 
 	return ss.str();
+}
 
+int character::getWeaponRange()
+{
+	return weaponRange;
 }
 
 int character::getModifier(int abilityScore) {
@@ -338,6 +349,30 @@ int character::getMaxHP() {
 
 int character::getMoveSpeed() {
 	return moveSpeed;
+}
+
+int character::getInitiative() {
+	return initiative;
+}
+
+void character::setCurrentInitiativeRoll(int initRoll)
+{
+	currentInitiativeRoll = initRoll;
+}
+
+int character::getCurrentInitiativeRoll()
+{
+	return currentInitiativeRoll;
+}
+
+void character::setType(string t)
+{
+	type = t;
+}
+
+string character::getType()
+{
+	return type;
 }
 
 bool character::isPlayerCharacter() {
@@ -430,7 +465,9 @@ void character::loadFromFile(string filepath)
 
 		}
 		input.close();
-
+		
+		currentHP = HP;
+		initiative = getModifier(abilities.dexterity);
 	}
 
 

@@ -18,9 +18,11 @@ one into the other.
 
 #include <fstream>
 #include "MapScreen.h"
+#include <QDebug>
 #include <string>
 #include <iostream>
 #include <math.h>
+#include <sstream>
 using namespace std;
 
 //This structure, Search, is used for the searching of the map to discover
@@ -435,12 +437,37 @@ void MapScreen::saveToFile()
 		index++;
 	}
 
+	output << "numberOfItems" << " " << numberOfItems << endl;
+
+	count = 0;
+	index = 0;
+	while (count < numberOfItems)
+	{
+		if (mapItems[index].itemName != "NULL")
+		{
+			output << "itemX" << " " << mapItems[index].itemX << " " << "itemY" << " " << mapItems[index].itemY << " " << "itemID" << " " << mapItems[index].itemID << endl; 
+			count++;
+		}
+		index++;
+	}
+
 	output.close();
 }
 
 
 void MapScreen::loadFromFile(string filename)
 {
+	vector<string> itemsFromFile;
+
+	ifstream itemInput("Resources/items.txt");
+
+	for (string itemline; getline(itemInput, itemline);)
+	{
+		itemsFromFile.push_back(itemline);
+	}
+
+	itemInput.close();
+
 	ifstream input;
 	input.open(filename, ios::in);
 
@@ -484,9 +511,22 @@ void MapScreen::loadFromFile(string filename)
 		characterEntities[x] = characterTable[i];
 		characterEntities[x].setX(xP);
 		characterEntities[x].setY(yP);
+		characterEntities[x].setType("hostile"); //This can be changed later
 		spaces[xP][yP].occupied = true;
 	}
 
+	
+	input >> type >> i;
+	string itemText;
+	int itemID;
+	
+	for (int x = 0; x < i; x++)
+	{
+		input >> type >> xP >> type >> yP >> type >> itemID;
+		itemText = itemsFromFile[itemID];
+		addItem(xP, yP, itemText);
+	}
+	
 	input.close();
 }
 
@@ -556,22 +596,25 @@ void MapScreen::removeNPC(int xPos, int yPos)
 	int count = 0;
 	bool found = false;
 
-	spaces[xPos][yPos].occupied = false;
 
-	while (!found)
+	for(int i = 0; i < numberOfNPCs+numberOfRemovedNPCs; i++)
 	{
-		if (characterEntities[index].getName() != "NULL")
+		if (characterEntities[i].getName() != "NULL")
 		{
-			if (characterEntities[index].getX() == xPos && characterEntities[index].getY() == yPos)
+			if (characterEntities[i].getX() == xPos && characterEntities[i].getY() == yPos)
 			{
 				found = true;
-				characterEntities[index] = character(); //Fills with empty character
+				characterEntities[i] = character(); //Fills with empty character
 			}
 		}
-		index++;
 	}
 
-	numberOfNPCs--;
+	if (found)
+	{
+		numberOfRemovedNPCs++;
+		numberOfNPCs--;
+		spaces[xPos][yPos].occupied = false;
+	}
 	if (numberOfNPCs < 0)
 	{
 		numberOfNPCs = 0; //Potentially useless
@@ -592,8 +635,10 @@ string MapScreen::getFilename()
 	return fName;
 }
 
-void MapScreen::npcMovement(int npcID, int destX, int destY)
+bool MapScreen::npcMovement(int npcID, int destX, int destY)
 {
+	int beginX = characterEntities[npcID].getX();
+	int beginY = characterEntities[npcID].getY();
 	//Dead NPCs may get changed to name DEAD to signify dead?
 	if (characterEntities[npcID].getName() != "DEAD" || characterEntities[npcID].getName() != "NULL")
 	{
@@ -712,5 +757,265 @@ void MapScreen::npcMovement(int npcID, int destX, int destY)
 		spaces[characterEntities[npcID].getX()][characterEntities[npcID].getY()].occupied = false;
 		spaces[closestSpace.xSpace][closestSpace.ySpace].occupied = true;
 		characterEntities[npcID].moveTo(closestSpace.xSpace, closestSpace.ySpace);
+		if (beginX == characterEntities[npcID].getX() && beginY == characterEntities[npcID].getY())
+		{
+			return false; //did not move
+		}
+		else
+		{
+			return true; //moved
+		}
 	}
+
+	return false;
+}
+
+void MapScreen::loadPlayerCharacter(string filename)
+{
+	playerCharacter.loadFromFile(filename);
+}
+
+string MapScreen::playerAttack(int sX, int sY, string dir, bool fullAttack)
+{
+	string combatText = "";
+
+	int foundNPC = -1;
+
+	int weaponRange = playerCharacter.getWeaponRange();
+	bool npcFound = false;
+	bool rangeError = false;
+	int rangeCheck = 1;
+
+	while (!npcFound && rangeCheck <= weaponRange && !rangeError)
+	{
+		for (int i = 0; i < numberOfNPCs; i++)
+		{
+			if (characterEntities[i].getX() == sX && characterEntities[i].getY() == sY)
+			{
+				foundNPC = i;
+				npcFound = true;
+			}
+		}
+
+		if (spaces[sX][sY].passable == false)
+		{
+			foundNPC = -2;
+			rangeError = true;
+		}
+
+		if (weaponRange > 1)
+		{
+			if (dir == "up")
+			{
+				sY--;
+				if (sY < 0)
+				{
+					rangeError = true;
+				}
+			}
+			else if (dir == "down")
+			{
+				sY++;
+				if (sY > maxY-1)
+				{
+					rangeError = true;
+				}
+			}
+			else if (dir == "left")
+			{
+				sX--;
+				if (sX < 0)
+				{
+					rangeError = true;
+				}
+			}
+			else if (dir == "right")
+			{
+				sX++;
+				if (sX > maxX-1)
+				{
+					rangeError = true;
+				}
+			}
+		}
+		
+		rangeCheck++;
+	}
+	if (foundNPC == -1)
+	{
+		return "You attack into an empty space! Nothing happens.";
+	}
+	else if (foundNPC == -2)
+	{
+		return "You attack a wall! Nothing happens.";
+	}
+	else
+	{
+		//Combat rolls and stuff goes here
+		int roll = Dice::roll(1, 20, 0);
+		combatText.append("Attack roll (d20): ");
+		combatText.append(std::to_string(roll));
+		if (roll == 1)
+		{
+			combatText.append(". Critical miss!");
+		}
+		else if (roll == 20)
+		{
+			combatText.append(". Critical hit!");
+			combatText.append(" DAMAGE TEXT GOES HERE.");
+		}
+		else
+		{
+			if ((roll + playerCharacter.getAttackBonus() > characterEntities[foundNPC].getArmorBonus()))
+			{
+				combatText.append("+");
+				combatText.append(std::to_string(playerCharacter.getAttackBonus()));
+				combatText.append(". Enemy hit!");
+				combatText.append(" DAMAGE TEXT GOES HERE.");
+			}
+			else
+			{
+				combatText.append("+");
+				combatText.append(std::to_string(playerCharacter.getAttackBonus()));
+				combatText.append(". Enemy dodges your attack!");
+			}
+		}
+		//NPCs that are friendly will become hostile when attacked
+		if (characterEntities[foundNPC].getType() == "friendly")
+		{
+			characterEntities[foundNPC].setType("hostile");
+			combatText.append(" Enemy is now hostile!");
+		}
+	}
+	return combatText;
+}
+
+string MapScreen::npcAttack(int npcID, bool moved)
+{
+	string combatText = "Nothing";
+
+	int npcX = characterEntities[npcID].getX();
+	int npcY = characterEntities[npcID].getY();
+	bool attack = false;
+
+	for (int i = 1; i <= characterEntities[npcID].getWeaponRange(); i++)
+	{
+		//Check up
+		if (npcX == currentX && (npcY-i) == currentY)
+		{
+			attack = true;
+		}
+		//Check down
+		if (npcX == currentX && (npcY+i) == currentY)
+		{
+			attack = true;
+		}
+		//Check left
+		if ((npcX - i) == currentX && npcY == currentY)
+		{
+			attack = true;
+		}
+		//Check right
+		if ((npcX + i) == currentX && npcY == currentY)
+		{
+			attack = true;
+		}
+	}
+
+	if (attack)
+	{
+		combatText = "NPC ";
+		combatText.append(std::to_string(npcID));
+		combatText.append(" attacks!");
+
+		//Combat rolls and stuff goes here
+		int roll = Dice::roll(1, 20, 0);
+		if (roll == 1)
+		{
+			combatText.append(" Critical miss!");
+			return combatText;
+		}
+		else if (roll == 20)
+		{
+			combatText.append(" Critical hit!");
+			combatText.append(" DAMAGE TEXT GOES HERE.");
+			return combatText;
+		}
+		else
+		{
+			if ((roll + characterEntities[npcID].getAttackBonus() > playerCharacter.getArmorBonus()))
+			{
+				combatText.append(" You were hit!");
+				combatText.append(" DAMAGE TEXT GOES HERE.");
+				return combatText;
+			}
+			else
+			{
+				combatText.append(" You dodge the enemy attack!");
+				return combatText;
+			}
+		}
+	}
+	return combatText;
+}
+
+void MapScreen::addItem(int x, int y, string itemText)
+{
+	Items tempItem;
+	tempItem.itemX = x;
+	tempItem.itemY = y;
+	tempItem.itemName = itemText;
+
+	std::istringstream idS(itemText);
+	string sID;
+	std::getline(idS, sID, '|');
+
+	tempItem.itemID = atoi(sID.c_str());
+
+	setOccupied(x, y, true);
+
+	mapItems.push_back(tempItem);
+	numberOfItems++;
+}
+
+void MapScreen::removeItem(int x, int y)
+{
+	int index = -1;
+	for (int i = 0; i < mapItems.size(); i++)
+	{
+		if (mapItems[i].itemX == x && mapItems[i].itemY == y)
+		{
+			index = i;
+		}
+	}
+	if (index != -1)
+	{
+		mapItems.erase(mapItems.begin()+index);
+		numberOfItems--;
+		setOccupied(x, y, false);
+	}
+}
+
+int MapScreen::getNumberOfItems()
+{
+	return numberOfItems;
+}
+
+string MapScreen::viewItems()
+{
+	string itemList = "";
+
+	for (int i = 0; i < mapItems.size(); i++)
+	{
+		itemList.append("X: ");
+		itemList.append(std::to_string(mapItems[i].itemX));
+		itemList.append(" Y: ");
+		itemList.append(std::to_string(mapItems[i].itemY));
+		itemList.append(" ItemID: ");
+		itemList.append(std::to_string(mapItems[i].itemID));
+		itemList.append(" Item: ");
+		itemList.append(mapItems[i].itemName);
+		itemList.append("\n");
+	}
+	return itemList;
 }

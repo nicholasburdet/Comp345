@@ -8,9 +8,3 @@
 7|Shield|Kiteshield|Armor Class|3|Heavy
 8|Belt|Titanium Belt|Strength|1|Heavy
 9|Boots|Rugged boots||0|Heavy
-10|Belt|Old Belt||0|Light
-11|Boots|Old Boots|Armor Class|1|Light
-12|Weapon|Dagger|Damage Bonus|5|1d4
-13|Armor|Plate Armor||0|Heavy
-14|Belt|Belt of Undying|Armor Class|4|Medium
-15|Belt|Fashion Belt|None|0|Light

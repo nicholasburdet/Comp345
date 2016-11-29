@@ -1,0 +1,5 @@
+1|Helmet|Full Helmet|Wisdom|4|Heavy
+2|Armor|Half Platebody||0|Heavy
+3|Weapon|Sword||0|1d4
+5|Ring|Ruby Ring|Armor Class|2|Light
+6|Ring|Emerald Ring|Armor Class|0|Light

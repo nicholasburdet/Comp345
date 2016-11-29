@@ -13,7 +13,7 @@ Menu commands are generally handled here, allowing the user to choose between pr
 serve as the UI controller for the entire game project for the most part
 */
 #include "editscreen.h"
-
+#include "itemContainer.h"
 
 #include "logic.h"
 #include <QDebug>
@@ -81,6 +81,25 @@ editscreen::editscreen(char n[])
 	characterEditorSaveAction = new QAction(tr("&Save Character"), this);
 	connect(characterEditorSaveAction, SIGNAL(triggered()), this, SLOT(characterEditorSave()));
 
+	viewCharacterStatsAction = new QAction(tr("&View Character Stats"), this);
+	connect(characterEditorSaveAction, SIGNAL(triggered()), this, SLOT(viewCharacterStats()));
+
+	viewControlsActions = new QAction(tr("&View Controls"), this);
+	connect(viewControlsActions, SIGNAL(triggered()), this, SLOT(viewControls()));
+
+	viewItemsAction = new QAction(tr("&View Items"), this);
+	connect(viewItemsAction, SIGNAL(triggered()), this, SLOT(viewItems()));
+	
+	//// VIEW INVENTORY AND WORN ITEMS
+
+	viewBackpackAction = new QAction(tr("&View Backpack"), this);
+	connect(viewBackpackAction, SIGNAL(triggered()), this, SLOT(viewBackpack()));
+
+	viewWornItemsAction = new QAction(tr("&View Worn Items"), this);
+	connect(viewWornItemsAction, SIGNAL(triggered()), this, SLOT(viewWornItems()));
+
+	/////
+	
 	////Item Editor && Character Movement
 	newItemAction = new QAction(tr("&New Item"), this);
 	connect(newItemAction, SIGNAL(triggered()), this, SLOT(newItem()));
@@ -88,7 +107,7 @@ editscreen::editscreen(char n[])
 	newMoveableMapAction = new QAction(tr("&Play Default Map"), this);
 	connect(newMoveableMapAction, SIGNAL(triggered()), this, SLOT(newGameMap()));
 	////
-	viewMapAction = new QAction(tr("&View Map"), this);
+	viewMapAction = new QAction(tr("&Game Start"), this);
 	connect(viewMapAction, SIGNAL(triggered()), this, SLOT(viewMap()));
 
 	menuCloseAction = new QAction(tr("&Close Menu"), this);
@@ -96,6 +115,8 @@ editscreen::editscreen(char n[])
 
 	editMenu = new QMenu(tr("&Main Menu"), this);
 	editMenu->addAction(campaignMenuAction);
+	
+
 	
 	//// Item Generator && Character Movement
 	editMenu->addAction(newItemAction);
@@ -110,6 +131,7 @@ editscreen::editscreen(char n[])
 	mapMenu->addAction(openMapAction);
 	mapMenu->addAction(resetMapAction);
 	mapMenu->addAction(mapMenuCloseAction);
+	mapMenu->addAction(viewItemsAction);
 	
 	mapNavigatorMenu = new QMenu(tr("&Navigate Maps"), this);
 	mapNavigatorMenu->addAction(nextMapAction);
@@ -131,7 +153,16 @@ editscreen::editscreen(char n[])
 	characterCreatorMenu->addAction(characterEditorSaveAction);
 	characterCreatorMenu->addAction(menuCloseAction);
 
+	gameMenu = new QMenu(tr("&Game Menu"), this);
+	gameMenu->addAction(viewCharacterStatsAction);
 	
+	////Add backpack and worn items to menu
+	gameMenu->addAction(viewBackpackAction);
+	gameMenu->addAction(viewWornItemsAction);
+	////
+
+	viewControlsMenu = new QMenu(tr("View Controls"), this);
+	viewControlsMenu->addAction(viewControlsActions);
 
 	editMenu->setFocusPolicy(Qt::NoFocus);
 	mapMenu->setFocusPolicy(Qt::NoFocus);
@@ -139,6 +170,7 @@ editscreen::editscreen(char n[])
 	mapNavigatorMenu->setFocusPolicy(Qt::NoFocus);
 	characterMenu->setFocusPolicy(Qt::NoFocus);
 	characterCreatorMenu->setFocusPolicy(Qt::NoFocus);
+	gameMenu->setFocusPolicy(Qt::NoFocus);
 
 	createMainMenu();
 }
@@ -254,7 +286,7 @@ void editscreen::editMap()
 
 	//This code allows it so the window cannot be resized by the user
 	this->setFixedWidth(windowResX);
-	this->setFixedHeight((height*resolution) + (resolution * 3) + addedHeight);
+	this->setFixedHeight((height*resolution) + (resolution * 4) + addedHeight);
 	//Creates map editor menu if coming from a higher menu
 	if (currentMenu != "mapeditor")
 	{
@@ -488,7 +520,6 @@ void editscreen::newItem()
 }
 ////
 
-
 //Navigates to previous map in campaign. Displays error if reached beginning
 void editscreen::previousMap()
 {
@@ -579,39 +610,39 @@ void editscreen::loadCampaign()
 //This section is so that the user can see any size of map on screen (roughly) 100x100 max
 int editscreen::checkResolution(int w, int h)
 {
-	if (h > 95)
+	if (h > 80)
 	{
 		return 8;
 	}
-	if (h > 80)
+	if (h > 70)
 	{
 		return 10;
 	}
-	if (h > 60)
+	if (h > 50)
 	{
 		return 12;
 	}
-	if (w > 80 || h > 40)
+	if (w > 80 || h > 35)
 	{
 		return 15;
 	}
-	if (w > 70 || h > 35)
+	if (w > 70 || h > 30)
 	{
 		return 20;
 	}
-	if (w > 60 || h > 30)
+	if (w > 60 || h > 25)
 	{
 		return 25;
 	}
-	if (w > 50 || h > 25)
+	if (w > 50 || h > 20)
 	{
 		return 30;
 	}
-	if (w > 40 || h > 20)
+	if (w > 40 || h > 15)
 	{
 		return 35;
 	}
-	if (w > 30 || h > 15)
+	if (w > 30 || h > 12)
 	{
 		return 40;
 	}
@@ -801,34 +832,57 @@ void editscreen::newGameMap()
 	loop.exec();
 }
 
+//**********************************************
+//
+// GAME START IS HERE IN VIEW MAP
+//
+//**********************************************
 void editscreen::viewMap()
 {
-	//reusing some code from editMap, should implement function to do similar stuff, but lazy
+	//Main implementation of game start code
 	bool ok1;
 	int width, height;
 	int resolution = 50;
 	int addedHeight = 20;
 
-	log = new logic;
+	log = new logic(0, this);
 	log->setEditmode(false);
 
 	QString fileName = "";
-	QString extension = "/Maps";
-	fileName = QFileDialog::getOpenFileName(this, tr("Open Map"), QDir::currentPath().append(extension));
+	QString extension = "/Campaigns";
+	//Asks user which campaign to load
+	fileName = QFileDialog::getOpenFileName(this, tr("Open Campaign"), QDir::currentPath().append(extension));
 	if (fileName != "")
 	{
 		fName = fileName.toStdString();
 	}
 	while (fileName == "")
 	{
-		fileName = QFileDialog::getOpenFileName(this, tr("Open Map"), QDir::currentPath().append(extension));
+		fileName = QFileDialog::getOpenFileName(this, tr("Open Campaign"), QDir::currentPath().append(extension));
 		fName = fileName.toStdString();
 	}
 
-	log->loadMap(fName);
+	log->loadCampaign(fName);
 	width = log->getWidth();
 	height = log->getHeight();
-		
+
+	extension = "/PlayerCharacters";
+	//Asks user which character to load
+	fileName = "";
+	fileName = QFileDialog::getOpenFileName(this, tr("Choose Character"), QDir::currentPath().append(extension));
+	if (fileName != "")
+	{
+		fName = fileName.toStdString();
+	}
+	while (fileName == "")
+	{
+		fileName = QFileDialog::getOpenFileName(this, tr("Choose Character"), QDir::currentPath().append(extension));
+		fName = fileName.toStdString();
+	}
+
+	//Load Character goes here
+	log->loadPlayerCharacter(fName);
+
 	resolution = checkResolution(width, height);
 	log->setResolution(resolution);
 
@@ -836,15 +890,243 @@ void editscreen::viewMap()
 	setWindowTitle(tr("Map Editor"));
 	int windowResX = width*resolution;
 	
-	int windowDisplayHeightAdd = 3 * resolution;
-	int windowDisplayWidthMinimum = 8 * resolution;
+	int windowDisplayHeightAdd = 3 * 50;
+	int windowDisplayWidthMinimum = 12 * resolution;
 
 	if (windowResX < windowDisplayWidthMinimum)
 	{
 		windowResX = windowDisplayWidthMinimum;
 	}
 
+
+	//Menu for the game appears
+	currentMenu = "gamemenu";
+	menuBar()->clear();
+	menuBar()->addMenu(gameMenu);
+	menuBar()->addMenu(viewControlsMenu);
+
 	this->setFixedWidth(windowResX);
 	this->setFixedHeight((height*resolution) + addedHeight + windowDisplayHeightAdd);
 	log->setFocus();
+}
+
+void editscreen::viewControls()
+{
+	messageBox.setText("Use the arrow keys to move during your turn.\n-Can move up to player's movement speed-\n\nPress (N) to advance game when NPC(s) turn.\nDuring Player turn:\n(S) Stops player movement if any move is available.\n(E) Immediately Ends player turn.\n(A) Attack an enemy. (Functionality not fully implemented)\n(L) Loot an adjacent item or chest (Functionality not fully implemented)\n\nCan only do a full attack if the player has not moved.\n\nOnce attack (A) has been selected, pick a direction (arrows) to attack.\nRanged attacks need to be in line with target to attack.");
+	messageBox.exec();
+}
+
+void editscreen::viewItems()
+{
+	log->viewItems();
+}
+
+void editscreen::viewCharacterStats()
+{
+	//Add code to view player stats here (needs to load a seperate widget to see stats possibly)
+}
+
+
+void editscreen::viewBackpack()
+{
+	//Add Interface to view backpack
+	
+	QDialog * d = new QDialog();
+	d->setWindowTitle("Backpack");
+	QLabel *spaceLabel = new QLabel("");
+
+	QVBoxLayout * vbox = new QVBoxLayout();
+
+
+	QFile myTextFile("Resources/backpack.txt");
+	QStringList myStringList;
+
+	if (!myTextFile.open(QIODevice::ReadOnly))
+	{
+		QMessageBox::information(0, "Error opening file", myTextFile.errorString());
+	}
+	else
+	{
+		while (!myTextFile.atEnd())
+		{
+			myStringList.append(myTextFile.readLine());
+		}
+
+		myTextFile.close();
+	}
+
+
+	QListWidget * backpack = new QListWidget();
+
+	backpack->addItems(myStringList);
+
+	QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
+	buttonBox->button(QDialogButtonBox::Ok)->setText("Back");
+
+	QObject::connect(buttonBox, SIGNAL(accepted()), d, SLOT(accept()));
+
+	vbox->addWidget(backpack);
+
+	vbox->addWidget(spaceLabel);
+	vbox->addWidget(buttonBox);
+
+	d->setLayout(vbox);
+
+	int result = d->exec();
+	if (result == QDialog::Accepted)
+	{
+		//Return to Game
+	}
+}
+
+void editscreen::viewWornItems()
+{
+	//Add Interface to view worn Items
+	QDialog * d = new QDialog();
+	d->setWindowTitle("Worn Items");
+	QLabel *spaceLabel = new QLabel("");
+
+	QVBoxLayout * vbox = new QVBoxLayout();
+
+
+	QFile myTextFile("Resources/backpack.txt");
+	QStringList myStringList;
+
+	if (!myTextFile.open(QIODevice::ReadOnly))
+	{
+		QMessageBox::information(0, "Error opening file", myTextFile.errorString());
+	}
+	else
+	{
+
+		while (!myTextFile.atEnd())
+		{
+			myStringList.append(myTextFile.readLine());
+		}
+
+		myTextFile.close();
+	}
+
+	
+	QLabel *helmetLabel = new QLabel("Helmet");
+	QComboBox * comboBoxHelmet = new QComboBox();
+	comboBoxHelmet->addItems(myStringList);
+
+
+	QLabel *armorLabel = new QLabel("Armor");
+	QComboBox * comboBoxArmor = new QComboBox();
+	comboBoxArmor->addItems(myStringList);
+
+	QLabel *shieldLabel = new QLabel("Shield");
+	QComboBox * comboBoxShield = new QComboBox();
+	comboBoxShield->addItems(myStringList);
+
+	QLabel *ringLabel = new QLabel("Ring");
+	QComboBox * comboBoxRing = new QComboBox();
+	comboBoxRing->addItems(myStringList);
+
+	QLabel *beltLabel = new QLabel("Belt");
+	QComboBox * comboBoxBelt = new QComboBox();
+	comboBoxBelt->addItems(myStringList);
+
+
+	QLabel *bootsLabel = new QLabel("Boots");
+	QComboBox * comboBoxBoots = new QComboBox();
+	comboBoxBoots->addItems(myStringList);
+
+	QLabel *weaponLabel = new QLabel("Weapon");
+	QComboBox * comboBoxWeapon = new QComboBox();
+	comboBoxWeapon->addItems(myStringList);
+
+
+	QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
+		| QDialogButtonBox::Cancel);
+
+	QObject::connect(buttonBox, SIGNAL(accepted()), d, SLOT(accept()));
+	QObject::connect(buttonBox, SIGNAL(rejected()), d, SLOT(reject()));
+
+	buttonBox->button(QDialogButtonBox::Ok)->setText("Equip");
+	buttonBox->button(QDialogButtonBox::Cancel)->setText("Back");
+
+	comboBoxHelmet->setMinimumHeight(30);
+	comboBoxArmor->setMinimumHeight(30);
+	comboBoxShield->setMinimumHeight(30);
+	comboBoxRing->setMinimumHeight(30);
+	comboBoxBelt->setMinimumHeight(30);
+	comboBoxBoots->setMinimumHeight(30);
+	comboBoxWeapon->setMinimumHeight(30);
+
+	vbox->addWidget(helmetLabel);
+	vbox->addWidget(comboBoxHelmet);
+
+	vbox->addWidget(armorLabel);
+	vbox->addWidget(comboBoxArmor);
+
+	
+	vbox->addWidget(shieldLabel);
+	vbox->addWidget(comboBoxShield);
+
+	vbox->addWidget(ringLabel);
+	vbox->addWidget(comboBoxRing);
+
+	
+	vbox->addWidget(beltLabel);
+	vbox->addWidget(comboBoxBelt);
+
+	vbox->addWidget(bootsLabel);
+	vbox->addWidget(comboBoxBoots);
+
+	vbox->addWidget(weaponLabel);
+	vbox->addWidget(comboBoxWeapon);
+
+	vbox->addWidget(spaceLabel);
+	vbox->addWidget(buttonBox);
+
+	d->setLayout(vbox);
+
+	int result = d->exec();
+	if (result == QDialog::Accepted)
+	{
+
+		itemContainer ic;
+
+		std::string lineHelmet = comboBoxHelmet->currentText().toUtf8().constData();
+		size_t found = lineHelmet.find("|");
+		lineHelmet = lineHelmet.substr(0, found);
+
+		std::string lineArmor = comboBoxArmor->currentText().toUtf8().constData();
+		found = lineArmor.find("|");
+		lineArmor = lineArmor.substr(0, found);
+
+		std::string lineShield = comboBoxShield->currentText().toUtf8().constData();
+		found = lineShield.find("|");
+		lineShield = lineShield.substr(0, found);
+
+		std::string lineRing = comboBoxRing->currentText().toUtf8().constData();
+		found = lineRing.find("|");
+		lineRing = lineRing.substr(0, found);
+
+		std::string lineBelt = comboBoxBelt->currentText().toUtf8().constData();
+		found = lineBelt.find("|");
+		lineBelt = lineBelt.substr(0, found);
+
+		std::string lineBoots = comboBoxBoots->currentText().toUtf8().constData();
+		found = lineBoots.find("|");
+		lineBoots = lineBoots.substr(0, found);
+
+		std::string lineWeapon = comboBoxWeapon->currentText().toUtf8().constData();
+		found = lineWeapon.find("|");
+		lineWeapon = lineWeapon.substr(0, found);
+
+
+		ic.addItemWorn(stoi(lineHelmet));
+		ic.addItemWorn(stoi(lineArmor));
+		ic.addItemWorn(stoi(lineShield));
+		ic.addItemWorn(stoi(lineRing));
+		ic.addItemWorn(stoi(lineBelt));
+		ic.addItemWorn(stoi(lineBoots));
+		ic.addItemWorn(stoi(lineWeapon));
+
+	}
+	
 }

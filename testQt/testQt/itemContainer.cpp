@@ -87,7 +87,6 @@ string itemContainer::getName(string filePath, int id)
 string itemContainer::getEnchantment(string filePath, int id)
 {
 
-
 	ifstream file(filePath);
 	string str;
 	string file_contents;
@@ -121,7 +120,7 @@ string itemContainer::getEnchantment(string filePath, int id)
 void itemContainer::addItemBackpack(int id)
 {
 
-	ifstream file("includes/items.txt");
+	ifstream file("Resources/items.txt");
 	string str;
 	string file_contents;
 	string symbol = "|";
@@ -140,22 +139,17 @@ void itemContainer::addItemBackpack(int id)
 	file.close();
 
 	ofstream myfile;
-	myfile.open("includes/backpack.txt", std::ios_base::app);
+	myfile.open("Resources/backpack.txt", std::ios_base::app);
 	myfile << file_contents;
 	myfile.close();
 
 }
 
 
-
-
-
-
-
 //Accepts the Id of the item to be removed
 void itemContainer::removeItemBackpack(int id)
 {
-	ifstream file("includes/backpack.txt");
+	ifstream file("Resources/backpack.txt");
 	string str;
 	string file_contents;
 	string symbol = "|";
@@ -174,7 +168,7 @@ void itemContainer::removeItemBackpack(int id)
 	file.close();
 
 	ofstream myfile;
-	myfile.open("includes/backpack.txt");
+	myfile.open("Resources/backpack.txt");
 	myfile << file_contents;
 	myfile.close();
 
@@ -184,7 +178,7 @@ void itemContainer::removeItemBackpack(int id)
 void itemContainer::addItemWorn(int id)
 {
 
-	ifstream file("includes/items.txt");
+	ifstream file("Resources/items.txt");
 	string str;
 	string file_contents;
 	string symbol = "|";
@@ -233,8 +227,7 @@ void itemContainer::addItemWorn(int id)
 		itemType = 6;
 
 
-
-	ifstream myfile("includes/wornItems.txt");
+	ifstream myfile("Resources/wornItems.txt");
 	
 	string new1;
 	string fc;
@@ -255,19 +248,12 @@ void itemContainer::addItemWorn(int id)
 
 	myfile.close();
 
-	ofstream writer("includes/wornItems.txt");
+	ofstream writer("Resources/wornItems.txt");
 	writer << fc;
 	writer.close();
-
-
-
-
-
-
-
-
-
 }
+
+
 void itemContainer::removeItemWorn(string file_contents2)
 {
 	
@@ -295,7 +281,7 @@ void itemContainer::removeItemWorn(string file_contents2)
 		itemType = 6;
 
 
-	ifstream myfile("includes/wornItems.txt");
+	ifstream myfile("Resources/wornItems.txt");
 	string new1;
 	string fc;
 	int count = 0;
@@ -316,7 +302,7 @@ void itemContainer::removeItemWorn(string file_contents2)
 	myfile.close();
 
 
-	ofstream writer("includes/wornItems.txt");
+	ofstream writer("Resources/wornItems.txt");
 	writer << fc;
 	writer.close();
 
