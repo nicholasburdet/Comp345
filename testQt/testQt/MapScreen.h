@@ -113,7 +113,8 @@ private:
 	//Number of NPCs on the map
 	int numberOfNPCs = 0;
 	int numberOfDistinctNPCs = 0; //This is just for id tracking
-	
+	int numberOfRemovedNPCs = 0; //This is a dumb workaround for not refactoring a ton of code
+
 	int numberOfItems = 0;
 	int numberOfChests = 0;
 

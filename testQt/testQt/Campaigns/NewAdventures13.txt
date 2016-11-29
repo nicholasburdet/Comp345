@@ -1,4 +1,0 @@
-NewAdventures 13 numberOfMaps 3
-id 0 fname NewAdventures13m0FirstMap.txt
-id 1 fname NewAdventures13m1SecondMap.txt
-id 2 fname NewAdventures13m2hallway.txt

@@ -233,6 +233,7 @@ void logic::mousePressEvent(QMouseEvent *event)
 						if (ms.isOccupied(currentX / resolution, currentY / resolution))
 						{
 							ms.removeNPC(currentX / resolution, currentY / resolution);
+							ms.removeItem(currentX / resolution, currentY / resolution);
 						}
 						update(rect);
 						clicked = true;
@@ -243,6 +244,7 @@ void logic::mousePressEvent(QMouseEvent *event)
 						if (ms.isOccupied(currentX / resolution, currentY / resolution))
 						{
 							ms.removeNPC(currentX / resolution, currentY / resolution);
+							ms.removeItem(currentX / resolution, currentY / resolution);
 						}
 						update(rect);
 						clicked = true;
@@ -255,6 +257,7 @@ void logic::mousePressEvent(QMouseEvent *event)
 						if (ms.isOccupied(currentX / resolution, currentY / resolution))
 						{
 							ms.removeNPC(currentX / resolution, currentY / resolution);
+							ms.removeItem(currentX / resolution, currentY / resolution);
 						}
 						rect = QRect(ms.getStartX()*resolution, ms.getStartY()*resolution, resolution + 1, resolution + 1);
 						oldStartX = ms.getStartX()*resolution;
@@ -276,6 +279,7 @@ void logic::mousePressEvent(QMouseEvent *event)
 						if (ms.isOccupied(currentX / resolution, currentY / resolution))
 						{
 							ms.removeNPC(currentX / resolution, currentY / resolution);
+							ms.removeItem(currentX / resolution, currentY / resolution);
 						}
 						rect = QRect(ms.getEndX()*resolution, ms.getEndY()*resolution, resolution + 1, resolution + 1);
 						oldEndX = ms.getEndX()*resolution;
@@ -298,6 +302,7 @@ void logic::mousePressEvent(QMouseEvent *event)
 								if (ms.isOccupied(currentX / resolution, currentY / resolution))
 								{
 									ms.removeNPC(currentX / resolution, currentY / resolution);
+									ms.removeItem(currentX / resolution, currentY / resolution);
 								}
 								ms.addNPC(npcId, currentX / resolution, currentY / resolution);
 								drawNPC = true;
@@ -309,6 +314,11 @@ void logic::mousePressEvent(QMouseEvent *event)
 						//Mode 6 is ITEM placement
 						if (ms.isPassable(currentX / resolution, currentY / resolution))
 						{
+							if (ms.isOccupied(currentX / resolution, currentY / resolution))
+							{
+								ms.removeNPC(currentX / resolution, currentY / resolution);
+								ms.removeItem(currentX / resolution, currentY / resolution);
+							}
 							string selectedItem = addItem();
 							drawItem = true;
 							update(rect);
@@ -319,8 +329,9 @@ void logic::mousePressEvent(QMouseEvent *event)
 						//Mode 7 is CHEST placement
 						if (ms.isPassable(currentX / resolution, currentY / resolution))
 						{
-							drawChest = true;
-							update(rect);
+							//Disabled for now
+							//drawChest = true;
+							//update(rect);
 						}
 					}
 				}
@@ -1089,7 +1100,8 @@ void logic::keyPressEvent(QKeyEvent *event)
 						}
 						else
 						{
-							//You win code here
+							message.setText("Congratulations! You have reached the end of the campaign!");
+							message.exec();
 						}
 					}
 				}

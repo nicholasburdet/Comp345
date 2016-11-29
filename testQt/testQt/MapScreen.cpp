@@ -445,7 +445,7 @@ void MapScreen::saveToFile()
 	{
 		if (mapItems[index].itemName != "NULL")
 		{
-			output << "itemX" << " " << mapItems[index].itemX << " " << "itemY" << " " << mapItems[index].itemY << " " << "itemID" << mapItems[index].itemID << endl; 
+			output << "itemX" << " " << mapItems[index].itemX << " " << "itemY" << " " << mapItems[index].itemY << " " << "itemID" << " " << mapItems[index].itemID << endl; 
 			count++;
 		}
 		index++;
@@ -595,22 +595,25 @@ void MapScreen::removeNPC(int xPos, int yPos)
 	int count = 0;
 	bool found = false;
 
-	spaces[xPos][yPos].occupied = false;
 
-	while (!found)
+	for(int i = 0; i < numberOfNPCs+numberOfRemovedNPCs; i++)
 	{
-		if (characterEntities[index].getName() != "NULL")
+		if (characterEntities[i].getName() != "NULL")
 		{
-			if (characterEntities[index].getX() == xPos && characterEntities[index].getY() == yPos)
+			if (characterEntities[i].getX() == xPos && characterEntities[i].getY() == yPos)
 			{
 				found = true;
-				characterEntities[index] = character(); //Fills with empty character
+				characterEntities[i] = character(); //Fills with empty character
 			}
 		}
-		index++;
 	}
 
-	numberOfNPCs--;
+	if (found)
+	{
+		numberOfRemovedNPCs++;
+		numberOfNPCs--;
+		spaces[xPos][yPos].occupied = false;
+	}
 	if (numberOfNPCs < 0)
 	{
 		numberOfNPCs = 0; //Potentially useless
@@ -968,6 +971,8 @@ void MapScreen::addItem(int x, int y, string itemText)
 
 	tempItem.itemID = atoi(sID.c_str());
 
+	setOccupied(x, y, true);
+
 	mapItems.push_back(tempItem);
 	numberOfItems++;
 }
@@ -986,6 +991,7 @@ void MapScreen::removeItem(int x, int y)
 	{
 		mapItems.erase(mapItems.begin()+index);
 		numberOfItems--;
+		setOccupied(x, y, false);
 	}
 }
 
