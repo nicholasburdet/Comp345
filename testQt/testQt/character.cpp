@@ -310,7 +310,7 @@ std::vector<int> character::getAttackBonusList()
 {
 	int n_attack = getAttackPerRound();
 
-	std::vector<int> attackBonuses=vector<int>();
+	std::vector<int> attackBonuses;
 
 	for (int i = 0; i < n_attack; i++) {
 		attackBonuses.push_back(getAttackBonus(i));

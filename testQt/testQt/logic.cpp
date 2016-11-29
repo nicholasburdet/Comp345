@@ -899,6 +899,10 @@ void logic::keyPressEvent(QKeyEvent *event)
 				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
 				
 				combatLog.addToLog(chatText);
+				string combatString = "Weapon Damage: ";
+				combatString.append(std::to_string(ms.playerCharacter.getNumberOfWeaponDice())).append("d").append(std::to_string(ms.playerCharacter.getWeaponDice())).append("+").append(std::to_string(ms.playerCharacter.getDamageBonus()));
+				combatString.append(" Attack Roll: (d20)");
+				combatLog.addToLog(combatString);
 				textChange = true;
 				update(rect);
 			}
