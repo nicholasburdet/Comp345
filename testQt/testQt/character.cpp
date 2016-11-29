@@ -8,6 +8,11 @@ ID:26639569
 
 COMP 345 Assignment 3: Character Builder
 
+Added to this file: 
+-GetAttackBonusLst returns a list of attack bonuses, given by the table (as provided in the requirement) plus an ability bonus (based on strength if using short-range weapon and dexterity otherwise)
+-Data sanitation in setLevel
+-Various others, unrelated to assignment requirements
+
 
 */
 

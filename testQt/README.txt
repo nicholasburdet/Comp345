@@ -18,3 +18,5 @@ The files related to this specific assignment are:
 
 -editScreen.cpp (from where the observer and builder are used to create new characters)
 
+
+To test the character Builder, open the character creation menu and simply set the parameters to any wanted value
