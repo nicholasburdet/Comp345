@@ -979,6 +979,8 @@ void editscreen::viewBackpack()
 
 	QObject::connect(buttonBox, SIGNAL(accepted()), d, SLOT(accept()));
 
+	backpack->setMinimumWidth(400);
+	backpack->setMinimumHeight(400);
 	vbox->addWidget(backpack);
 
 	vbox->addWidget(spaceLabel);
@@ -1006,6 +1008,15 @@ void editscreen::viewWornItems()
 	QFile myTextFile("Resources/backpack.txt");
 	QStringList myStringList;
 
+	QStringList helmetList;
+	QStringList armorList;
+	QStringList shieldList;
+	QStringList ringList;
+	QStringList beltList;
+	QStringList bootsList;
+	QStringList weaponList;
+
+
 	if (!myTextFile.open(QIODevice::ReadOnly))
 	{
 		QMessageBox::information(0, "Error opening file", myTextFile.errorString());
@@ -1015,7 +1026,54 @@ void editscreen::viewWornItems()
 
 		while (!myTextFile.atEnd())
 		{
-			myStringList.append(myTextFile.readLine());
+			QString tempLine = myTextFile.readLine();
+
+			myStringList.append(tempLine);
+
+			//myTextFile.readLine().find("|");
+
+
+			//QString s_data = QString::fromAscii(myTextFile.readLine());
+
+			//QString(myTextFile.readLine());
+
+			string newLine = QString(tempLine).toUtf8().constData();
+
+
+			//QInputDialog::getText(this, newLine, myTextFile.readLine(), QLineEdit::Normal, "", &ok1);
+			
+
+			std::size_t found = newLine.find("|");
+			newLine = newLine.substr(found + 1, newLine.length());
+			found = newLine.find("|");
+			newLine = newLine.substr(0, found);
+
+
+			bool ok1;
+
+			
+			
+			if (string(newLine) == "Helmet")
+				helmetList.append(tempLine);
+
+			if (string(newLine) == "Armor")
+				armorList.append(tempLine);
+
+			if (string(newLine) == "Shield")
+				shieldList.append(tempLine);
+
+			if (string(newLine) == "Ring")
+				ringList.append(tempLine);
+
+			if (string(newLine) == "Belt")
+				beltList.append(tempLine);
+
+			if (string(newLine) == "Boots")
+				bootsList.append(tempLine);
+
+			if (string(newLine) == "Weapon")
+				weaponList.append(tempLine);
+
 		}
 
 		myTextFile.close();
@@ -1024,33 +1082,33 @@ void editscreen::viewWornItems()
 	
 	QLabel *helmetLabel = new QLabel("Helmet");
 	QComboBox * comboBoxHelmet = new QComboBox();
-	comboBoxHelmet->addItems(myStringList);
+	comboBoxHelmet->addItems(helmetList);
 
 
 	QLabel *armorLabel = new QLabel("Armor");
 	QComboBox * comboBoxArmor = new QComboBox();
-	comboBoxArmor->addItems(myStringList);
+	comboBoxArmor->addItems(armorList);
 
 	QLabel *shieldLabel = new QLabel("Shield");
 	QComboBox * comboBoxShield = new QComboBox();
-	comboBoxShield->addItems(myStringList);
+	comboBoxShield->addItems(shieldList);
 
 	QLabel *ringLabel = new QLabel("Ring");
 	QComboBox * comboBoxRing = new QComboBox();
-	comboBoxRing->addItems(myStringList);
+	comboBoxRing->addItems(ringList);
 
 	QLabel *beltLabel = new QLabel("Belt");
 	QComboBox * comboBoxBelt = new QComboBox();
-	comboBoxBelt->addItems(myStringList);
+	comboBoxBelt->addItems(beltList);
 
 
 	QLabel *bootsLabel = new QLabel("Boots");
 	QComboBox * comboBoxBoots = new QComboBox();
-	comboBoxBoots->addItems(myStringList);
+	comboBoxBoots->addItems(bootsList);
 
 	QLabel *weaponLabel = new QLabel("Weapon");
 	QComboBox * comboBoxWeapon = new QComboBox();
-	comboBoxWeapon->addItems(myStringList);
+	comboBoxWeapon->addItems(weaponList);
 
 
 	QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
