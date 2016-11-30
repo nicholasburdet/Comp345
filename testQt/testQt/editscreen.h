@@ -46,7 +46,8 @@ public slots:
 	void viewMap();
 	void viewControls();
 	void viewItems();
-	
+	void quitGame();
+
 	void viewBackpack();
 	void viewWornItems();
 
@@ -101,6 +102,7 @@ private:
 	QAction *viewMapAction;
 	QAction *viewControlsActions;
 	QAction *viewItemsAction;
+	QAction *quitGameAction;
 	
 	QAction *viewBackpackAction;
 	QAction *viewWornItemsAction;

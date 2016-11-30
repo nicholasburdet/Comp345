@@ -37,8 +37,11 @@ using namespace std;
 //Initialize all menus here upon class initialization
 editscreen::editscreen(char n[])
 {
-	this->setFixedWidth(400);
-	this->setFixedHeight(200);
+	QPixmap backing("Images/background.jpg");
+	backing = backing.scaled(this->size(), Qt::IgnoreAspectRatio);
+	QPalette pal;
+	pal.setBrush(QPalette::Background, backing);
+	this->setPalette(pal);
 	
 	setFocusPolicy(Qt::NoFocus);
 	
@@ -92,6 +95,9 @@ editscreen::editscreen(char n[])
 
 	viewItemsAction = new QAction(tr("&View Items"), this);
 	connect(viewItemsAction, SIGNAL(triggered()), this, SLOT(viewItems()));
+
+	quitGameAction = new QAction(tr("&Quit Game"), this);
+	connect(quitGameAction, SIGNAL(triggered()), this, SLOT(quitGame()));
 	
 	//// VIEW INVENTORY AND WORN ITEMS
 
@@ -163,6 +169,7 @@ editscreen::editscreen(char n[])
 	gameMenu->addAction(viewBackpackAction);
 	gameMenu->addAction(viewWornItemsAction);
 	////
+	gameMenu->addAction(quitGameAction);
 
 	viewControlsMenu = new QMenu(tr("View Controls"), this);
 	viewControlsMenu->addAction(viewControlsActions);
@@ -584,6 +591,8 @@ void editscreen::characterMenuClose()
 void editscreen::mapMenuClose()
 {
 	log->closeWindow();
+	this->setFixedWidth(400);
+	this->setFixedHeight(200);
 	createCampaignMenus();
 }
 
@@ -616,6 +625,33 @@ void editscreen::loadCampaign()
 	}
 
 	editMap();
+}
+
+void editscreen::quitGame()
+{
+	QDialog * d = new QDialog();
+	d->setWindowTitle("Are you sure you want to quit?");
+
+	QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
+		| QDialogButtonBox::Cancel);
+
+	QObject::connect(buttonBox, SIGNAL(accepted()), d, SLOT(accept()));
+	QObject::connect(buttonBox, SIGNAL(rejected()), d, SLOT(reject()));
+
+	buttonBox->button(QDialogButtonBox::Ok)->setText("Quit");
+	buttonBox->button(QDialogButtonBox::Cancel)->setText("Cancel");
+
+	QVBoxLayout * vbox = new QVBoxLayout();
+
+	vbox->addWidget(buttonBox);
+	d->setLayout(vbox);
+
+	int result = d->exec();
+	if (result == QDialog::Accepted)
+	{
+		log->closeWindow();
+		createMainMenu();
+	}
 }
 
 //This section is so that the user can see any size of map on screen (roughly) 100x100 max
@@ -665,6 +701,9 @@ void editscreen::createMainMenu()
 {
 	menuBar()->clear();
 	menuBar()->addMenu(editMenu);
+	this->setFixedWidth(400);
+	this->setFixedHeight(200);
+
 }
 
 void editscreen::createEditorMenus()

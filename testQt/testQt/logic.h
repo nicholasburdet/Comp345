@@ -80,7 +80,7 @@ class logic : public QWidget
 
 		int currentX;
 		int currentY;
-		QPixmap currentTile = QPixmap("C:/Users/Nick/Desktop/Images/grass.png");
+		QPixmap currentTile = QPixmap("Images/grass.png");
 		
 		//This will be the mode checking for tiles
 		int mode = 1; 
