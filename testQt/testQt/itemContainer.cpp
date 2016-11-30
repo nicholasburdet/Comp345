@@ -175,7 +175,7 @@ void itemContainer::removeItemBackpack(int id)
 }
 
 
-void itemContainer::addItemWorn(int id)
+void itemContainer::addItemWorn(int id,string dirName)
 {
 
 	ifstream file("Resources/items.txt");
