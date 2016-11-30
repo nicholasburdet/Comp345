@@ -348,6 +348,30 @@ int character::getShieldBonus()
 	return shieldBonus;
 }
 
+void character::takeDamage(int dmg)
+{
+	currentHP = currentHP - dmg;
+	if (currentHP <= 0)
+	{
+		alive = false;
+	}
+}
+
+bool character::getDamageTaken()
+{
+	if (damageTaken)
+	{
+		damageTaken = false;
+		return true;
+	}
+	return false;
+}
+
+bool character::getAlive()
+{
+	return alive;
+}
+
 int character::getModifier(int abilityScore) {
 	return (abilityScore - 10) / 2;
 }

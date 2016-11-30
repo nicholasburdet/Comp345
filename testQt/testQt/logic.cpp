@@ -459,6 +459,7 @@ void logic::paintEvent(QPaintEvent *event)
 		//Draws log background if not in editmode (for gameplay)
 		if (!editMode)
 		{
+			painter.setPen(QPen(Qt::white));
 			QString textWindow;
 			painter.drawPixmap(0, yRes, minX*resolution, 150, logBackground);
 			int logStart = combatLog.getLogLength() - 13;
@@ -474,6 +475,7 @@ void logic::paintEvent(QPaintEvent *event)
 				painter.drawText(12, ms.getMaxY()*resolution + 20 + (10 * count), textWindow);
 				count++;
 			}
+			painter.setPen(QPen(Qt::black));
 		}
 		//Builds the tiles onto the screen from the map object. As of right now, there are only 4 tiles that exist
 		//for the map. Grass->passable, Dirt->not passable, Entrance and Exit.
@@ -728,6 +730,7 @@ void logic::paintEvent(QPaintEvent *event)
 
 	if(textChange)
 	{
+		painter.setPen(QPen(Qt::white));
 		QString textWindow;
 		painter.drawPixmap(0, yRes, minX*resolution, 150, logBackground);
 		int logStart = combatLog.getLogLength() - 13;
@@ -745,6 +748,7 @@ void logic::paintEvent(QPaintEvent *event)
 		}
 		
 		textChange = false;
+		painter.setPen(QPen(Qt::black));
 	}
 }
 
@@ -914,15 +918,23 @@ void logic::keyPressEvent(QKeyEvent *event)
 				int adjX = ms.getCurrentX();
 				int adjY = ms.getCurrentY() - 1;
 				string dir = "up";
+				character enemy;
 				//Checks bounds
 				if (adjY > 0)
 				{
 					attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
+					enemy = ms.getCharacter(adjX, adjY);
 				}
 				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
 				combatLog.addToLog(attackMessage);
-				textChange = true;
-				update(rect);
+				
+				if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
+				{
+					combatLog.addToLog("Enemy defeated!");
+					ms.removeNPC(enemy.getX(), enemy.getY());
+					start = true;
+					update();
+				}
 
 				string chatText = "Player turn has ended.";
 				npcTurn++;
@@ -942,16 +954,24 @@ void logic::keyPressEvent(QKeyEvent *event)
 				string attackMessage;
 				int adjX = ms.getCurrentX();
 				int adjY = ms.getCurrentY() + 1;
+				character enemy;
 				//Checks bounds
 				string dir = "down";
 				if (adjY < ms.getMaxY()-1)
 				{
 					attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
+					enemy = ms.getCharacter(adjX, adjY);
 				}
 				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
 				combatLog.addToLog(attackMessage);
-				textChange = true;
-				update(rect);
+
+				if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
+				{
+					combatLog.addToLog("Enemy defeated!");
+					ms.removeNPC(enemy.getX(), enemy.getY());
+					start = true;
+					update();
+				}
 
 				string chatText = "Player turn has ended.";
 				npcTurn++;
@@ -972,15 +992,23 @@ void logic::keyPressEvent(QKeyEvent *event)
 				int adjX = ms.getCurrentX() - 1;
 				int adjY = ms.getCurrentY();
 				string dir = "left";
+				character enemy;
 				//Checks bounds
 				if (adjX > 0)
 				{
 					attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
+					enemy = ms.getCharacter(adjX, adjY);
 				}
 				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
 				combatLog.addToLog(attackMessage);
-				textChange = true;
-				update(rect);
+
+				if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
+				{
+					combatLog.addToLog("Enemy defeated!");
+					ms.removeNPC(enemy.getX(), enemy.getY());
+					start = true;
+					update();
+				}
 
 				string chatText = "Player turn has ended.";
 				npcTurn++;
@@ -1001,15 +1029,24 @@ void logic::keyPressEvent(QKeyEvent *event)
 				int adjX = ms.getCurrentX() + 1;
 				int adjY = ms.getCurrentY();
 				string dir = "right";
+				character enemy;
 				//Checks bounds
 				if (adjX < ms.getMaxX() - 1)
 				{
 					attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
+					enemy = ms.getCharacter(adjX, adjY);
 				}
+
 				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
 				combatLog.addToLog(attackMessage);
-				textChange = true;
-				update(rect);
+
+				if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
+				{
+					combatLog.addToLog("Enemy defeated!");
+					ms.removeNPC(enemy.getX(), enemy.getY());
+					start = true;
+					update();
+				}
 
 				string chatText = "Player turn has ended.";
 				npcTurn++;

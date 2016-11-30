@@ -167,6 +167,11 @@ public:
 	int getWeaponDice();
 	int getShieldBonus();
 
+	void takeDamage(int dmg);
+	bool getDamageTaken();
+	bool getAlive();
+	bool damageTaken = false;
+
 private:
 	int id;
 	string name = "NULL";
@@ -192,6 +197,8 @@ private:
 	int initiative = 0;
 	int currentInitiativeRoll = 0;
 	bool playerCharacter = false;
+	
+	bool alive = true;
 
 	string type = ""; //Will eventually be "player", "friendly" or "hostile"
 

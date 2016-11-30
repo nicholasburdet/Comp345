@@ -878,7 +878,11 @@ string MapScreen::playerAttack(int sX, int sY, string dir, bool fullAttack)
 			{
 				combatText.append(" Crit! ");
 				damageRoll = damageRoll * 2;
+				damageDone =+ damageRoll;
 				combatText.append(std::to_string(damageRoll)).append("dmg! ");
+				//Calculate damage here
+				characterEntities[foundNPC].takeDamage(damageDone);
+				characterEntities[foundNPC].damageTaken = true;
 			}
 			else
 			{
@@ -888,6 +892,10 @@ string MapScreen::playerAttack(int sX, int sY, string dir, bool fullAttack)
 					combatText.append(std::to_string(attackBonuses[a]));
 					combatText.append(" Hit ");
 					combatText.append(std::to_string(damageRoll)).append("dmg! ");
+					damageDone = +damageRoll;
+					//Calculate damage here
+					characterEntities[foundNPC].takeDamage(damageDone);
+					characterEntities[foundNPC].damageTaken = true;
 				}
 				else
 				{
@@ -897,6 +905,7 @@ string MapScreen::playerAttack(int sX, int sY, string dir, bool fullAttack)
 				}
 			}
 		}
+		
 		//NPCs that are friendly will become hostile when attacked
 		if (characterEntities[foundNPC].getType() == "friendly")
 		{
@@ -1063,6 +1072,20 @@ string MapScreen::getItem(int x, int y)
 		}
 	}
 	return foundItem;
+}
+
+character MapScreen::getCharacter(int x, int y)
+{
+	character c = character();
+	for (int i = 0; i < numberOfNPCs + numberOfRemovedNPCs; i++)
+	{
+		if (characterEntities[i].getX() == x && characterEntities[i].getY() == y)
+		{
+			return characterEntities[i];
+		}
+	}
+	
+	return c;
 }
 
 //Loot item at X,Y (return item and remove from map)

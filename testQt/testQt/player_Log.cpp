@@ -9,10 +9,6 @@ player_Log::player_Log(void)
 void player_Log::addToLog(string logEntry)
 {
 	logLength++;
-	if (logLength > log.capacity())
-	{
-		log.resize(log.capacity() + 5);
-	}
 	log.push_back(logEntry);
 }
 

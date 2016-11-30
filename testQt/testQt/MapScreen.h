@@ -95,6 +95,7 @@ public:
 	string lootItems(int x, int y);
 	bool checkItem(int x, int y);
 	string getItem(int x, int y);
+	character getCharacter(int x, int y);
 
 private:
 	//current X and Y can be used for the player location (?)
