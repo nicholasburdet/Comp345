@@ -1290,13 +1290,13 @@ void editscreen::viewWornItems()
 		lineWeapon = lineWeapon.substr(0, found);
 
 
-		ic.addItemWorn(stoi(lineHelmet));
-		ic.addItemWorn(stoi(lineArmor));
-		ic.addItemWorn(stoi(lineShield));
-		ic.addItemWorn(stoi(lineRing));
-		ic.addItemWorn(stoi(lineBelt));
-		ic.addItemWorn(stoi(lineBoots));
-		ic.addItemWorn(stoi(lineWeapon));
+		ic.addItemWorn(stoi(lineHelmet),playerFile);
+		ic.addItemWorn(stoi(lineArmor), playerFile);
+		ic.addItemWorn(stoi(lineShield), playerFile);
+		ic.addItemWorn(stoi(lineRing), playerFile);
+		ic.addItemWorn(stoi(lineBelt), playerFile);
+		ic.addItemWorn(stoi(lineBoots), playerFile);
+		ic.addItemWorn(stoi(lineWeapon), playerFile);
 
 
 		QDialog * d = new QDialog();
