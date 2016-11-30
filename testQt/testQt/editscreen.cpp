@@ -1099,7 +1099,7 @@ void editscreen::viewWornItems()
 
 	QString s1 = "Resources/";
 	QString s2 = QString::fromStdString(playerFile);
-	QString s3 = "wornItems.txt";
+	QString s3 = "backpack.txt";
 	QString s4 = s1 + s2 + s3;
 	QFile myTextFile(s4);
 	
