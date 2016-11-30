@@ -33,7 +33,7 @@ public:
 	void removeItemBackpack(int rnd);
 
 	//For the character worn item container
-	void addItemWorn(int id);
+	void addItemWorn(int id,string dirName);
 	void removeItemWorn(string itemType);
 	
 };
