@@ -195,7 +195,7 @@ int character::levelUp(int incAmount = 1) {
 	level += incAmount;
 	HP += getModifier(abilities.constitution)*incAmount;
 
-	currentHP = HP;
+	currentHP = HP + currentEquipment.equipConstitution*level;
 	notifyObservers();
 
 	return HP;

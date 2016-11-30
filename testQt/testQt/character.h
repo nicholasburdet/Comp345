@@ -96,8 +96,6 @@ public:
 
 	void setImage(std::string im);
 
-
-
 	void setX(int x);
 	void setY(int y);
 
