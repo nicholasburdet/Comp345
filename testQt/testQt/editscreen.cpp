@@ -369,15 +369,10 @@ void editscreen::newItem()
 
 	int temp = atoi(str2.c_str());
 	temp = temp + 1;
-
-
-
-
 	
 	items << tr("Helmet") << tr("Armor") << tr("Shield") << tr("Ring") << tr("Belt") << tr("Boots") << tr("Weapon");
 
 	QString itemType = QInputDialog::getItem(this, tr("QInputDialog::getItem()"),tr("Select Item Type:"), items, 0, false, &ok1);
-
 
 	//Currently has to be typed out -- at a later date it'll be a combo box to prevent errors and to improve the ux
 	//QString itemType = QInputDialog::getText(this, tr("Item Type"), tr("Enter Item Type: Helmet, Armor, Shield, Ring, Belt, Boots, Weapon"), QLineEdit::Normal, "", &ok1);

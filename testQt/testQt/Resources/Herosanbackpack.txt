@@ -1,10 +1,9 @@
 1|Helmet|Full Helmet|Wisdom|4|Heavy
 2|Armor|Half Platebody||0|Heavy
-3|Weapon|Sword||0|1d4
-5|Ring|Ruby Ring|Armor Class|2|Light
-6|Ring|Emerald Ring|Armor Class|0|Light
 7|Shield|Kiteshield|Armor Class|3|Heavy
+5|Ring|Ruby Ring|Armor Class|2|Light
 8|Belt|Titanium Belt|Strength|1|Heavy
 9|Boots|Rugged boots||0|Heavy
-10|Shield|Large Shield|Armor Class|4|Medium
-11|Weapon|Long Sword|Attack Bonus|2|1d12
+11|Weapon|Long Sword|Attack Bonus|2|1d122|Armor|Half Platebody||0|Heavy
+2|Armor|Half Platebody||0|Heavy
+2|Armor|Half Platebody||0|Heavy

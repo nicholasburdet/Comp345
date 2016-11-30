@@ -1082,9 +1082,13 @@ void logic::keyPressEvent(QKeyEvent *event)
 					string itemLeft = ms.lootItems(ms.getCurrentX() - 1, ms.getCurrentY());
 					string itemRight = ms.lootItems(ms.getCurrentX() + 1, ms.getCurrentY());
 
-					/********************************************************************
-					Add to appropriate BACKPACK here when its ready!!
-					********************************************************************/
+					ofstream addItems;
+					string addItemsFile = "Resources/";
+					string playerN = ms.playerCharacter.getName();
+					playerN.erase(std::remove(playerN.begin(), playerN.end(), ' '), playerN.end()); //Because of a stupid issue
+					addItemsFile.append(playerN);
+					addItemsFile.append("backpack.txt");
+					addItems.open(addItemsFile.c_str(), ios::out | ios::app);
 
 					//Prints this if nothing is returned
 					if (itemUp == "NULL" && itemDown == "NULL" && itemLeft == "NULL" && itemRight == "NULL")
@@ -1095,6 +1099,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 					//Checks each item to display multiple found if at all
 					if (itemUp != "NULL")
 					{
+						addItems << itemUp << "\n";
 						std::istringstream idS(itemUp);
 						string sID;
 						std::getline(idS, sID, '|');
@@ -1107,6 +1112,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 					}
 					if (itemDown != "NULL")
 					{
+						addItems << itemDown << "\n";
 						std::istringstream idS(itemDown);
 						string sID;
 						std::getline(idS, sID, '|');
@@ -1119,6 +1125,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 					}
 					if (itemLeft != "NULL")
 					{
+						addItems << itemLeft << "\n";
 						std::istringstream idS(itemLeft);
 						string sID;
 						std::getline(idS, sID, '|');
@@ -1131,6 +1138,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 					}
 					if (itemRight != "NULL")
 					{
+						addItems << itemRight << "\n";
 						std::istringstream idS(itemRight);
 						string sID;
 						std::getline(idS, sID, '|');
@@ -1142,6 +1150,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 						combatLog.addToLog(chatText);
 					}
 
+					addItems.close();
 					chatText = "Player turn has ended.";
 					npcTurn++;
 					if (npcTurn > ms.getNumberOfNPCs())
