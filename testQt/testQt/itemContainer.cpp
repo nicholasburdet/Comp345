@@ -227,7 +227,7 @@ void itemContainer::addItemWorn(int id)
 		itemType = 6;
 
 
-	ifstream myfile("Resources/wornItems.txt");
+	ifstream myfile("Resources/"+ dirName +"wornItems.txt");
 	
 	string new1;
 	string fc;
@@ -248,7 +248,7 @@ void itemContainer::addItemWorn(int id)
 
 	myfile.close();
 
-	ofstream writer("Resources/wornItems.txt");
+	ofstream writer("Resources/"+ dirName +"wornItems.txt");
 	writer << fc;
 	writer.close();
 }
