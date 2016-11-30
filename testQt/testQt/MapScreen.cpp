@@ -1108,6 +1108,26 @@ character MapScreen::getCharacter(int x, int y)
 	return c;
 }
 
+string MapScreen::getPlayerString()
+{
+	string playerString = "";
+
+	playerString.append("Name: ").append(playerCharacter.getName()).append("\n");
+	playerString.append("Level: ").append(std::to_string(playerCharacter.getLevel())).append("\n");
+	playerString.append("Class: ").append(playerCharacter.getClassName()).append("\n");
+	playerString.append("HP: ").append(std::to_string(playerCharacter.getCurrentHP())).append("/").append(std::to_string(playerCharacter.getHP())).append("\n");
+	playerString.append("AC: ").append(std::to_string(playerCharacter.getArmorBonus())).append("\n");
+	playerString.append("Strength: ").append(std::to_string(playerCharacter.getAbilities().strength)).append(" Mod: ").append(std::to_string(playerCharacter.getModifier(playerCharacter.getAbilities().strength))).append("\n");
+	playerString.append("Dexterity: ").append(std::to_string(playerCharacter.getAbilities().dexterity)).append(" Mod: ").append(std::to_string(playerCharacter.getModifier(playerCharacter.getAbilities().dexterity))).append("\n");
+	playerString.append("Constitution: ").append(std::to_string(playerCharacter.getAbilities().constitution)).append(" Mod: ").append(std::to_string(playerCharacter.getModifier(playerCharacter.getAbilities().constitution))).append("\n");
+	playerString.append("Intelligence: ").append(std::to_string(playerCharacter.getAbilities().intelligence)).append(" Mod: ").append(std::to_string(playerCharacter.getModifier(playerCharacter.getAbilities().intelligence))).append("\n");
+	playerString.append("Wisdom: ").append(std::to_string(playerCharacter.getAbilities().wisdom)).append(" Mod: ").append(std::to_string(playerCharacter.getModifier(playerCharacter.getAbilities().wisdom))).append("\n");
+	playerString.append("Charisma: ").append(std::to_string(playerCharacter.getAbilities().charisma)).append(" Mod: ").append(std::to_string(playerCharacter.getModifier(playerCharacter.getAbilities().charisma))).append("\n");
+	playerString.append("Move Speed: ").append(std::to_string(playerCharacter.getMoveSpeed())).append("\n");
+	playerString.append("Initiative: ").append(std::to_string(playerCharacter.getInitiative())).append("\n");
+	return playerString;
+}
+
 //Loot item at X,Y (return item and remove from map)
 string MapScreen::lootItems(int x, int y)
 {

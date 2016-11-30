@@ -50,6 +50,7 @@ class logic : public QWidget
 		int checkResolution(int x, int y);
 		string addItem();
 		void viewItems();
+		void viewPlayer();
 	protected:
 		void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 		void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;

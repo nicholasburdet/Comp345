@@ -85,7 +85,7 @@ editscreen::editscreen(char n[])
 	connect(characterEditorSaveAction, SIGNAL(triggered()), this, SLOT(characterEditorSave()));
 
 	viewCharacterStatsAction = new QAction(tr("&View Character Stats"), this);
-	connect(characterEditorSaveAction, SIGNAL(triggered()), this, SLOT(viewCharacterStats()));
+	connect(viewCharacterStatsAction, SIGNAL(triggered()), this, SLOT(viewCharacterStats()));
 
 	viewControlsActions = new QAction(tr("&View Controls"), this);
 	connect(viewControlsActions, SIGNAL(triggered()), this, SLOT(viewControls()));
@@ -936,7 +936,8 @@ void editscreen::viewItems()
 
 void editscreen::viewCharacterStats()
 {
-	//Add code to view player stats here (needs to load a seperate widget to see stats possibly)
+	//Add code to view player stats here
+	log->viewPlayer();
 }
 
 

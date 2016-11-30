@@ -1448,3 +1448,9 @@ void logic::viewItems()
 	message.setText(QString::fromStdString(ms.viewItems()));
 	message.exec();
 }
+
+void logic::viewPlayer()
+{
+	message.setText(QString::fromStdString(ms.getPlayerString()));
+	message.exec();
+}

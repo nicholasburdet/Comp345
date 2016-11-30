@@ -96,6 +96,7 @@ public:
 	bool checkItem(int x, int y);
 	string getItem(int x, int y);
 	character getCharacter(int x, int y);
+	string getPlayerString();
 
 private:
 	//current X and Y can be used for the player location (?)
