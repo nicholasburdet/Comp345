@@ -203,7 +203,7 @@ private:
 	string charClassName = "fighter";
 	string subtype;
 	int level;
-	int hitDice;
+	int hitDice = 10;
 	//Default 1d4 for fist weapon and 0 armor for no armor
 	int numberOfWeaponDice = 1;
 	int weaponDice = 4;

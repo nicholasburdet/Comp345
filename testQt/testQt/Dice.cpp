@@ -9,10 +9,10 @@ int Dice::roll(int quantity, int type, int modifier)
 
 	for (int i = 0; i < quantity; i++)
 	{
-		sum += (1 + rand() % type);
+		sum = sum + (rand() % type) + 1;
 	}
 	
-	sum += modifier;
+	sum = sum + modifier;
 
 	return sum;
 }

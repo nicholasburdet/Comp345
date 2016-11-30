@@ -1,0 +1,12 @@
+id 23847
+name Aloha
+level 1
+hp 10
+hitdice 10
+className fighter
+strength 12
+dexterity 13
+constitution 15
+intelligence 11
+wisdom 8
+charisma 11

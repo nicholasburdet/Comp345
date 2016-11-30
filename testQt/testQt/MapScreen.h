@@ -98,6 +98,7 @@ public:
 	character getCharacter(int x, int y);
 	string getPlayerString();
 	string viewEnemies();
+	void adjustNPCLevel(int levelInc);
 
 private:
 	//current X and Y can be used for the player location (?)

@@ -53,6 +53,9 @@ class logic : public QWidget
 		void viewPlayer();
 		void viewEnemyStats();
 		void loadEquipment();
+		void setEnemyLevel(int amount);
+		int getPlayerLevel();
+
 	protected:
 		void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 		void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;

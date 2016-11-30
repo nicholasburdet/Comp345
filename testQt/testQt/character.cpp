@@ -83,12 +83,12 @@ character::character(int i, string n, int l, string im, string subt) :observers(
 
 character::character(int i, string n, int l, string im, string subt, int abList[6]) :observers()
 {
+	
 	id = i;
 	name = n;
 	level = l;
 	image = im;
-	abilities = abilList{ abList[0] % 18,abList[1] % 18,abList[2] % 18,abList[3] % 18,abList[4] % 18,abList[5] % 18 };
-	hitDice = 10;
+	abilities = abilList{ abList[0],abList[1],abList[2],abList[3],abList[4],abList[5]};
 	HP = getMaxHP();
 	subtype = subt;
 	currentHP = HP;
@@ -192,8 +192,8 @@ string character::getClassName() {
 }
 
 int character::levelUp(int incAmount = 1) {
-	level += incAmount;
-	HP += getModifier(abilities.constitution)*incAmount;
+	level = level+  incAmount;
+	HP = HP + getModifier(abilities.constitution)*incAmount + Dice::roll(incAmount, hitDice, 0);
 
 	currentHP = HP + currentEquipment.equipConstitution*level;
 	notifyObservers();
@@ -376,8 +376,9 @@ int character::getModifier(int abilityScore) {
 }
 
 int character::getMaxHP() {
-	//Fixed get Max HP, was not adding a hitDice for every level
-	return (getModifier(this->abilities.constitution + currentEquipment.equipConstitution)*((this->level)-1) + this->hitDice + Dice::roll(level-1, this->hitDice, 0));
+	int maxHP = (getModifier(this->abilities.constitution + currentEquipment.equipConstitution)*((this->level)) + this->hitDice + Dice::roll(level-1, this->hitDice, 0));
+	qDebug() << "Name: " << QString::fromStdString(name) << " Level: " << QString::fromStdString(std::to_string(abilities.constitution)); 
+	return maxHP;
 }
 
 int character::getMoveSpeed() {
@@ -567,8 +568,6 @@ void character::loadEquipment()
 			string valS = sID;
 			int val = atoi(sID.c_str());
 			std::getline(idS, type);
-
-			qDebug() << "Results: " << QString::fromStdString(slot) << " " << QString::fromStdString(attribute) << " " << QString::fromStdString(valS);
 
 			if (slot == "Helmet")
 			{

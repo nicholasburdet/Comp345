@@ -1199,8 +1199,23 @@ void logic::keyPressEvent(QKeyEvent *event)
 							{
 								string file = Campaign.getMapFilename(Campaign.getCurrentMapId());
 								string extension = "Maps/";
+								MapScreen newMap; //Should reimplement the map (possibly breaks stuff?)
+								ms = newMap;
 								ms.loadFromFile(extension.append(file));
 								ms.playerCharacter = pc;
+								
+								int playerLevel = ms.playerCharacter.getLevel();
+
+								if (playerLevel > 3)
+								{
+									playerLevel = playerLevel - 3;
+								}
+								else {
+									playerLevel = 0;
+								}
+
+								ms.adjustNPCLevel(playerLevel);
+							
 								resolution = checkResolution(ms.getMaxX(), ms.getMaxY());
 								int windowResX = ms.getMaxX()*resolution;
 
@@ -1465,4 +1480,14 @@ void logic::loadEquipment()
 {
 	ms.playerCharacter.loadEquipment();
 	ms.playerCharacter.checkConstitutionChange();
+}
+
+void logic::setEnemyLevel(int amount)
+{
+	ms.adjustNPCLevel(amount);
+}
+
+int logic::getPlayerLevel()
+{
+	return ms.playerCharacter.getLevel();
 }

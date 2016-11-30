@@ -143,8 +143,8 @@ editscreen::editscreen(char n[])
 	mapMenu->addAction(newMapAction);
 	mapMenu->addAction(openMapAction);
 	mapMenu->addAction(resetMapAction);
-	mapMenu->addAction(mapMenuCloseAction);
 	mapMenu->addAction(viewItemsAction);
+	mapMenu->addAction(mapMenuCloseAction);
 	
 	mapNavigatorMenu = new QMenu(tr("&Navigate Maps"), this);
 	mapNavigatorMenu->addAction(nextMapAction);
@@ -944,7 +944,18 @@ void editscreen::viewMap()
 
 	//Load Character goes here
 	log->loadPlayerCharacter(fName);
+	int playerLevel = log->getPlayerLevel();
 
+	//This could be used to adjust the difficulty of the game technically speaking
+	if (playerLevel > 3)
+	{
+		playerLevel = playerLevel - 3;
+	}
+	else {
+		playerLevel = 0;
+	}
+
+	log->setEnemyLevel(playerLevel);
 	resolution = checkResolution(width, height);
 	log->setResolution(resolution);
 

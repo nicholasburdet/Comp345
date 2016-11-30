@@ -561,10 +561,10 @@ void MapScreen::loadNPCs(void)
 
 	input >> type >> id >> type >> name >> type >> level >> type >> image >> subtype >> type >> str >> type >> dex >> type >> con >> type >> itl >> type >> wis >> type >> cha >> type >> wdice >> type >> wdam >> type >> dbon >> type >> abon >> type >> ran;
 	abilList[0] = str;
-	abilList[1] = dex;
-	abilList[2] = con;
-	abilList[3] = itl;
-	abilList[4] = wis;
+	abilList[1] = itl;
+	abilList[2] = wis;
+	abilList[3] = dex;
+	abilList[4] = con;
 	abilList[5] = cha;
 	if (!input.eof())
 	{
@@ -581,10 +581,10 @@ void MapScreen::loadNPCs(void)
 	{
 		input >> type >> id >> type >> name >> type >> level >> type >> image >> subtype >> type >> str >> type >> dex >> type >> con >> type >> itl >> type >> wis >> type >> cha >> type >> wdice >> type >> wdam >> type >> dbon >> type >> abon >> type >> ran;
 		abilList[0] = str;
-		abilList[1] = dex;
-		abilList[2] = con;
-		abilList[3] = itl;
-		abilList[4] = wis;
+		abilList[1] = itl;
+		abilList[2] = wis;
+		abilList[3] = dex;
+		abilList[4] = con;
 		abilList[5] = cha;
 		characterTable[id] = character(id, name, level, image, subtype, abilList);
 		characterTable[id].setNumberOfWeaponDice(wdice);
@@ -1181,6 +1181,14 @@ string MapScreen::viewEnemies()
 	}
 
 	return eStr;
+}
+
+void MapScreen::adjustNPCLevel(int levelInc)
+{
+	for (int i = 0; i < numberOfNPCs; i++)
+	{
+		characterEntities[i].levelUp(levelInc);
+	}
 }
 
 //Loot item at X,Y (return item and remove from map)
