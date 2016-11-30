@@ -11,6 +11,8 @@
 
 #pragma once
 #include "character.h"
+#include <iostream>
+#include <fstream>
 
 using namespace std;
 /*!
@@ -39,6 +41,15 @@ public:
 
 	void buildName(string name) {
 		toBuild->setName(name);
+		
+		////Creates default inventory for new characters
+		ofstream writer("Resources/" + name + "backpack.txt");
+		writer << "1|Helmet|Full Helmet|Wisdom|4|Heavy\n2|Armor|Half Platebody||0|Heavy\n7|Shield|Kiteshield|Armor Class|3|Heavy\n5|Ring|Ruby Ring|Armor Class|2|Light\n8|Belt|Titanium Belt|Strength|1|Heavy\n9|Boots|Rugged boots||0|Heavy\n11|Weapon|Long Sword|Attack Bonus|2|1d12";
+		writer.close();
+
+		ofstream writer2("Resources/" + name + "wornItems.txt");
+		writer2 << "1|Helmet|Full Helmet|Wisdom|4|Heavy\n2|Armor|Half Platebody||0|Heavy\n7|Shield|Kiteshield|Armor Class|3|Heavy\n5|Ring|Ruby Ring|Armor Class|2|Light\n8|Belt|Titanium Belt|Strength|1|Heavy\n9|Boots|Rugged boots||0|Heavy\n11|Weapon|Long Sword|Attack Bonus|2|1d12";
+		writer2.close();
 	};
 	virtual void buildHP(int hp) {
 		toBuild->setHP(hp);
