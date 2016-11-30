@@ -64,7 +64,7 @@ character::character() :observers()
 	HP = getMaxHP();
 	subtype = "Bully";
 	currentHP = HP;
-	initiative = getModifier(abilities.dexterity);
+	initiative = getModifier(abilities.dexterity + currentEquipment.equipDexterity);
 }
 character::character(int i, string n, int l, string im, string subt) :observers()
 {
@@ -78,7 +78,7 @@ character::character(int i, string n, int l, string im, string subt) :observers(
 	subtype = subt;
 
 	currentHP = HP;
-	initiative = getModifier(abilities.dexterity);
+	initiative = getModifier(abilities.dexterity + currentEquipment.equipDexterity);
 }
 
 character::character(int i, string n, int l, string im, string subt, int abList[6]) :observers()
@@ -92,7 +92,7 @@ character::character(int i, string n, int l, string im, string subt, int abList[
 	HP = getMaxHP();
 	subtype = subt;
 	currentHP = HP;
-	initiative = getModifier(abilities.dexterity);
+	initiative = getModifier(abilities.dexterity + currentEquipment.equipDexterity);
 
 }
 
@@ -109,7 +109,7 @@ void character::initialize(int i, string n, int l, string im) {
 	hitDice = 10; //Fighter hit dice
 	HP = getMaxHP();
 	currentHP = HP;
-	initiative = getModifier(abilities.dexterity);
+	initiative = getModifier(abilities.dexterity + currentEquipment.equipDexterity);
 }
 
 void character::setId(int i)
@@ -195,7 +195,6 @@ int character::levelUp(int incAmount = 1) {
 	level += incAmount;
 	HP += getModifier(abilities.constitution)*incAmount;
 
-
 	currentHP = HP;
 	notifyObservers();
 
@@ -278,11 +277,11 @@ void character::decHP(int damage) {
 }
 
 int character::getArmorBonus() {
-	return 10 + armorBonus + shieldBonus + getModifier(abilities.dexterity);
+	return 10 + currentEquipment.equipAC + getModifier((abilities.dexterity)+ currentEquipment.equipDexterity);
 }
 
 int character::getDamageBonus() {
-	return getModifier(abilities.strength);
+	return getModifier(abilities.strength + currentEquipment.equipStrength)+weaponDamageBonus;
 }
 
 /*!
@@ -297,9 +296,9 @@ int character::getAttackBonus(int attackNum)
 
 	int levBonus = level - (attackNum * 5);
 
-	int abBonus = weaponRange < 1 ? getModifier(abilities.strength) : getModifier(abilities.dexterity);
+	int abBonus = weaponRange < 1 ? getModifier(abilities.strength + currentEquipment.equipStrength) : getModifier(abilities.dexterity + currentEquipment.equipDexterity);
 
-	return levBonus + abBonus;
+	return levBonus + abBonus + weaponAttackBonus;
 
 }
 
@@ -343,11 +342,6 @@ int character::getWeaponRange()
 	return weaponRange;
 }
 
-int character::getShieldBonus()
-{
-	return shieldBonus;
-}
-
 void character::takeDamage(int dmg)
 {
 	currentHP = currentHP - dmg;
@@ -383,7 +377,7 @@ int character::getModifier(int abilityScore) {
 
 int character::getMaxHP() {
 	//Fixed get Max HP, was not adding a hitDice for every level
-	return (getModifier(this->abilities.constitution)*((this->level)-1) + this->hitDice + Dice::roll(level-1, this->hitDice, 0));
+	return (getModifier(this->abilities.constitution + currentEquipment.equipConstitution)*((this->level)-1) + this->hitDice + Dice::roll(level-1, this->hitDice, 0));
 }
 
 int character::getMoveSpeed() {
@@ -427,16 +421,6 @@ void character::setWeaponDice(int d)
 void character::setWeaponRange(int r)
 {
 	weaponRange = r;
-}
-
-void character::setShieldBonus(int s)
-{
-	shieldBonus = s;
-}
-
-void character::setArmorBonus(int a)
-{
-	armorBonus = a;
 }
 
 int character::getNumberOfWeaponDice()
@@ -540,9 +524,210 @@ void character::loadFromFile(string filepath)
 		}
 		input.close();
 		
-		currentHP = HP;
-		initiative = getModifier(abilities.dexterity);
+		//Load equipment here?
+		loadEquipment();
+
+		currentHP = HP + ((currentEquipment.equipConstitution)/2)*level;
+		initiative = getModifier(abilities.dexterity + currentEquipment.equipDexterity);
 	}
+}
+
+void character::loadEquipment()
+{
+	//Potentially more robust for NPCs?
+	//Currently just for single player
+
+	string result;
+	string customItemsFile = "Resources/wornItems.txt";
+	ifstream equipInput(customItemsFile);
+
+	if (equipInput.is_open()) {
+		while (getline(equipInput, result))
+		{
+			std::istringstream idS(result);
+			string sID;
+			string slot;
+			string attribute;
+			string type;
+			std::getline(idS, sID, '|');
+			std::getline(idS, slot, '|');
+			std::getline(idS, sID, '|');
+			std::getline(idS, attribute, '|');
+			std::getline(idS, sID, '|');
+			string valS = sID;
+			int val = atoi(sID.c_str());
+			std::getline(idS, type);
+
+			qDebug() << "Results: " << QString::fromStdString(slot) << " " << QString::fromStdString(attribute) << " " << QString::fromStdString(valS);
+
+			if (slot == "Helmet")
+			{
+				currentEquipment.helmetModifier = val;
+				currentEquipment.helmetStat = attribute;
+			}
+			if (slot == "Armor")
+			{
+				currentEquipment.armorModifier = val;
+			}
+			if (slot == "Shield")
+			{
+				currentEquipment.shieldModifier = val;
+			}
+			if (slot == "Ring")
+			{
+				currentEquipment.ringModifier = val;
+				currentEquipment.ringStat = attribute;
+			}
+			if (slot == "Belt")
+			{
+				currentEquipment.beltModifier = val;
+				currentEquipment.beltStat = attribute;
+			}
+			if (slot == "Boots")
+			{
+				currentEquipment.bootsModifier = val;
+				currentEquipment.bootsStat = attribute;
+			}
+			if (slot == "Weapon")
+			{
+				std::istringstream inputString(type);
+				std::getline(inputString, sID, 'd');
+				numberOfWeaponDice = atoi(sID.c_str());
+				std::getline(inputString, sID);
+				weaponDice = atoi(sID.c_str());
+
+				if (attribute == "Attack Bonus")
+				{
+					weaponDamageBonus = 0;
+					weaponAttackBonus = val;
+				}
+				if (attribute == "Damage Bonus")
+				{
+					weaponAttackBonus = 0;
+					weaponDamageBonus = val;
+				}
+			}
+		}
+	}
+	equipInput.close();
+
+	//Incase player constitution changes after equip, will modify amount (equip CON only affects CURRENT hp)
+	previousConstitutionBonus = currentEquipment.equipConstitution;
+
+	//Equip mods calculated here
+	//Start by resetting them
+	currentEquipment.equipAC = 0;
+	currentEquipment.equipStrength = 0;
+	currentEquipment.equipDexterity = 0;
+	currentEquipment.equipConstitution = 0;
+	currentEquipment.equipIntelligence = 0;
+	currentEquipment.equipWisdom = 0;
+	currentEquipment.equipCharisma = 0;
+
+	int totalAC = 0;
+	int totalStr = 0;
+	int totalDex = 0;
+	int totalCon = 0;
+	int totalInt = 0;
+	int totalWis = 0;
+	int totalCha = 0;
+
+	totalAC = currentEquipment.armorModifier + currentEquipment.shieldModifier;
+
+	//This part is a bit messy, but its aggregating all the modifiers together
+	if (currentEquipment.helmetStat == "Armor Class")
+	{
+		totalAC = totalAC + currentEquipment.helmetModifier;
+	}
+	if (currentEquipment.ringStat == "Armor Class")
+	{
+		totalAC = totalAC + currentEquipment.ringModifier;
+	}
+	if (currentEquipment.beltStat == "Armor Class")
+	{
+		totalAC = totalAC + currentEquipment.beltModifier;
+	}
+	if (currentEquipment.bootsStat == "Armor Class")
+	{
+		totalAC = totalAC + currentEquipment.bootsModifier;
+	}
+	currentEquipment.equipAC = totalAC;
 
 
+	if (currentEquipment.helmetStat == "Intelligence")
+	{
+		totalInt = currentEquipment.helmetModifier;
+	}
+	currentEquipment.equipIntelligence = totalInt;
+
+
+	if (currentEquipment.helmetStat == "Wisdom")
+	{
+		totalWis = totalWis + currentEquipment.helmetModifier;
+	}
+	if (currentEquipment.ringStat == "Wisdom")
+	{
+		totalWis = totalWis + currentEquipment.ringModifier;
+	}
+	if (currentEquipment.beltStat == "Wisdom")
+	{
+		totalWis = totalWis + currentEquipment.beltModifier;
+	}
+	currentEquipment.equipWisdom = totalWis;
+
+
+	if (currentEquipment.bootsStat == "Dexterity")
+	{
+		totalDex = currentEquipment.bootsModifier;
+	}
+	currentEquipment.equipDexterity = totalDex;
+
+
+	if (currentEquipment.helmetStat == "Constitution")
+	{
+		totalCon = totalCon + currentEquipment.helmetModifier;
+	}
+	if (currentEquipment.ringStat == "Constitution")
+	{
+		totalCon = totalCon + currentEquipment.ringModifier;
+	}
+	if (currentEquipment.beltStat == "Constitution")
+	{
+		totalCon = totalCon + currentEquipment.beltModifier;
+	}
+	currentEquipment.equipConstitution = totalCon;
+
+
+	if (currentEquipment.ringStat == "Charisma")
+	{
+		totalCha = totalCha + currentEquipment.ringModifier;
+	}
+	if (currentEquipment.beltStat == "Charisma")
+	{
+		totalCha = totalCha + currentEquipment.beltModifier;
+	}
+	currentEquipment.equipCharisma = totalCha;
+
+
+	if (currentEquipment.ringStat == "Strength")
+	{
+		totalStr = totalStr + currentEquipment.ringModifier;
+	}
+	if (currentEquipment.beltStat == "Strength")
+	{
+		totalStr = totalStr + currentEquipment.beltModifier;
+	}
+	currentEquipment.equipStrength = totalStr;
+}
+
+void character::checkConstitutionChange()
+{
+	if (previousConstitutionBonus > currentEquipment.equipConstitution)
+	{
+		currentHP = currentHP - (((previousConstitutionBonus - currentEquipment.equipConstitution) / 2)*level);
+	}
+	if (previousConstitutionBonus < currentEquipment.equipConstitution)
+	{
+		currentHP = currentHP + (((currentEquipment.equipConstitution - previousConstitutionBonus) / 2)*level);
+	}
 }

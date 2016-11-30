@@ -1454,3 +1454,9 @@ void logic::viewPlayer()
 	message.setText(QString::fromStdString(ms.getPlayerString()));
 	message.exec();
 }
+
+void logic::loadEquipment()
+{
+	ms.playerCharacter.loadEquipment();
+	ms.playerCharacter.checkConstitutionChange();
+}

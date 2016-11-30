@@ -385,7 +385,7 @@ void editscreen::newItem()
 
 				//enchantmentType
 				
-				enchants << tr("None") << tr("Intelligence") << tr("Wisdom") << tr("Consitution") << tr("Armor Class");
+				enchants << tr("None") << tr("Intelligence") << tr("Wisdom") << tr("Constitution") << tr("Armor Class");
 				enchantmentType = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select Enchantment:"), enchants, 0, false, &ok1);
 
 
@@ -424,7 +424,7 @@ void editscreen::newItem()
 			else if (itemType == "Ring") {
 
 				//enchantmentType
-				enchants << tr("None") << tr("Armor Class") << tr("Strength") << tr("Consitution") << tr("Wisdom") << tr("Charisma");
+				enchants << tr("None") << tr("Armor Class") << tr("Strength") << tr("Constitution") << tr("Wisdom") << tr("Charisma");
 				enchantmentType = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select Item enchantment:"), enchants, 0, false, &ok1);
 
 
@@ -445,7 +445,7 @@ void editscreen::newItem()
 
 
 				//enchantmentType
-				enchants << tr("None")  << tr("Armor Class") << tr("Strength") << tr("Consitution") << tr("Wisdom") << tr("Charisma");
+				enchants << tr("None")  << tr("Armor Class") << tr("Strength") << tr("Constitution") << tr("Wisdom") << tr("Charisma");
 				enchantmentType = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select Enchantment:"), enchants, 0, false, &ok1);
 
 
@@ -1248,6 +1248,7 @@ void editscreen::viewWornItems()
 		if (result == QDialog::Accepted)
 		{
 			//Return to Game
+			log->loadEquipment(); //Will make equipment changes for the player immediately
 		}
 
 	}

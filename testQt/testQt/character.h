@@ -117,6 +117,31 @@ public:
 		int charisma;
 	};
 
+	//Default to Armor and 0
+	struct equipment {
+		string helmetStat = "Armor Class";
+		int helmetModifier = 0;
+		string armorStat = "Armor Class";
+		int armorModifier = 0;
+		string shieldStat = "Armor Class";
+		int shieldModifier = 0;
+		string ringStat = "Armor Class";
+		int ringModifier = 0;
+		string beltStat = "Armor Class";
+		int beltModifier = 0;
+		string bootsStat = "Armor Class";
+		int bootsModifier = 0;
+		int equipAC = 0;
+		int equipStrength = 0;
+		int equipDexterity = 0;
+		int equipConstitution= 0;
+		int equipIntelligence = 0;
+		int equipWisdom = 0;
+		int equipCharisma = 0;
+	};
+
+	equipment currentEquipment;
+
 	int getId();
 	string getName();
 	int getLevel();
@@ -160,18 +185,17 @@ public:
 	void setNumberOfWeaponDice(int n);
 	void setWeaponDice(int d);
 	void setWeaponRange(int r);
-	void setShieldBonus(int s);
-	void setArmorBonus(int a);
 
 	int getNumberOfWeaponDice();
 	int getWeaponDice();
-	int getShieldBonus();
 
 	void takeDamage(int dmg);
 	bool getDamageTaken();
 	bool getAlive();
 	bool damageTaken = false;
 	int getCurrentHP();
+	void loadEquipment();
+	void checkConstitutionChange();
 
 private:
 	int id;
@@ -180,12 +204,12 @@ private:
 	string subtype;
 	int level;
 	int hitDice;
-	//PLACEHOLDERS
+	//Default 1d4 for fist weapon and 0 armor for no armor
 	int numberOfWeaponDice = 1;
 	int weaponDice = 4;
 	int weaponRange = 1;
-	int shieldBonus = 1;
-	int armorBonus = 3;
+	int weaponAttackBonus = 0;
+	int weaponDamageBonus = 0;
 	//END PLACEHOLDERS
 	int HP;
 	int currentHP;
@@ -200,6 +224,7 @@ private:
 	bool playerCharacter = false;
 	
 	bool alive = true;
+	int previousConstitutionBonus = 0;
 
 	string type = ""; //Will eventually be "player", "friendly" or "hostile"
 
