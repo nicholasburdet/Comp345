@@ -1,0 +1,12 @@
+id 25762
+name Weakling
+level 1
+hp 10
+hitdice 10
+className fighter
+strength 15
+dexterity 11
+constitution 11
+intelligence 11
+wisdom 10
+charisma 10

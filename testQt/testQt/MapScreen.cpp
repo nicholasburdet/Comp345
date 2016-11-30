@@ -920,6 +920,21 @@ string MapScreen::npcAttack(int npcID, bool moved)
 {
 	string combatText = "Nothing";
 
+	int numberOfAttacks = 1;
+	vector<int> attackBonuses;
+	int damageRoll;
+	int weaponDice = characterEntities[npcID].getWeaponDice();
+	int numberOfWeaponDice = characterEntities[npcID].getNumberOfWeaponDice();
+	int damageDone = 0;
+	int damageModifier = characterEntities[npcID].getDamageBonus();
+
+	if (!moved)
+	{
+		numberOfAttacks = characterEntities[npcID].getAttackPerRound();
+	}
+
+	attackBonuses = characterEntities[npcID].getAttackBonusList();
+
 	int npcX = characterEntities[npcID].getX();
 	int npcY = characterEntities[npcID].getY();
 	bool attack = false;
@@ -953,34 +968,39 @@ string MapScreen::npcAttack(int npcID, bool moved)
 		combatText = "NPC ";
 		combatText.append(std::to_string(npcID));
 		combatText.append(" attacks!");
-
+		int misses = 0;
+		int hits = 0;
+		int criticalHits = 0;
+		damageRoll = (Dice::roll(numberOfWeaponDice, weaponDice, damageModifier));
 		//Combat rolls and stuff goes here
-		int roll = Dice::roll(1, 20, 0);
-		if (roll == 1)
+		for (int a = 0; a < numberOfAttacks; a++)
 		{
-			combatText.append(" Critical miss!");
-			return combatText;
-		}
-		else if (roll == 20)
-		{
-			combatText.append(" Critical hit!");
-			combatText.append(" DAMAGE TEXT GOES HERE.");
-			return combatText;
-		}
-		else
-		{
-			if ((roll + characterEntities[npcID].getAttackBonus() > playerCharacter.getArmorBonus()))
+			int roll = Dice::roll(1, 20, 0);
+			if (roll == 1)
 			{
-				combatText.append(" You were hit!");
-				combatText.append(" DAMAGE TEXT GOES HERE.");
-				return combatText;
+				misses = misses + 1;
+			}
+			else if (roll == 20)
+			{
+				damageRoll = damageRoll * 2;
+				damageDone = damageDone + damageRoll;
+				criticalHits = criticalHits + 1;
 			}
 			else
 			{
-				combatText.append(" You dodge the enemy attack!");
-				return combatText;
+				if ((roll + attackBonuses[a] > playerCharacter.getArmorBonus()))
+				{
+					damageDone = damageDone + damageRoll;
+					hits = hits + 1;
+				}
+				else
+				{
+					misses = misses + 1;
+				}
 			}
 		}
+		playerCharacter.takeDamage(damageDone);
+		combatText.append(" Hits:").append(std::to_string(hits)).append(" Misses:").append(std::to_string(misses)).append(" Crits:").append(std::to_string(criticalHits)).append(" Damage:").append(std::to_string(damageDone)).append("dmg").append(" HP:").append(std::to_string(playerCharacter.getCurrentHP())).append("hp");
 	}
 	return combatText;
 }

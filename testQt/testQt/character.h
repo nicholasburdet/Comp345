@@ -171,6 +171,7 @@ public:
 	bool getDamageTaken();
 	bool getAlive();
 	bool damageTaken = false;
+	int getCurrentHP();
 
 private:
 	int id;

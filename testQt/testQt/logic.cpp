@@ -754,558 +754,566 @@ void logic::paintEvent(QPaintEvent *event)
 
 void logic::keyPressEvent(QKeyEvent *event)
 {
-	if (!editMode)
+	if (gameplay)
 	{
-		bool didPlayerMove = false;
-		oldPlayerX = ms.getCurrentX();
-		oldPlayerY = ms.getCurrentY();
-
-		int minXReso = ms.getMaxX();
-		if (ms.getMaxX() < 12)
+		if (!editMode)
 		{
-			minXReso = 12;
-		}
+			bool didPlayerMove = false;
+			oldPlayerX = ms.getCurrentX();
+			oldPlayerY = ms.getCurrentY();
 
-		if (!mapStart)
-		{
-			//Up/Down/Left/Right Movement events
-			if (event->key() == Qt::Key_Left && playerTurn && playerMove && playerAttacking == false) {
-				if (ms.getCurrentX() > 0 && !(ms.isOccupied(ms.getCurrentX() - 1, ms.getCurrentY())) && ms.isPassable(ms.getCurrentX() - 1, ms.getCurrentY()))
-				{
-					ms.setCurrentX(ms.getCurrentX() - 1);
-					movePlayer = true;
-					QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
-					update(rect);
-					playerSteps++; //To keep track of the number of steps
-					didPlayerMove = true;
-				}
+			int minXReso = ms.getMaxX();
+			if (ms.getMaxX() < 12)
+			{
+				minXReso = 12;
 			}
-			else if (event->key() == Qt::Key_Right && playerTurn && playerMove && playerAttacking == false) {
-				if (ms.getCurrentX() < ms.getMaxX() - 1 && !(ms.isOccupied(ms.getCurrentX() + 1, ms.getCurrentY())) && ms.isPassable(ms.getCurrentX() + 1, ms.getCurrentY()))
-				{
-					ms.setCurrentX(ms.getCurrentX() + 1);
-					movePlayer = true;
-					QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
-					update(rect);
-					playerSteps++; //To keep track of the number of steps
-					didPlayerMove = true;
+
+			if (!mapStart)
+			{
+				//Up/Down/Left/Right Movement events
+				if (event->key() == Qt::Key_Left && playerTurn && playerMove && playerAttacking == false) {
+					if (ms.getCurrentX() > 0 && !(ms.isOccupied(ms.getCurrentX() - 1, ms.getCurrentY())) && ms.isPassable(ms.getCurrentX() - 1, ms.getCurrentY()))
+					{
+						ms.setCurrentX(ms.getCurrentX() - 1);
+						movePlayer = true;
+						QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
+						update(rect);
+						playerSteps++; //To keep track of the number of steps
+						didPlayerMove = true;
+					}
 				}
-			}
-			else if (event->key() == Qt::Key_Up && playerTurn && playerMove && playerAttacking == false) {
-				if (ms.getCurrentY() > 0 && !(ms.isOccupied(ms.getCurrentX(), ms.getCurrentY() - 1)) && ms.isPassable(ms.getCurrentX(), ms.getCurrentY() - 1))
-				{
-					ms.setCurrentY(ms.getCurrentY() - 1);
-					movePlayer = true;
-					QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
-					update(rect);
-					playerSteps++; //To keep track of the number of steps
-					didPlayerMove = true;
+				else if (event->key() == Qt::Key_Right && playerTurn && playerMove && playerAttacking == false) {
+					if (ms.getCurrentX() < ms.getMaxX() - 1 && !(ms.isOccupied(ms.getCurrentX() + 1, ms.getCurrentY())) && ms.isPassable(ms.getCurrentX() + 1, ms.getCurrentY()))
+					{
+						ms.setCurrentX(ms.getCurrentX() + 1);
+						movePlayer = true;
+						QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
+						update(rect);
+						playerSteps++; //To keep track of the number of steps
+						didPlayerMove = true;
+					}
 				}
-			}
-			else if (event->key() == Qt::Key_Down && playerTurn && playerMove && playerAttacking == false) {
-				if (ms.getCurrentY() < ms.getMaxY() - 1 && !(ms.isOccupied(ms.getCurrentX(), ms.getCurrentY() + 1)) && ms.isPassable(ms.getCurrentX(), ms.getCurrentY() + 1))
-				{
-					ms.setCurrentY(ms.getCurrentY() + 1);
-					movePlayer = true;
-					QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
-					update(rect);
-					playerSteps++; //To keep track of the number of steps
-					didPlayerMove = true;
+				else if (event->key() == Qt::Key_Up && playerTurn && playerMove && playerAttacking == false) {
+					if (ms.getCurrentY() > 0 && !(ms.isOccupied(ms.getCurrentX(), ms.getCurrentY() - 1)) && ms.isPassable(ms.getCurrentX(), ms.getCurrentY() - 1))
+					{
+						ms.setCurrentY(ms.getCurrentY() - 1);
+						movePlayer = true;
+						QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
+						update(rect);
+						playerSteps++; //To keep track of the number of steps
+						didPlayerMove = true;
+					}
 				}
-			}
-			//Code for next event stuff goes here (player can advance the game when not his turn by pressing N)
-			else if (event->key() == Qt::Key_N && playerTurn == false) {
-				string chatText;
-				QRect rect(0, ms.getMaxY()*resolution, minXReso * resolution, 50 * 3);
-				bool moved = ms.npcMovement(turnOrder[npcTurn], ms.getCurrentX(), ms.getCurrentY());
-				if(moved)
+				else if (event->key() == Qt::Key_Down && playerTurn && playerMove && playerAttacking == false) {
+					if (ms.getCurrentY() < ms.getMaxY() - 1 && !(ms.isOccupied(ms.getCurrentX(), ms.getCurrentY() + 1)) && ms.isPassable(ms.getCurrentX(), ms.getCurrentY() + 1))
+					{
+						ms.setCurrentY(ms.getCurrentY() + 1);
+						movePlayer = true;
+						QRect rect(ms.getCurrentX()*resolution, ms.getCurrentY()*resolution, resolution, resolution);
+						update(rect);
+						playerSteps++; //To keep track of the number of steps
+						didPlayerMove = true;
+					}
+				}
+				//Code for next event stuff goes here (player can advance the game when not his turn by pressing N)
+				else if (event->key() == Qt::Key_N && playerTurn == false) {
+					string chatText;
+					QRect rect(0, ms.getMaxY()*resolution, minXReso * resolution, 50 * 3);
+					bool moved = ms.npcMovement(turnOrder[npcTurn], ms.getCurrentX(), ms.getCurrentY());
+					if (moved)
+					{
+						chatText = "NPC ";
+						chatText.append(std::to_string(turnOrder[npcTurn]));
+						chatText.append(" moves to X:");
+						chatText.append(std::to_string(ms.characterEntities[turnOrder[npcTurn]].getX()));
+						chatText.append(" Y:");
+						chatText.append(std::to_string(ms.characterEntities[turnOrder[npcTurn]].getY()));
+						combatLog.addToLog(chatText);
+					}
+					else
+					{
+						chatText = "NPC ";
+						chatText.append(std::to_string(turnOrder[npcTurn]));
+						chatText.append(" does not move.");
+						combatLog.addToLog(chatText);
+					}
+
+					//NPC Attack goes here
+					chatText = "Nothing";
+					if (ms.characterEntities[turnOrder[npcTurn]].getType() == "hostile")
+					{
+						chatText = ms.npcAttack(turnOrder[npcTurn], moved);
+					}
+					if (chatText != "Nothing")
+					{
+						combatLog.addToLog(chatText);
+						if (!(ms.playerCharacter.getAlive()))
+						{
+							combatLog.addToLog("You have been defeated! Please start a new game!");
+							gameplay = false;
+						}
+					}
+
+					textChange = true;
+					update(rect);
+
+					npcTurn++;
+					if (npcTurn > ms.getNumberOfNPCs())
+					{
+						npcTurn = 0;
+					}
+
+					start = true;
+					update();
+					if (turnOrder[npcTurn] == -1 || ms.getNumberOfNPCs() == 0)
+					{
+						playerTurn = true;
+						playerMove = true;
+						playerSteps = 0;
+						chatText = "Player turn start!";
+						combatLog.addToLog(chatText);
+						textChange = true;
+						update(rect);
+					}
+				}
+				//Code for stopping player movement during their turn (end movement)
+				else if (event->key() == Qt::Key_S && playerMove == true && playerTurn == true && playerAttacking == false)
 				{
-					chatText = "NPC ";
-					chatText.append(std::to_string(turnOrder[npcTurn]));
-					chatText.append(" moves to X:");
-					chatText.append(std::to_string(ms.characterEntities[turnOrder[npcTurn]].getX()));
-					chatText.append(" Y:");
-					chatText.append(std::to_string(ms.characterEntities[turnOrder[npcTurn]].getY()));
+					//Code for player stop goes here NOTE:Fix player movement end ending their turn
+					//Note: Also potentially limit player movement dialog messages to destination ONLY?
+
+					QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+					string chatText = "Movement for turn ended.";
+					chatText.append(" Attack (A), Loot Item (L) or End Turn (E)");
+					playerMove = false;
+
 					combatLog.addToLog(chatText);
+					textChange = true;
+					update(rect);
 				}
-				else
+				//Code for attacking during player turn goes here
+				else if (event->key() == Qt::Key_A && playerTurn == true && playerAttacking == false)
 				{
-					chatText = "NPC ";
-					chatText.append(std::to_string(turnOrder[npcTurn]));
-					chatText.append(" does not move.");
+					playerAttacking = true;
+					//Checks to see if player will use 1 attack or full attack
+					string chatText;
+					if (playerSteps == 0)
+					{
+						fullAttack = true;
+						chatText = "You prepare a full attack! Choose a direction to attack.";
+					}
+					else
+					{
+						fullAttack = false;
+						chatText = "You declare an attack! Choose a direction to attack.";
+					}
+					QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+
 					combatLog.addToLog(chatText);
+					string combatString = "Weapon Damage: ";
+					combatString.append(std::to_string(ms.playerCharacter.getNumberOfWeaponDice())).append("d").append(std::to_string(ms.playerCharacter.getWeaponDice())).append("+").append(std::to_string(ms.playerCharacter.getDamageBonus()));
+					combatString.append(" Attack Roll: (d20)");
+					combatLog.addToLog(combatString);
+					textChange = true;
+					update(rect);
 				}
 
-				//NPC Attack goes here
-				chatText = "Nothing";
-				if (ms.characterEntities[turnOrder[npcTurn]].getType() == "hostile")
+				//Code for each attack direction goes here!
+				else if (event->key() == Qt::Key_Up && playerTurn == true && playerAttacking == true)
 				{
-					chatText = ms.npcAttack(turnOrder[npcTurn], moved);
-				}
-				if (chatText != "Nothing")
-				{
+					string attackMessage;
+					int adjX = ms.getCurrentX();
+					int adjY = ms.getCurrentY() - 1;
+					string dir = "up";
+					character enemy;
+					//Checks bounds
+					if (adjY > 0)
+					{
+						attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
+						enemy = ms.getCharacter(adjX, adjY);
+					}
+					QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+					combatLog.addToLog(attackMessage);
+
+					if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
+					{
+						combatLog.addToLog("Enemy defeated!");
+						ms.removeNPC(enemy.getX(), enemy.getY());
+						start = true;
+						update();
+					}
+
+					string chatText = "Player turn has ended.";
+					npcTurn++;
+					if (npcTurn > ms.getNumberOfNPCs())
+					{
+						npcTurn = 0;
+					}
+					fullAttack = false;
+					playerTurn = false;
+					playerAttacking = false;
 					combatLog.addToLog(chatText);
+					textChange = true;
+					update(rect);
+				}
+				else if (event->key() == Qt::Key_Down && playerTurn == true && playerAttacking == true)
+				{
+					string attackMessage;
+					int adjX = ms.getCurrentX();
+					int adjY = ms.getCurrentY() + 1;
+					character enemy;
+					//Checks bounds
+					string dir = "down";
+					if (adjY < ms.getMaxY() - 1)
+					{
+						attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
+						enemy = ms.getCharacter(adjX, adjY);
+					}
+					QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+					combatLog.addToLog(attackMessage);
+
+					if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
+					{
+						combatLog.addToLog("Enemy defeated!");
+						ms.removeNPC(enemy.getX(), enemy.getY());
+						start = true;
+						update();
+					}
+
+					string chatText = "Player turn has ended.";
+					npcTurn++;
+					if (npcTurn > ms.getNumberOfNPCs())
+					{
+						npcTurn = 0;
+					}
+					fullAttack = false;
+					playerTurn = false;
+					playerAttacking = false;
+					combatLog.addToLog(chatText);
+					textChange = true;
+					update(rect);
+				}
+				else if (event->key() == Qt::Key_Left && playerTurn == true && playerAttacking == true)
+				{
+					string attackMessage;
+					int adjX = ms.getCurrentX() - 1;
+					int adjY = ms.getCurrentY();
+					string dir = "left";
+					character enemy;
+					//Checks bounds
+					if (adjX > 0)
+					{
+						attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
+						enemy = ms.getCharacter(adjX, adjY);
+					}
+					QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+					combatLog.addToLog(attackMessage);
+
+					if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
+					{
+						combatLog.addToLog("Enemy defeated!");
+						ms.removeNPC(enemy.getX(), enemy.getY());
+						start = true;
+						update();
+					}
+
+					string chatText = "Player turn has ended.";
+					npcTurn++;
+					if (npcTurn > ms.getNumberOfNPCs())
+					{
+						npcTurn = 0;
+					}
+					fullAttack = false;
+					playerTurn = false;
+					playerAttacking = false;
+					combatLog.addToLog(chatText);
+					textChange = true;
+					update(rect);
+				}
+				else if (event->key() == Qt::Key_Right && playerTurn == true && playerAttacking == true)
+				{
+					string attackMessage;
+					int adjX = ms.getCurrentX() + 1;
+					int adjY = ms.getCurrentY();
+					string dir = "right";
+					character enemy;
+					//Checks bounds
+					if (adjX < ms.getMaxX() - 1)
+					{
+						attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
+						enemy = ms.getCharacter(adjX, adjY);
+					}
+
+					QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+					combatLog.addToLog(attackMessage);
+
+					if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
+					{
+						combatLog.addToLog("Enemy defeated!");
+						ms.removeNPC(enemy.getX(), enemy.getY());
+						start = true;
+						update();
+					}
+
+					string chatText = "Player turn has ended.";
+					npcTurn++;
+					if (npcTurn > ms.getNumberOfNPCs())
+					{
+						npcTurn = 0;
+					}
+					fullAttack = false;
+					playerTurn = false;
+					playerAttacking = false;
+					combatLog.addToLog(chatText);
+					textChange = true;
+					update(rect);
+				}
+				//End of attack direction code above ^^^^^^
+
+				//Code for looting during player turn goes here
+				else if (event->key() == Qt::Key_L && playerTurn == true)
+				{
+					QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+					string chatText = "You looted around you!";
+					combatLog.addToLog(chatText);
+					//Loot all around you
+					string itemUp = ms.lootItems(ms.getCurrentX(), ms.getCurrentY() - 1);
+					string itemDown = ms.lootItems(ms.getCurrentX(), ms.getCurrentY() + 1);
+					string itemLeft = ms.lootItems(ms.getCurrentX() - 1, ms.getCurrentY());
+					string itemRight = ms.lootItems(ms.getCurrentX() + 1, ms.getCurrentY());
+
+					/********************************************************************
+					Add to appropriate BACKPACK here when its ready!!
+					********************************************************************/
+
+					//Prints this if nothing is returned
+					if (itemUp == "NULL" && itemDown == "NULL" && itemLeft == "NULL" && itemRight == "NULL")
+					{
+						chatText.append("You found nothing!");
+						combatLog.addToLog(chatText);
+					}
+					//Checks each item to display multiple found if at all
+					if (itemUp != "NULL")
+					{
+						std::istringstream idS(itemUp);
+						string sID;
+						std::getline(idS, sID, '|');
+						std::getline(idS, sID, '|');
+						std::getline(idS, sID, '|');
+						chatText = "You found ";
+						chatText.append(sID);
+						chatText.append(".");
+						combatLog.addToLog(chatText);
+					}
+					if (itemDown != "NULL")
+					{
+						std::istringstream idS(itemDown);
+						string sID;
+						std::getline(idS, sID, '|');
+						std::getline(idS, sID, '|');
+						std::getline(idS, sID, '|');
+						chatText = "You found ";
+						chatText.append(sID);
+						chatText.append(".");
+						combatLog.addToLog(chatText);
+					}
+					if (itemLeft != "NULL")
+					{
+						std::istringstream idS(itemLeft);
+						string sID;
+						std::getline(idS, sID, '|');
+						std::getline(idS, sID, '|');
+						std::getline(idS, sID, '|');
+						chatText = "You found ";
+						chatText.append(sID);
+						chatText.append(".");
+						combatLog.addToLog(chatText);
+					}
+					if (itemRight != "NULL")
+					{
+						std::istringstream idS(itemRight);
+						string sID;
+						std::getline(idS, sID, '|');
+						std::getline(idS, sID, '|');
+						std::getline(idS, sID, '|');
+						chatText = "You found ";
+						chatText.append(sID);
+						chatText.append(".");
+						combatLog.addToLog(chatText);
+					}
+
+					chatText = "Player turn has ended.";
+					npcTurn++;
+					if (npcTurn > ms.getNumberOfNPCs())
+					{
+						npcTurn = 0;
+					}
+					playerTurn = false;
+					playerAttacking = false;
+					combatLog.addToLog(chatText);
+					start = true;
+					update();
+				}
+				else if (event->key() == Qt::Key_E && playerTurn == true)
+				{
+					//End player turn
+					QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+					string chatText = "Player turn has ended.";
+					npcTurn++;
+					if (npcTurn > ms.getNumberOfNPCs())
+					{
+						npcTurn = 0;
+					}
+					fullAttack = false;
+					playerTurn = false;
+					playerAttacking = false;
+					combatLog.addToLog(chatText);
+					textChange = true;
+					update(rect);
 				}
 
+				if (didPlayerMove)
+				{
+					if (playerSteps <= ms.playerCharacter.getMoveSpeed())
+					{
+						QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+						string chatText = "You have ";
+						chatText.append(std::to_string(ms.playerCharacter.getMoveSpeed() - playerSteps));
+						chatText.append(" steps remaining.");
+
+						if (playerSteps == ms.playerCharacter.getMoveSpeed())
+						{
+							chatText.append(" Attack (A), Loot Item (L) or End Turn (E)");
+							playerMove = false;
+						}
+
+						combatLog.addToLog(chatText);
+						textChange = true;
+						update(rect);
+
+						//Code if player reaches exit
+						if (ms.getCurrentX() == ms.getEndX() && ms.getCurrentY() == ms.getEndY())
+						{
+							character pc = ms.playerCharacter;
+							if (nextMap())
+							{
+								string file = Campaign.getMapFilename(Campaign.getCurrentMapId());
+								string extension = "Maps/";
+								ms.loadFromFile(extension.append(file));
+								ms.playerCharacter = pc;
+								resolution = checkResolution(ms.getMaxX(), ms.getMaxY());
+								int windowResX = ms.getMaxX()*resolution;
+
+								int windowDisplayHeightAdd = 3 * 50;
+								int windowDisplayWidthMinimum = 12 * resolution;
+
+								if (windowResX < windowDisplayWidthMinimum)
+								{
+									windowResX = windowDisplayWidthMinimum;
+								}
+								mainWindow->setFixedWidth(windowResX);
+								mainWindow->setFixedHeight((ms.getMaxY()*resolution) + 20 + windowDisplayHeightAdd);
+
+								start = true;
+								update();
+								mapStart = true;
+							}
+							else
+							{
+								message.setText("Congratulations! You have reached the end of the campaign!");
+								message.exec();
+							}
+						}
+					}
+				}
+			}
+			//This handles the code if player enters a map for the first time
+			else
+			{
+				npcTurn = 0;
+				int pcInit = ms.playerCharacter.getInitiative();
+				int roll = Dice::roll(1, 20, 0);
+
+				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
+				string chatText = "You roll a d20. Result: ";
+				chatText.append(std::to_string(roll));
+				chatText.append(". Your initiative is ");
+				chatText.append(std::to_string(roll + pcInit));
+				chatText.append(" for this map.");
+
+				combatLog.addToLog(chatText);
 				textChange = true;
 				update(rect);
 
-				npcTurn++;
-				if (npcTurn > ms.getNumberOfNPCs())
+				//Handling initiative order
+				turnOrder.clear();
+				int npcQuantity = ms.getNumberOfNPCs();
+
+				vector<int> npcOrder;
+
+				for (int i = 0; i < npcQuantity; i++)
 				{
-					npcTurn = 0;
+					ms.characterEntities[i].setCurrentInitiativeRoll(Dice::roll(1, 20, 0) + ms.characterEntities[i].getInitiative());
+					npcOrder.push_back(ms.characterEntities[i].getCurrentInitiativeRoll());
 				}
 
-				start = true;
-				update();
-				if (turnOrder[npcTurn] == -1 || ms.getNumberOfNPCs() == 0)
+				int highestInit = -100;
+				int highestCharacter;
+				bool pcHighest = false;
+				bool pcOrdered = false; //boolean to keep track if pc has been sorted
+				int pcPosition;
+
+				for (int index = 0; index < (npcQuantity + 1); index++)
+				{
+					highestInit = -100;
+					highestCharacter = -1; //reset
+					if (!pcOrdered)
+					{
+						highestInit = pcInit + roll;
+						pcHighest = true;
+					}
+					for (int i = 0; i < npcQuantity; i++)
+					{
+						if (npcOrder[i] > highestInit)
+						{
+							highestInit = npcOrder[i];
+							highestCharacter = i;
+							pcHighest = false;
+						}
+					}
+					if (pcHighest)
+					{
+						turnOrder.push_back(-1); //-1 signifies the player
+						pcOrdered = true;
+						pcPosition = index;
+					}
+					else
+					{
+						turnOrder.push_back(highestCharacter);
+						npcOrder[highestCharacter] = -1;
+					}
+				}
+
+				chatText = "You turn order: ";
+				chatText.append(std::to_string(pcPosition + 1));
+
+				combatLog.addToLog(chatText);
+				textChange = true;
+				update(rect);
+
+				if (pcPosition == 0)
 				{
 					playerTurn = true;
 					playerMove = true;
-					playerSteps = 0;
-					chatText = "Player turn start!";
-					combatLog.addToLog(chatText);
-					textChange = true;
-					update(rect);
-				}
-			}
-			//Code for stopping player movement during their turn (end movement)
-			else if (event->key() == Qt::Key_S && playerMove == true && playerTurn == true && playerAttacking == false)
-			{
-				//Code for player stop goes here NOTE:Fix player movement end ending their turn
-				//Note: Also potentially limit player movement dialog messages to destination ONLY?
-				
-				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
-				string chatText = "Movement for turn ended.";
-				chatText.append(" Attack (A), Loot Item (L) or End Turn (E)");
-				playerMove = false;
-				
-				combatLog.addToLog(chatText);
-				textChange = true;
-				update(rect);
-			}
-			//Code for attacking during player turn goes here
-			else if (event->key() == Qt::Key_A && playerTurn == true && playerAttacking == false)
-			{
-				playerAttacking = true;
-				//Checks to see if player will use 1 attack or full attack
-				string chatText;
-				if (playerSteps == 0)
-				{
-					fullAttack = true;
-					chatText = "You prepare a full attack! Choose a direction to attack.";
 				}
 				else
 				{
-					fullAttack = false;
-					chatText = "You declare an attack! Choose a direction to attack.";
+					playerTurn = false;
+					playerMove = false;
 				}
-				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
-				
-				combatLog.addToLog(chatText);
-				string combatString = "Weapon Damage: ";
-				combatString.append(std::to_string(ms.playerCharacter.getNumberOfWeaponDice())).append("d").append(std::to_string(ms.playerCharacter.getWeaponDice())).append("+").append(std::to_string(ms.playerCharacter.getDamageBonus()));
-				combatString.append(" Attack Roll: (d20)");
-				combatLog.addToLog(combatString);
-				textChange = true;
-				update(rect);
+				playerSteps = 0;
+				mapStart = false;
 			}
-
-			//Code for each attack direction goes here!
-			else if (event->key() == Qt::Key_Up && playerTurn == true && playerAttacking == true)
-			{
-				string attackMessage;
-				int adjX = ms.getCurrentX();
-				int adjY = ms.getCurrentY() - 1;
-				string dir = "up";
-				character enemy;
-				//Checks bounds
-				if (adjY > 0)
-				{
-					attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
-					enemy = ms.getCharacter(adjX, adjY);
-				}
-				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
-				combatLog.addToLog(attackMessage);
-				
-				if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
-				{
-					combatLog.addToLog("Enemy defeated!");
-					ms.removeNPC(enemy.getX(), enemy.getY());
-					start = true;
-					update();
-				}
-
-				string chatText = "Player turn has ended.";
-				npcTurn++;
-				if (npcTurn > ms.getNumberOfNPCs())
-				{
-					npcTurn = 0;
-				}
-				fullAttack = false;
-				playerTurn = false;
-				playerAttacking = false;
-				combatLog.addToLog(chatText);
-				textChange = true;
-				update(rect);
-			}
-			else if (event->key() == Qt::Key_Down && playerTurn == true && playerAttacking == true)
-			{
-				string attackMessage;
-				int adjX = ms.getCurrentX();
-				int adjY = ms.getCurrentY() + 1;
-				character enemy;
-				//Checks bounds
-				string dir = "down";
-				if (adjY < ms.getMaxY()-1)
-				{
-					attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
-					enemy = ms.getCharacter(adjX, adjY);
-				}
-				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
-				combatLog.addToLog(attackMessage);
-
-				if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
-				{
-					combatLog.addToLog("Enemy defeated!");
-					ms.removeNPC(enemy.getX(), enemy.getY());
-					start = true;
-					update();
-				}
-
-				string chatText = "Player turn has ended.";
-				npcTurn++;
-				if (npcTurn > ms.getNumberOfNPCs())
-				{
-					npcTurn = 0;
-				}
-				fullAttack = false;
-				playerTurn = false;
-				playerAttacking = false;
-				combatLog.addToLog(chatText);
-				textChange = true;
-				update(rect);
-			}
-			else if (event->key() == Qt::Key_Left && playerTurn == true && playerAttacking == true)
-			{
-				string attackMessage;
-				int adjX = ms.getCurrentX() - 1;
-				int adjY = ms.getCurrentY();
-				string dir = "left";
-				character enemy;
-				//Checks bounds
-				if (adjX > 0)
-				{
-					attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
-					enemy = ms.getCharacter(adjX, adjY);
-				}
-				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
-				combatLog.addToLog(attackMessage);
-
-				if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
-				{
-					combatLog.addToLog("Enemy defeated!");
-					ms.removeNPC(enemy.getX(), enemy.getY());
-					start = true;
-					update();
-				}
-
-				string chatText = "Player turn has ended.";
-				npcTurn++;
-				if (npcTurn > ms.getNumberOfNPCs())
-				{
-					npcTurn = 0;
-				}
-				fullAttack = false;
-				playerTurn = false;
-				playerAttacking = false;
-				combatLog.addToLog(chatText);
-				textChange = true;
-				update(rect);
-			}
-			else if (event->key() == Qt::Key_Right && playerTurn == true && playerAttacking == true)
-			{
-				string attackMessage;
-				int adjX = ms.getCurrentX() + 1;
-				int adjY = ms.getCurrentY();
-				string dir = "right";
-				character enemy;
-				//Checks bounds
-				if (adjX < ms.getMaxX() - 1)
-				{
-					attackMessage = ms.playerAttack(adjX, adjY, dir, fullAttack);
-					enemy = ms.getCharacter(adjX, adjY);
-				}
-
-				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
-				combatLog.addToLog(attackMessage);
-
-				if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
-				{
-					combatLog.addToLog("Enemy defeated!");
-					ms.removeNPC(enemy.getX(), enemy.getY());
-					start = true;
-					update();
-				}
-
-				string chatText = "Player turn has ended.";
-				npcTurn++;
-				if (npcTurn > ms.getNumberOfNPCs())
-				{
-					npcTurn = 0;
-				}
-				fullAttack = false;
-				playerTurn = false;
-				playerAttacking = false;
-				combatLog.addToLog(chatText);
-				textChange = true;
-				update(rect);
-			}
-			//End of attack direction code above ^^^^^^
-
-			//Code for looting during player turn goes here
-			else if (event->key() == Qt::Key_L && playerTurn == true)
-			{
-				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
-				string chatText = "You looted around you!";
-				combatLog.addToLog(chatText);
-				//Loot all around you
-				string itemUp = ms.lootItems(ms.getCurrentX(), ms.getCurrentY() - 1);
-				string itemDown = ms.lootItems(ms.getCurrentX(), ms.getCurrentY() + 1);
-				string itemLeft = ms.lootItems(ms.getCurrentX() - 1, ms.getCurrentY());
-				string itemRight = ms.lootItems(ms.getCurrentX() + 1, ms.getCurrentY());
-
-				/********************************************************************
-				Add to appropriate BACKPACK here when its ready!!
-				********************************************************************/
-
-				//Prints this if nothing is returned
-				if (itemUp == "NULL" && itemDown == "NULL" && itemLeft == "NULL" && itemRight == "NULL")
-				{
-					chatText.append("You found nothing!");
-					combatLog.addToLog(chatText);
-				}
-				//Checks each item to display multiple found if at all
-				if (itemUp != "NULL")
-				{
-					std::istringstream idS(itemUp);
-					string sID;
-					std::getline(idS, sID, '|');
-					std::getline(idS, sID, '|');
-					std::getline(idS, sID, '|');
-					chatText = "You found ";
-					chatText.append(sID);
-					chatText.append(".");
-					combatLog.addToLog(chatText);
-				}
-				if (itemDown != "NULL")
-				{
-					std::istringstream idS(itemDown);
-					string sID;
-					std::getline(idS, sID, '|');
-					std::getline(idS, sID, '|');
-					std::getline(idS, sID, '|');
-					chatText = "You found ";
-					chatText.append(sID);
-					chatText.append(".");
-					combatLog.addToLog(chatText);
-				}
-				if (itemLeft != "NULL")
-				{
-					std::istringstream idS(itemLeft);
-					string sID;
-					std::getline(idS, sID, '|');
-					std::getline(idS, sID, '|');
-					std::getline(idS, sID, '|');
-					chatText = "You found ";
-					chatText.append(sID);
-					chatText.append(".");
-					combatLog.addToLog(chatText);
-				}
-				if (itemRight != "NULL")
-				{
-					std::istringstream idS(itemRight);
-					string sID;
-					std::getline(idS, sID, '|');
-					std::getline(idS, sID, '|');
-					std::getline(idS, sID, '|');
-					chatText = "You found ";
-					chatText.append(sID);
-					chatText.append(".");
-					combatLog.addToLog(chatText);
-				}
-
-				chatText = "Player turn has ended.";
-				npcTurn++;
-				if (npcTurn > ms.getNumberOfNPCs())
-				{
-					npcTurn = 0;
-				}
-				playerTurn = false;
-				playerAttacking = false;
-				combatLog.addToLog(chatText);
-				start = true;
-				update();
-			}
-			else if (event->key() == Qt::Key_E && playerTurn == true)
-			{
-				//End player turn
-				QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
-				string chatText = "Player turn has ended.";
-				npcTurn++;
-				if (npcTurn > ms.getNumberOfNPCs())
-				{
-					npcTurn = 0;
-				}
-				fullAttack = false;
-				playerTurn = false;
-				playerAttacking = false;
-				combatLog.addToLog(chatText);
-				textChange = true;
-				update(rect);
-			}
-
-			if (didPlayerMove)
-			{
-				if (playerSteps <= ms.playerCharacter.getMoveSpeed())
-				{
-					QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
-					string chatText = "You have ";
-					chatText.append(std::to_string(ms.playerCharacter.getMoveSpeed() - playerSteps));
-					chatText.append(" steps remaining.");
-
-					if (playerSteps == ms.playerCharacter.getMoveSpeed())
-					{
-						chatText.append(" Attack (A), Loot Item (L) or End Turn (E)");
-						playerMove = false;
-					}
-
-					combatLog.addToLog(chatText);
-					textChange = true;
-					update(rect);
-
-					//Code if player reaches exit
-					if (ms.getCurrentX() == ms.getEndX() && ms.getCurrentY() == ms.getEndY())
-					{
-						character pc = ms.playerCharacter;
-						if (nextMap())
-						{
-							string file = Campaign.getMapFilename(Campaign.getCurrentMapId());
-							string extension = "Maps/";
-							ms.loadFromFile(extension.append(file));
-							ms.playerCharacter = pc;
-							resolution = checkResolution(ms.getMaxX(), ms.getMaxY());
-							int windowResX = ms.getMaxX()*resolution;
-
-							int windowDisplayHeightAdd = 3 * 50;
-							int windowDisplayWidthMinimum = 12 * resolution;
-
-							if (windowResX < windowDisplayWidthMinimum)
-							{
-								windowResX = windowDisplayWidthMinimum;
-							}
-							mainWindow->setFixedWidth(windowResX);
-							mainWindow->setFixedHeight((ms.getMaxY()*resolution) + 20 + windowDisplayHeightAdd);
-
-							start = true;
-							update();
-							mapStart = true;
-						}
-						else
-						{
-							message.setText("Congratulations! You have reached the end of the campaign!");
-							message.exec();
-						}
-					}
-				}
-			}
-		}
-		//This handles the code if player enters a map for the first time
-		else
-		{
-			npcTurn = 0;
-			int pcInit = ms.playerCharacter.getInitiative();
-			int roll = Dice::roll(1, 20, 0);
-
-			QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
-			string chatText = "You roll a d20. Result: ";
-			chatText.append(std::to_string(roll));
-			chatText.append(". Your initiative is ");
-			chatText.append(std::to_string(roll+pcInit));
-			chatText.append(" for this map.");
-
-			combatLog.addToLog(chatText);
-			textChange = true;
-			update(rect);
-
-			//Handling initiative order
-			turnOrder.clear();
-			int npcQuantity = ms.getNumberOfNPCs();
-
-			vector<int> npcOrder;
-
-			for (int i = 0; i < npcQuantity; i++)
-			{
-				ms.characterEntities[i].setCurrentInitiativeRoll(Dice::roll(1, 20, 0) + ms.characterEntities[i].getInitiative());
-				npcOrder.push_back(ms.characterEntities[i].getCurrentInitiativeRoll());
-			}
-
-			int highestInit = -100;
-			int highestCharacter;
-			bool pcHighest = false;
-			bool pcOrdered = false; //boolean to keep track if pc has been sorted
-			int pcPosition;
-
-			for (int index = 0; index < (npcQuantity + 1); index++)
-			{
-				highestInit = -100;
-				highestCharacter = -1; //reset
-				if (!pcOrdered)
-				{
-					highestInit = pcInit + roll;
-					pcHighest = true;
-				}
-				for (int i = 0; i < npcQuantity; i++)
-				{
-					if (npcOrder[i] > highestInit)
-					{
-						highestInit = npcOrder[i];
-						highestCharacter = i;
-						pcHighest = false;
-					}
-				}
-				if (pcHighest)
-				{
-					turnOrder.push_back(-1); //-1 signifies the player
-					pcOrdered = true;
-					pcPosition = index;
-				}
-				else
-				{
-					turnOrder.push_back(highestCharacter);
-					npcOrder[highestCharacter] = -1;
-				}
-			}
-
-			chatText = "You turn order: ";
-			chatText.append(std::to_string(pcPosition+1));
-
-			combatLog.addToLog(chatText);
-			textChange = true;
-			update(rect);
-
-			if (pcPosition == 0)
-			{
-				playerTurn = true;
-				playerMove = true;
-			}
-			else
-			{
-				playerTurn = false;
-				playerMove = false;
-			}
-			playerSteps = 0;
-			mapStart = false;
 		}
 	}
 }

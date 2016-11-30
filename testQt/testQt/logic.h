@@ -120,6 +120,7 @@ class logic : public QWidget
 		int playerSteps = 0;
 		bool gameSession = false;
 
+		bool gameplay = true;
 
 		player_Log combatLog;
 		bool playerTurn = true;

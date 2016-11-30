@@ -372,6 +372,11 @@ bool character::getAlive()
 	return alive;
 }
 
+int character::getCurrentHP()
+{
+	return currentHP;
+}
+
 int character::getModifier(int abilityScore) {
 	return (abilityScore - 10) / 2;
 }
