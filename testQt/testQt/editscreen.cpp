@@ -1001,7 +1001,31 @@ void editscreen::viewBackpack()
 	QVBoxLayout * vbox = new QVBoxLayout();
 
 
-	QFile myTextFile("Resources/backpack.txt");
+	string playerFile;
+
+	ifstream file(fName);
+	string str;
+	string file_contents;
+	string symbol = " ";
+	while (getline(file, str))
+	{
+		size_t found = str.find(symbol);
+		string str2 = str.substr(0, found);
+		string temp = str2.c_str();
+
+		if (temp == "name") {
+			playerFile = str.substr(found+1, str.length());
+		}
+
+	}
+	file.close();
+
+	QString s1 = "Resources/";
+	QString s2 = QString::fromStdString(playerFile);
+	QString s3 = "backpack.txt";
+	QString s4 = s1 + s2 + s3;
+	QFile myTextFile(s4);
+
 	QStringList myStringList;
 
 	if (!myTextFile.open(QIODevice::ReadOnly))
