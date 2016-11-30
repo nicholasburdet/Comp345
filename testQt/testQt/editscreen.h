@@ -43,6 +43,7 @@ public slots:
 	void characterEditorSave();
 	void loadCharacter();
 	void viewCharacterStats();
+	void viewEnemyStats();
 	void viewMap();
 	void viewControls();
 	void viewItems();
@@ -103,6 +104,7 @@ private:
 	QAction *viewControlsActions;
 	QAction *viewItemsAction;
 	QAction *quitGameAction;
+	QAction *viewEnemyStatsAction;
 	
 	QAction *viewBackpackAction;
 	QAction *viewWornItemsAction;

@@ -1455,6 +1455,12 @@ void logic::viewPlayer()
 	message.exec();
 }
 
+void logic::viewEnemyStats()
+{
+	message.setText(QString::fromStdString(ms.viewEnemies()));
+	message.exec();
+}
+
 void logic::loadEquipment()
 {
 	ms.playerCharacter.loadEquipment();

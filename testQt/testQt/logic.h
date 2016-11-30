@@ -51,6 +51,7 @@ class logic : public QWidget
 		string addItem();
 		void viewItems();
 		void viewPlayer();
+		void viewEnemyStats();
 		void loadEquipment();
 	protected:
 		void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;

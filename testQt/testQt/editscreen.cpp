@@ -98,6 +98,10 @@ editscreen::editscreen(char n[])
 
 	quitGameAction = new QAction(tr("&Quit Game"), this);
 	connect(quitGameAction, SIGNAL(triggered()), this, SLOT(quitGame()));
+
+	viewEnemyStatsAction = new QAction(tr("&View Enemy Stats (CONSOLE)"), this);
+	connect(viewEnemyStatsAction, SIGNAL(triggered()), this, SLOT(viewEnemyStats()));
+
 	
 	//// VIEW INVENTORY AND WORN ITEMS
 
@@ -169,6 +173,7 @@ editscreen::editscreen(char n[])
 	gameMenu->addAction(viewBackpackAction);
 	gameMenu->addAction(viewWornItemsAction);
 	////
+	gameMenu->addAction(viewEnemyStatsAction);
 	gameMenu->addAction(quitGameAction);
 
 	viewControlsMenu = new QMenu(tr("View Controls"), this);
@@ -652,6 +657,11 @@ void editscreen::quitGame()
 		log->closeWindow();
 		createMainMenu();
 	}
+}
+
+void editscreen::viewEnemyStats()
+{
+	log->viewEnemyStats();
 }
 
 //This section is so that the user can see any size of map on screen (roughly) 100x100 max

@@ -97,6 +97,7 @@ public:
 	string getItem(int x, int y);
 	character getCharacter(int x, int y);
 	string getPlayerString();
+	string viewEnemies();
 
 private:
 	//current X and Y can be used for the player location (?)

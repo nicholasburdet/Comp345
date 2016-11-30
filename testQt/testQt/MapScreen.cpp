@@ -544,18 +544,54 @@ void MapScreen::loadNPCs(void)
 	string image;
 	string subtype;
 
-	input >> type >> id >> type >> name >> type >> level >> type >> image >> subtype;
-	
+	int str;
+	int dex;
+	int con;
+	int itl;
+	int wis;
+	int cha;
+
+	int wdice;
+	int wdam;
+	int dbon;
+	int abon;
+	int ran;
+
+	int abilList[6];
+
+	input >> type >> id >> type >> name >> type >> level >> type >> image >> subtype >> type >> str >> type >> dex >> type >> con >> type >> itl >> type >> wis >> type >> cha >> type >> wdice >> type >> wdam >> type >> dbon >> type >> abon >> type >> ran;
+	abilList[0] = str;
+	abilList[1] = dex;
+	abilList[2] = con;
+	abilList[3] = itl;
+	abilList[4] = wis;
+	abilList[5] = cha;
 	if (!input.eof())
 	{
-		characterTable[id] = character(id, name, level, image, subtype);
+		characterTable[id] = character(id, name, level, image, subtype, abilList);
+		characterTable[id].setNumberOfWeaponDice(wdice);
+		characterTable[id].setWeaponDice(wdam);
+		characterTable[id].setWeaponDamageBonus(dbon);
+		characterTable[id].setWeaponAttackBonus(abon);
+		characterTable[id].setWeaponRange(ran);
 		numberOfDistinctNPCs++;
 	}
 
 	while (!input.eof())
 	{
-		input >> type >> id >> type >> name >> type >> level >> type >> image >> subtype;
-		characterTable[id] = character(id, name, level, image, subtype);
+		input >> type >> id >> type >> name >> type >> level >> type >> image >> subtype >> type >> str >> type >> dex >> type >> con >> type >> itl >> type >> wis >> type >> cha >> type >> wdice >> type >> wdam >> type >> dbon >> type >> abon >> type >> ran;
+		abilList[0] = str;
+		abilList[1] = dex;
+		abilList[2] = con;
+		abilList[3] = itl;
+		abilList[4] = wis;
+		abilList[5] = cha;
+		characterTable[id] = character(id, name, level, image, subtype, abilList);
+		characterTable[id].setNumberOfWeaponDice(wdice);
+		characterTable[id].setWeaponDice(wdam);
+		characterTable[id].setWeaponDamageBonus(dbon);
+		characterTable[id].setWeaponAttackBonus(abon);
+		characterTable[id].setWeaponRange(ran);
 		numberOfDistinctNPCs++;
 	}
 
@@ -1126,6 +1162,25 @@ string MapScreen::getPlayerString()
 	playerString.append("Move Speed: ").append(std::to_string(playerCharacter.getMoveSpeed())).append("\n");
 	playerString.append("Initiative: ").append(std::to_string(playerCharacter.getInitiative())).append("\n");
 	return playerString;
+}
+
+//This is a console window type function (would not legitimately be in the real game)
+string MapScreen::viewEnemies()
+{
+	//Because you don't have enemy data in a real dungeons and dragons game, we are not showing the enemy data on screen.
+	//So, in order to appropriate a way to show that stuff is ACTUALLY working, this is just to show off SOME enemy data
+	string eStr = "";
+
+	for (int i = 0; i < numberOfNPCs; i++)
+	{
+		eStr.append("Name: ").append(characterEntities[i].getName());
+		eStr.append("  ID: ").append(std::to_string(characterEntities[i].getId()));
+		eStr.append("  Level: ").append(std::to_string(characterEntities[i].getLevel()));
+		eStr.append("  Current HP: ").append(std::to_string(characterEntities[i].getCurrentHP())).append("/").append(std::to_string(characterEntities[i].getHP()));
+		eStr.append("\n");	
+	}
+
+	return eStr;
 }
 
 //Loot item at X,Y (return item and remove from map)

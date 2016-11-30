@@ -1,3 +1,3 @@
-id 0 name Orc level 1 image Images/orc.png Nimble
-id 1 name Ogre level 3 image Images/ogre.png Tank
-id 2 name Minotaur level 5 image Images/minotaur.png Tank
+id 0 name Orc level 1 image Images/orc.png Nimble Str 11 Dex 14 Con 12 Int 8 Wis 6 Cha 10 WDice 1 WDam 6 DBon 1 ABon 0 Ran 12
+id 1 name Ogre level 3 image Images/ogre.png Tank Str 14 Dex 10 Con 16 Int 4 Wis 4 Cha 12 WDice 1 WDam 8 DBon 1 ABon 1 Ran 1
+id 2 name Minotaur level 5 image Images/minotaur.png Tank Str 16 Dex 12 Con 18 Int 10 Wis 10 Cha 14 WDice 2 WDam 6 DBon 1 ABon 3 Ran 1

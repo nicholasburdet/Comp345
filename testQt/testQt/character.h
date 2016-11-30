@@ -185,6 +185,8 @@ public:
 	void setNumberOfWeaponDice(int n);
 	void setWeaponDice(int d);
 	void setWeaponRange(int r);
+	void setWeaponDamageBonus(int db);
+	void setWeaponAttackBonus(int ab);
 
 	int getNumberOfWeaponDice();
 	int getWeaponDice();

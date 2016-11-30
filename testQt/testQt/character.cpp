@@ -423,6 +423,16 @@ void character::setWeaponRange(int r)
 	weaponRange = r;
 }
 
+void character::setWeaponDamageBonus(int db)
+{
+	weaponDamageBonus = db;
+}
+
+void character::setWeaponAttackBonus(int ab)
+{
+	weaponAttackBonus = ab;
+}
+
 int character::getNumberOfWeaponDice()
 {
 	return numberOfWeaponDice;
