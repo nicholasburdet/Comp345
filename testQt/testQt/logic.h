@@ -102,7 +102,7 @@ class logic : public QWidget
 		bool drawChest = false;
 
 		//flag to check path status
-		bool checkStatus = true;
+		bool checkStatus = false;
 
 		//stores if path exists here, default map path exists
 		bool path = true;

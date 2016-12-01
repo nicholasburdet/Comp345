@@ -1,8 +1,8 @@
 campaignName TheRealOne campaignId 13 mapId 0 mapName TheEntrance
 currentX 4
 currentY 0
-startX 4
-startY 0
+startX 1
+startY 3
 endX 4
 endY 9
 maxX 10

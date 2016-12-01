@@ -377,7 +377,6 @@ int character::getModifier(int abilityScore) {
 
 int character::getMaxHP() {
 	int maxHP = (getModifier(this->abilities.constitution + currentEquipment.equipConstitution)*((this->level)) + this->hitDice + Dice::roll(level-1, this->hitDice, 0));
-	qDebug() << "Name: " << QString::fromStdString(name) << " Level: " << QString::fromStdString(std::to_string(abilities.constitution)); 
 	return maxHP;
 }
 

@@ -724,8 +724,11 @@ void logic::paintEvent(QPaintEvent *event)
 		{
 			replace = "grass";
 		}
-		replacePlayer = true;
-		update(recta);
+		if (!mapStart)
+		{
+			replacePlayer = true;
+			update(recta);
+		}
 	}
 
 	if(textChange)
@@ -1206,15 +1209,18 @@ void logic::keyPressEvent(QKeyEvent *event)
 							character pc = ms.playerCharacter;
 							if (nextMap())
 							{
+								qDebug() << "ENDING MAP";
 								string file = Campaign.getMapFilename(Campaign.getCurrentMapId());
 								string extension = "Maps/";
-								MapScreen newMap; //Should reimplement the map (possibly breaks stuff?)
-								ms = newMap;
+								//MapScreen newMap; //Should reimplement the map (possibly breaks stuff?)
+								//ms = newMap;
 								ms.loadFromFile(extension.append(file));
 								ms.playerCharacter = pc;
+								ms.setCurrentX(ms.getStartX());
+								ms.setCurrentY(ms.getStartY());
 								
 								int playerLevel = ms.playerCharacter.getLevel();
-
+								
 								if (playerLevel > 3)
 								{
 									playerLevel = playerLevel - 3;
