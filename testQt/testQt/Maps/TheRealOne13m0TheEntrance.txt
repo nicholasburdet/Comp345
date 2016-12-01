@@ -108,7 +108,7 @@ space 9 7 0
 space 9 8 0
 space 9 9 1
 numberOfNPCs 2
-npcID 1 xPos 8 yPos 7 friendly
+npcID 0 xPos 7 yPos 4 friendly
 npcID 2 xPos 9 yPos 9 friendly
 numberOfItems 1
 itemX 1 itemY 7 itemID 2

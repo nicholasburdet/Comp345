@@ -196,6 +196,8 @@ public:
 	int getCurrentHP();
 	void loadEquipment();
 	void checkConstitutionChange();
+	void addNpcItem(string it);
+	vector<string> getNpcItems();
 
 private:
 	int id;
@@ -223,6 +225,9 @@ private:
 	int currentInitiativeRoll = 0;
 	bool playerCharacter = false;
 	
+	vector<string> npcItems;
+	int numberNpcItems = 0;
+
 	bool alive = true;
 	int previousConstitutionBonus = 0;
 

@@ -743,3 +743,14 @@ void character::checkConstitutionChange()
 		currentHP = currentHP + (((currentEquipment.equipConstitution - previousConstitutionBonus) / 2)*level);
 	}
 }
+
+void character::addNpcItem(string it)
+{
+	npcItems.push_back(it);
+	numberNpcItems++;
+}
+
+vector<string> character::getNpcItems()
+{
+	return npcItems;
+}

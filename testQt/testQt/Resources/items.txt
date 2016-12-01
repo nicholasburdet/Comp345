@@ -13,3 +13,11 @@
 12|Boots|Dexterity Boots|Dexterity|3|Light
 13|Boots|Heavy Metal Boots|None|0|Medium
 14|Helmet|Phaser Helm|Wisdom|3|Heavy
+15|Armor|Spiked Armor|Armor Class|2|Medium
+16|Weapon|Broadsword|Damage Bonus|3|1d8
+17|Weapon|Battleaxe|Attack Bonus|3|2d6
+18|Ring|Health Ring|Constitution|2|Light
+19|Shield|Tower Shield|Armor Class|5|Heavy
+20|Belt|Power Cinch|Strength|3|Medium
+21|Weapon|Lethal Dagger|Damage Bonus|4|2d4
+22|Weapon|Godsword|Damage Bonus|5|1d1000

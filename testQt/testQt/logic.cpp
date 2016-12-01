@@ -968,6 +968,34 @@ void logic::keyPressEvent(QKeyEvent *event)
 
 					if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
 					{
+						vector<string> lootItems;
+						lootItems = enemy.getNpcItems();
+						int numLootItems = lootItems.size();
+
+						ofstream addItems;
+						string addItemsFile = "Resources/";
+						string playerN = ms.playerCharacter.getName();
+						playerN.erase(std::remove(playerN.begin(), playerN.end(), ' '), playerN.end()); //Because of a stupid issue
+						addItemsFile.append(playerN);
+						addItemsFile.append("backpack.txt");
+						addItems.open(addItemsFile.c_str(), ios::out | ios::app);
+
+						for (int i = 0; i < numLootItems; i++)
+						{
+							addItems << lootItems[i] << "\n";
+							std::istringstream idS(lootItems[i]);
+							string sID;
+							std::getline(idS, sID, '|');
+							std::getline(idS, sID, '|');
+							std::getline(idS, sID, '|');
+							string chatText = "You looted a ";
+							chatText.append(sID);
+							chatText.append(".");
+							combatLog.addToLog(chatText);
+						}
+
+						addItems.close();
+
 						combatLog.addToLog("Enemy defeated!");
 						ms.removeNPC(enemy.getX(), enemy.getY());
 						start = true;
@@ -1005,6 +1033,34 @@ void logic::keyPressEvent(QKeyEvent *event)
 
 					if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
 					{
+						vector<string> lootItems;
+						lootItems = enemy.getNpcItems();
+						int numLootItems = lootItems.size();
+
+						ofstream addItems;
+						string addItemsFile = "Resources/";
+						string playerN = ms.playerCharacter.getName();
+						playerN.erase(std::remove(playerN.begin(), playerN.end(), ' '), playerN.end()); //Because of a stupid issue
+						addItemsFile.append(playerN);
+						addItemsFile.append("backpack.txt");
+						addItems.open(addItemsFile.c_str(), ios::out | ios::app);
+
+						for (int i = 0; i < numLootItems; i++)
+						{
+							addItems << lootItems[i] << "\n";
+							std::istringstream idS(lootItems[i]);
+							string sID;
+							std::getline(idS, sID, '|');
+							std::getline(idS, sID, '|');
+							std::getline(idS, sID, '|');
+							string chatText = "You looted a ";
+							chatText.append(sID);
+							chatText.append(".");
+							combatLog.addToLog(chatText);
+						}
+
+						addItems.close();
+
 						combatLog.addToLog("Enemy defeated!");
 						ms.removeNPC(enemy.getX(), enemy.getY());
 						start = true;
@@ -1042,6 +1098,34 @@ void logic::keyPressEvent(QKeyEvent *event)
 
 					if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
 					{
+						vector<string> lootItems;
+						lootItems = enemy.getNpcItems();
+						int numLootItems = lootItems.size();
+
+						ofstream addItems;
+						string addItemsFile = "Resources/";
+						string playerN = ms.playerCharacter.getName();
+						playerN.erase(std::remove(playerN.begin(), playerN.end(), ' '), playerN.end()); //Because of a stupid issue
+						addItemsFile.append(playerN);
+						addItemsFile.append("backpack.txt");
+						addItems.open(addItemsFile.c_str(), ios::out | ios::app);
+
+						for (int i = 0; i < numLootItems; i++)
+						{
+							addItems << lootItems[i] << "\n";
+							std::istringstream idS(lootItems[i]);
+							string sID;
+							std::getline(idS, sID, '|');
+							std::getline(idS, sID, '|');
+							std::getline(idS, sID, '|');
+							string chatText = "You looted a ";
+							chatText.append(sID);
+							chatText.append(".");
+							combatLog.addToLog(chatText);
+						}
+
+						addItems.close();
+
 						combatLog.addToLog("Enemy defeated!");
 						ms.removeNPC(enemy.getX(), enemy.getY());
 						start = true;
@@ -1080,6 +1164,34 @@ void logic::keyPressEvent(QKeyEvent *event)
 
 					if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
 					{
+						vector<string> lootItems;
+						lootItems = enemy.getNpcItems();
+						int numLootItems = lootItems.size();
+
+						ofstream addItems;
+						string addItemsFile = "Resources/";
+						string playerN = ms.playerCharacter.getName();
+						playerN.erase(std::remove(playerN.begin(), playerN.end(), ' '), playerN.end()); //Because of a stupid issue
+						addItemsFile.append(playerN);
+						addItemsFile.append("backpack.txt");
+						addItems.open(addItemsFile.c_str(), ios::out | ios::app);
+						
+						for (int i = 0; i < numLootItems; i++)
+						{
+							addItems << lootItems[i] << "\n";
+							std::istringstream idS(lootItems[i]);
+							string sID;
+							std::getline(idS, sID, '|');
+							std::getline(idS, sID, '|');
+							std::getline(idS, sID, '|');
+							string chatText = "You looted a ";
+							chatText.append(sID);
+							chatText.append(".");
+							combatLog.addToLog(chatText);
+						}
+
+						addItems.close();
+
 						combatLog.addToLog("Enemy defeated!");
 						ms.removeNPC(enemy.getX(), enemy.getY());
 						start = true;

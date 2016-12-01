@@ -536,6 +536,15 @@ void MapScreen::loadFromFile(string filename)
 //adding or retrieving them, it won't go into the .txt file every time.
 void MapScreen::loadNPCs(void)
 {
+	vector<string> itemsFromFile;
+	ifstream itemInput("Resources/items.txt");
+
+	for (string itemline; getline(itemInput, itemline);)
+	{
+		itemsFromFile.push_back(itemline);
+	}
+
+	itemInput.close();
 	ifstream input("npc.txt");
 
 	string type;
@@ -560,8 +569,10 @@ void MapScreen::loadNPCs(void)
 	int ran;
 
 	int abilList[6];
+	int itemNum;
+	string itemList;
 
-	input >> type >> id >> type >> name >> type >> level >> type >> image >> subtype >> type >> str >> type >> dex >> type >> con >> type >> itl >> type >> wis >> type >> cha >> type >> wdice >> type >> wdam >> type >> dbon >> type >> abon >> type >> ran;
+	input >> type >> id >> type >> name >> type >> level >> type >> image >> subtype >> type >> str >> type >> dex >> type >> con >> type >> itl >> type >> wis >> type >> cha >> type >> wdice >> type >> wdam >> type >> dbon >> type >> abon >> type >> ran >> type >> itemNum >> itemList;
 	abilList[0] = str;
 	abilList[1] = itl;
 	abilList[2] = wis;
@@ -576,12 +587,26 @@ void MapScreen::loadNPCs(void)
 		characterTable[id].setWeaponDamageBonus(dbon);
 		characterTable[id].setWeaponAttackBonus(abon);
 		characterTable[id].setWeaponRange(ran);
+
+		std::istringstream idS(itemList);
+		string sID;
+		int iID;
+		string iText = "";
+		for (int a = 0; a < itemNum; a++)
+		{
+			std::getline(idS, sID, '|');
+			iID = atoi(sID.c_str());
+			iText = itemsFromFile[iID];
+			iText.erase(std::remove(iText.begin(), iText.end(), '\r'), iText.end());
+			iText.erase(std::remove(iText.begin(), iText.end(), '\n'), iText.end());
+			characterTable[id].addNpcItem(iText);
+		}
 		numberOfDistinctNPCs++;
 	}
 
 	while (!input.eof())
 	{
-		input >> type >> id >> type >> name >> type >> level >> type >> image >> subtype >> type >> str >> type >> dex >> type >> con >> type >> itl >> type >> wis >> type >> cha >> type >> wdice >> type >> wdam >> type >> dbon >> type >> abon >> type >> ran;
+		input >> type >> id >> type >> name >> type >> level >> type >> image >> subtype >> type >> str >> type >> dex >> type >> con >> type >> itl >> type >> wis >> type >> cha >> type >> wdice >> type >> wdam >> type >> dbon >> type >> abon >> type >> ran >> type >> itemNum >> itemList;
 		abilList[0] = str;
 		abilList[1] = itl;
 		abilList[2] = wis;
@@ -594,6 +619,20 @@ void MapScreen::loadNPCs(void)
 		characterTable[id].setWeaponDamageBonus(dbon);
 		characterTable[id].setWeaponAttackBonus(abon);
 		characterTable[id].setWeaponRange(ran);
+
+		std::istringstream idS(itemList);
+		string sID;
+		int iID;
+		string iText = "";
+		for (int a = 0; a < itemNum; a++)
+		{
+			std::getline(idS, sID, '|');
+			iID = atoi(sID.c_str());
+			iText = itemsFromFile[iID];
+			iText.erase(std::remove(iText.begin(), iText.end(), '\r'), iText.end());
+			iText.erase(std::remove(iText.begin(), iText.end(), '\n'), iText.end());
+			characterTable[id].addNpcItem(iText);
+		}
 		numberOfDistinctNPCs++;
 	}
 

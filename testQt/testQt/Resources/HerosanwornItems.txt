@@ -4,4 +4,4 @@
 5|Ring|Ruby Ring|Armor Class|2|Light
 8|Belt|Titanium Belt|Strength|1|Heavy
 12|Boots|Dexterity Boots|Dexterity|3|Light
-11|Weapon|Long Sword|Attack Bonus|2|1d12
+22|Weapon|Godsword|Damage Bonus|5|1d1000
