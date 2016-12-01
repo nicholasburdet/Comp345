@@ -56,6 +56,9 @@ class logic : public QWidget
 		void loadEquipment();
 		void setEnemyLevel(int amount);
 		int getPlayerLevel();
+		void combatLogToggle();
+		void movementLogToggle();
+		void miscLogToggle();
 
 	protected:
 		void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
@@ -124,6 +127,11 @@ class logic : public QWidget
 
 		int wid;
 		int hei;
+
+		//log views
+		bool miscLog = true;
+		bool moveLog = true;
+		bool attackLog = true;
 
 		//this section will hold some variables pertaining to gameplay ONLY, ignore for non-gameplay related stuff
 		int playerSteps = 0;

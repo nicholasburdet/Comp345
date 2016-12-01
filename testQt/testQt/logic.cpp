@@ -859,14 +859,14 @@ void logic::keyPressEvent(QKeyEvent *event)
 						chatText.append(std::to_string(ms.characterEntities[turnOrder[npcTurn]].getX()));
 						chatText.append(" Y:");
 						chatText.append(std::to_string(ms.characterEntities[turnOrder[npcTurn]].getY()));
-						combatLog.addToLog(chatText);
+						if(moveLog)combatLog.addToLog(chatText);
 					}
 					else
 					{
 						chatText = "NPC ";
 						chatText.append(std::to_string(turnOrder[npcTurn]));
 						chatText.append(" does not move.");
-						combatLog.addToLog(chatText);
+						if (moveLog)combatLog.addToLog(chatText);
 					}
 
 					//NPC Attack goes here
@@ -877,10 +877,10 @@ void logic::keyPressEvent(QKeyEvent *event)
 					}
 					if (chatText != "Nothing")
 					{
-						combatLog.addToLog(chatText);
+						if (attackLog)combatLog.addToLog(chatText);
 						if (!(ms.playerCharacter.getAlive()))
 						{
-							combatLog.addToLog("You have been defeated! Please start a new game!");
+							if (miscLog)combatLog.addToLog("You have been defeated! Please start a new game!");
 							gameplay = false;
 						}
 					}
@@ -902,7 +902,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 						playerMove = true;
 						playerSteps = 0;
 						chatText = "Player turn start!";
-						combatLog.addToLog(chatText);
+						if (miscLog)combatLog.addToLog(chatText);
 						textChange = true;
 						update(rect);
 					}
@@ -918,7 +918,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 					chatText.append(" Attack (A), Loot Item (L) or End Turn (E)");
 					playerMove = false;
 
-					combatLog.addToLog(chatText);
+					if (moveLog)combatLog.addToLog(chatText);
 					textChange = true;
 					update(rect);
 				}
@@ -940,11 +940,11 @@ void logic::keyPressEvent(QKeyEvent *event)
 					}
 					QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
 
-					combatLog.addToLog(chatText);
+					if (miscLog)combatLog.addToLog(chatText);
 					string combatString = "Weapon Damage: ";
 					combatString.append(std::to_string(ms.playerCharacter.getNumberOfWeaponDice())).append("d").append(std::to_string(ms.playerCharacter.getWeaponDice())).append("+").append(std::to_string(ms.playerCharacter.getDamageBonus()));
 					combatString.append(" Attack Roll: (d20)");
-					combatLog.addToLog(combatString);
+					if (miscLog)combatLog.addToLog(combatString);
 					textChange = true;
 					update(rect);
 				}
@@ -964,7 +964,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 						enemy = ms.getCharacter(adjX, adjY);
 					}
 					QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
-					combatLog.addToLog(attackMessage);
+					if (attackLog)combatLog.addToLog(attackMessage);
 
 					if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
 					{
@@ -991,12 +991,21 @@ void logic::keyPressEvent(QKeyEvent *event)
 							string chatText = "You looted a ";
 							chatText.append(sID);
 							chatText.append(".");
-							combatLog.addToLog(chatText);
+							if (miscLog)combatLog.addToLog(chatText);
 						}
-
 						addItems.close();
 
-						combatLog.addToLog("Enemy defeated!");
+						int enemyTurnIndex = 0;
+						for (int i = 0; i < ms.getNumberOfNPCs() + 1; i++)
+						{
+							if (enemy.npcUniqueID == turnOrder[i])
+							{
+								enemyTurnIndex = i;
+							}
+						}
+						turnOrder.erase(turnOrder.begin() + enemyTurnIndex);
+
+						if (miscLog)combatLog.addToLog("Enemy defeated!");
 						ms.removeNPC(enemy.getX(), enemy.getY());
 						start = true;
 						update();
@@ -1011,7 +1020,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 					fullAttack = false;
 					playerTurn = false;
 					playerAttacking = false;
-					combatLog.addToLog(chatText);
+					if (miscLog)combatLog.addToLog(chatText);
 					textChange = true;
 					update(rect);
 				}
@@ -1029,7 +1038,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 						enemy = ms.getCharacter(adjX, adjY);
 					}
 					QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
-					combatLog.addToLog(attackMessage);
+					if (attackLog)combatLog.addToLog(attackMessage);
 
 					if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
 					{
@@ -1056,12 +1065,22 @@ void logic::keyPressEvent(QKeyEvent *event)
 							string chatText = "You looted a ";
 							chatText.append(sID);
 							chatText.append(".");
-							combatLog.addToLog(chatText);
+							if (miscLog)combatLog.addToLog(chatText);
 						}
 
 						addItems.close();
 
-						combatLog.addToLog("Enemy defeated!");
+						int enemyTurnIndex = 0;
+						for (int i = 0; i < ms.getNumberOfNPCs() + 1; i++)
+						{
+							if (enemy.npcUniqueID == turnOrder[i])
+							{
+								enemyTurnIndex = i;
+							}
+						}
+						turnOrder.erase(turnOrder.begin() + enemyTurnIndex);
+
+						if (miscLog)combatLog.addToLog("Enemy defeated!");
 						ms.removeNPC(enemy.getX(), enemy.getY());
 						start = true;
 						update();
@@ -1076,7 +1095,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 					fullAttack = false;
 					playerTurn = false;
 					playerAttacking = false;
-					combatLog.addToLog(chatText);
+					if (miscLog)combatLog.addToLog(chatText);
 					textChange = true;
 					update(rect);
 				}
@@ -1094,7 +1113,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 						enemy = ms.getCharacter(adjX, adjY);
 					}
 					QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
-					combatLog.addToLog(attackMessage);
+					if (attackLog)combatLog.addToLog(attackMessage);
 
 					if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
 					{
@@ -1121,12 +1140,22 @@ void logic::keyPressEvent(QKeyEvent *event)
 							string chatText = "You looted a ";
 							chatText.append(sID);
 							chatText.append(".");
-							combatLog.addToLog(chatText);
+							if (miscLog)combatLog.addToLog(chatText);
 						}
 
 						addItems.close();
 
-						combatLog.addToLog("Enemy defeated!");
+						int enemyTurnIndex = 0;
+						for (int i = 0; i < ms.getNumberOfNPCs() + 1; i++)
+						{
+							if (enemy.npcUniqueID == turnOrder[i])
+							{
+								enemyTurnIndex = i;
+							}
+						}
+						turnOrder.erase(turnOrder.begin() + enemyTurnIndex);
+
+						if (miscLog)combatLog.addToLog("Enemy defeated!");
 						ms.removeNPC(enemy.getX(), enemy.getY());
 						start = true;
 						update();
@@ -1141,7 +1170,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 					fullAttack = false;
 					playerTurn = false;
 					playerAttacking = false;
-					combatLog.addToLog(chatText);
+					if (miscLog)combatLog.addToLog(chatText);
 					textChange = true;
 					update(rect);
 				}
@@ -1160,7 +1189,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 					}
 
 					QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
-					combatLog.addToLog(attackMessage);
+					if (attackLog)combatLog.addToLog(attackMessage);
 
 					if (enemy.getName() != "NULL" && !(enemy.getAlive()) && enemy.getDamageTaken())
 					{
@@ -1187,12 +1216,22 @@ void logic::keyPressEvent(QKeyEvent *event)
 							string chatText = "You looted a ";
 							chatText.append(sID);
 							chatText.append(".");
-							combatLog.addToLog(chatText);
+							if (miscLog)combatLog.addToLog(chatText);
 						}
 
 						addItems.close();
 
-						combatLog.addToLog("Enemy defeated!");
+						int enemyTurnIndex = 0;
+						for (int i = 0; i < ms.getNumberOfNPCs() + 1; i++)
+						{
+							if (enemy.npcUniqueID == turnOrder[i])
+							{
+								enemyTurnIndex = i;
+							}
+						}
+						turnOrder.erase(turnOrder.begin() + enemyTurnIndex);
+
+						if (miscLog)combatLog.addToLog("Enemy defeated!");
 						ms.removeNPC(enemy.getX(), enemy.getY());
 						start = true;
 						update();
@@ -1207,7 +1246,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 					fullAttack = false;
 					playerTurn = false;
 					playerAttacking = false;
-					combatLog.addToLog(chatText);
+					if (miscLog)combatLog.addToLog(chatText);
 					textChange = true;
 					update(rect);
 				}
@@ -1218,7 +1257,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				{
 					QRect rect(0, ms.getMaxY()*resolution, resolution * minXReso*resolution, 50 * 3);
 					string chatText = "You looted around you!";
-					combatLog.addToLog(chatText);
+					if (miscLog)combatLog.addToLog(chatText);
 					//Loot all around you
 					string itemUp = ms.lootItems(ms.getCurrentX(), ms.getCurrentY() - 1);
 					string itemDown = ms.lootItems(ms.getCurrentX(), ms.getCurrentY() + 1);
@@ -1237,7 +1276,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 					if (itemUp == "NULL" && itemDown == "NULL" && itemLeft == "NULL" && itemRight == "NULL")
 					{
 						chatText.append("You found nothing!");
-						combatLog.addToLog(chatText);
+						if (miscLog)combatLog.addToLog(chatText);
 					}
 					//Checks each item to display multiple found if at all
 					if (itemUp != "NULL")
@@ -1251,7 +1290,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 						chatText = "You found ";
 						chatText.append(sID);
 						chatText.append(".");
-						combatLog.addToLog(chatText);
+						if (miscLog)combatLog.addToLog(chatText);
 					}
 					if (itemDown != "NULL")
 					{
@@ -1264,7 +1303,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 						chatText = "You found ";
 						chatText.append(sID);
 						chatText.append(".");
-						combatLog.addToLog(chatText);
+						if (miscLog)combatLog.addToLog(chatText);
 					}
 					if (itemLeft != "NULL")
 					{
@@ -1277,7 +1316,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 						chatText = "You found ";
 						chatText.append(sID);
 						chatText.append(".");
-						combatLog.addToLog(chatText);
+						if (miscLog)combatLog.addToLog(chatText);
 					}
 					if (itemRight != "NULL")
 					{
@@ -1290,7 +1329,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 						chatText = "You found ";
 						chatText.append(sID);
 						chatText.append(".");
-						combatLog.addToLog(chatText);
+						if (miscLog)combatLog.addToLog(chatText);
 					}
 
 					addItems.close();
@@ -1302,7 +1341,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 					}
 					playerTurn = false;
 					playerAttacking = false;
-					combatLog.addToLog(chatText);
+					if (miscLog)combatLog.addToLog(chatText);
 					start = true;
 					update();
 				}
@@ -1319,7 +1358,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 					fullAttack = false;
 					playerTurn = false;
 					playerAttacking = false;
-					combatLog.addToLog(chatText);
+					if (miscLog)combatLog.addToLog(chatText);
 					textChange = true;
 					update(rect);
 				}
@@ -1339,7 +1378,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 							playerMove = false;
 						}
 
-						combatLog.addToLog(chatText);
+						if (moveLog)combatLog.addToLog(chatText);
 						textChange = true;
 						update(rect);
 
@@ -1359,7 +1398,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 								ms.setCurrentY(ms.getStartY());
 								
 								ms.playerCharacter.levelUp(1);
-								combatLog.addToLog("PLAYER LEVEL UP!");
+								if (miscLog)combatLog.addToLog("PLAYER LEVEL UP!");
 								textChange = true;
 								update(rect);
 
@@ -1396,6 +1435,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 							{
 								message.setText("Congratulations! You have reached the end of the campaign!");
 								message.exec();
+								gameplay = false;
 							}
 						}
 					}
@@ -1407,7 +1447,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				string startString = "Now entering ";
 				startString.append(ms.getName());
 				startString.append(".");
-				combatLog.addToLog(startString);
+				if (miscLog)combatLog.addToLog(startString);
 				npcTurn = 0;
 				int pcInit = ms.playerCharacter.getInitiative();
 				int roll = Dice::roll(1, 20, 0);
@@ -1419,7 +1459,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				chatText.append(std::to_string(roll + pcInit));
 				chatText.append(" for this map.");
 
-				combatLog.addToLog(chatText);
+				if (miscLog)combatLog.addToLog(chatText);
 				textChange = true;
 				update(rect);
 
@@ -1475,7 +1515,7 @@ void logic::keyPressEvent(QKeyEvent *event)
 				chatText = "You turn order: ";
 				chatText.append(std::to_string(pcPosition + 1));
 
-				combatLog.addToLog(chatText);
+				if (miscLog)combatLog.addToLog(chatText);
 				textChange = true;
 				update(rect);
 
@@ -1653,4 +1693,52 @@ void logic::setEnemyLevel(int amount)
 int logic::getPlayerLevel()
 {
 	return ms.playerCharacter.getLevel();
+}
+
+void logic::combatLogToggle()
+{
+	if (attackLog)
+	{
+		attackLog = false;
+		message.setText("Combat Text will no longer show!");
+		message.exec();
+	}
+	else
+	{
+		attackLog = true;
+		message.setText("Combat Text will now show!");
+		message.exec();
+	}
+}
+
+void logic::movementLogToggle()
+{
+	if (moveLog)
+	{
+		moveLog = false;
+		message.setText("Movement Text will no longer show!");
+		message.exec();
+	}
+	else
+	{
+		moveLog = true;
+		message.setText("Movement Text will now show!");
+		message.exec();
+	}
+}
+
+void logic::miscLogToggle()
+{
+	if (miscLog)
+	{
+		miscLog = false;
+		message.setText("Miscellaneous Text will no longer show!");
+		message.exec();
+	}
+	else
+	{
+		miscLog = true;
+		message.setText("Miscellaneous Text will now show!");
+		message.exec();
+	}
 }

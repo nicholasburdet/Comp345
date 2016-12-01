@@ -515,6 +515,7 @@ void MapScreen::loadFromFile(string filename)
 		characterEntities[x].setY(yP);
 		characterEntities[x].setType(nature); //This can be changed later
 		spaces[xP][yP].occupied = true;
+		characterEntities[x].npcUniqueID = x;
 	}
 
 	
@@ -718,7 +719,7 @@ bool MapScreen::npcMovement(int npcID, int destX, int destY)
 	int beginX = characterEntities[npcID].getX();
 	int beginY = characterEntities[npcID].getY();
 	//Dead NPCs may get changed to name DEAD to signify dead?
-	if (characterEntities[npcID].getName() != "DEAD" || characterEntities[npcID].getName() != "NULL")
+	if (characterEntities[npcID].getName() != "NULL")
 	{
 		int npcX = characterEntities[npcID].getX();
 		int npcY = characterEntities[npcID].getY();
@@ -879,7 +880,7 @@ string MapScreen::playerAttack(int sX, int sY, string dir, bool fullAttack)
 
 	while (!npcFound && rangeCheck <= weaponRange && !rangeError)
 	{
-		for (int i = 0; i < numberOfNPCs; i++)
+		for (int i = 0; i < numberOfNPCs+numberOfRemovedNPCs; i++)
 		{
 			if (characterEntities[i].getX() == sX && characterEntities[i].getY() == sY)
 			{

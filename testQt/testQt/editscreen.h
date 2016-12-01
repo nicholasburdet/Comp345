@@ -56,6 +56,10 @@ public slots:
 	void newItem();
 	void newGameMap();
 	////
+	void combatLogToggle();
+	void movementLogToggle();
+	void miscLogToggle();
+
 private:
 	logic *log;
 	character *newCharacter = new character();
@@ -83,6 +87,7 @@ private:
 	QMenu *characterCreatorMenu;
 	QMenu *gameMenu;
 	QMenu *viewControlsMenu;
+	QMenu *toggleLogView;
 
 	QAction *campaignMenuAction;
 	QAction *newCampaignAction;
@@ -108,6 +113,10 @@ private:
 	
 	QAction *viewBackpackAction;
 	QAction *viewWornItemsAction;
+
+	QAction *combatLogToggleAction;
+	QAction *movementLogToggleAction;
+	QAction *miscLogToggleAction;
 
 	////Item Action && Character movement
 	QAction *newItemAction;

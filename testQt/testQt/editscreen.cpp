@@ -102,6 +102,15 @@ editscreen::editscreen(char n[])
 	viewEnemyStatsAction = new QAction(tr("&View Enemy Stats (CONSOLE)"), this);
 	connect(viewEnemyStatsAction, SIGNAL(triggered()), this, SLOT(viewEnemyStats()));
 
+	combatLogToggleAction = new QAction(tr("&Toggle Combat Log"), this);
+	connect(combatLogToggleAction, SIGNAL(triggered()), this, SLOT(combatLogToggle()));
+
+	movementLogToggleAction = new QAction(tr("&Toggle Movement Log"), this);
+	connect(movementLogToggleAction, SIGNAL(triggered()), this, SLOT(movementLogToggle()));
+
+	miscLogToggleAction = new QAction(tr("&Toggle Misc Log"), this);
+	connect(miscLogToggleAction, SIGNAL(triggered()), this, SLOT(miscLogToggle()));
+
 	
 	//// VIEW INVENTORY AND WORN ITEMS
 
@@ -172,6 +181,11 @@ editscreen::editscreen(char n[])
 
 	viewControlsMenu = new QMenu(tr("View Controls"), this);
 	viewControlsMenu->addAction(viewControlsActions);
+
+	toggleLogView = new QMenu(tr("Toggle Log"), this);
+	toggleLogView->addAction(combatLogToggleAction);
+	toggleLogView->addAction(movementLogToggleAction);
+	toggleLogView->addAction(miscLogToggleAction);
 
 	editMenu->setFocusPolicy(Qt::NoFocus);
 	mapMenu->setFocusPolicy(Qt::NoFocus);
@@ -883,6 +897,21 @@ void editscreen::newGameMap()
 	loop.exec();
 }
 
+void editscreen::combatLogToggle()
+{
+	log->combatLogToggle();
+}
+
+void editscreen::movementLogToggle()
+{
+	log->movementLogToggle();
+}
+
+void editscreen::miscLogToggle()
+{
+	log->miscLogToggle();
+}
+
 //**********************************************
 //
 // GAME START IS HERE IN VIEW MAP
@@ -966,6 +995,7 @@ void editscreen::viewMap()
 	menuBar()->clear();
 	menuBar()->addMenu(gameMenu);
 	menuBar()->addMenu(viewControlsMenu);
+	menuBar()->addMenu(toggleLogView);
 
 	this->setFixedWidth(windowResX);
 	this->setFixedHeight((height*resolution) + addedHeight + windowDisplayHeightAdd);
@@ -974,7 +1004,7 @@ void editscreen::viewMap()
 
 void editscreen::viewControls()
 {
-	messageBox.setText("Use the arrow keys to move during your turn.\n-Can move up to player's movement speed-\n\nPress (N) to advance game when NPC(s) turn.\nDuring Player turn:\n(S) Stops player movement if any move is available.\n(E) Immediately Ends player turn.\n(A) Attack an enemy. (Functionality not fully implemented)\n(L) Loot an adjacent item or chest (Functionality not fully implemented)\n\nCan only do a full attack if the player has not moved.\n\nOnce attack (A) has been selected, pick a direction (arrows) to attack.\nRanged attacks need to be in line with target to attack.");
+	messageBox.setText("Use the arrow keys to move during your turn.\n-Can move up to player's movement speed-\n\nPress (N) to advance game when NPC(s) turn.\nDuring Player turn:\n(S) Stops player movement if any move is available.\n(E) Immediately Ends player turn.\n(A) Attack an enemy.\n(L) Loot an adjacent item.\n\nCan only do a full attack if the player has not moved.\n\nOnce attack (A) has been selected, pick a direction (arrows) to attack.\nRanged attacks need to be in line with target to attack.");
 	messageBox.exec();
 }
 

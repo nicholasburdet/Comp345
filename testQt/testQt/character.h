@@ -140,6 +140,8 @@ public:
 
 	equipment currentEquipment;
 
+	int npcUniqueID;
+
 	int getId();
 	string getName();
 	int getLevel();
