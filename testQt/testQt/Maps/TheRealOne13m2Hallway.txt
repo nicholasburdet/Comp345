@@ -152,9 +152,9 @@ space 11 9 1
 space 11 10 1
 space 11 11 1
 numberOfNPCs 4
-npcID 2 xPos 8 yPos 0
-npcID 1 xPos 5 yPos 11
-npcID 0 xPos 9 yPos 9
-npcID 0 xPos 7 yPos 7
+npcID 2 xPos 8 yPos 0 hostile
+npcID 1 xPos 5 yPos 11 hostile
+npcID 0 xPos 9 yPos 9 hostile
+npcID 0 xPos 7 yPos 7 hostile
 numberOfItems 1
 itemX 11 itemY 0 itemID 10

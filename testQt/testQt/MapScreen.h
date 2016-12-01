@@ -76,7 +76,7 @@ public:
 	void saveToFile();
 	void loadFromFile(string filename);
 	void loadNPCs();
-	bool addNPC(int id, int xPos, int yPos);
+	bool addNPC(int id, int xPos, int yPos, string npcType);
 	void removeNPC(int xPos, int yPos);
 	character characterTable[10]; //This is a table that holds each individual different type of NPC (for reference)
 	character characterEntities[100]; //This is a table of NPCS that exist on the map

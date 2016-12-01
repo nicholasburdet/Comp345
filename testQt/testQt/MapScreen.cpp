@@ -431,7 +431,7 @@ void MapScreen::saveToFile()
 	{
 		if (characterEntities[index].getName() != "NULL")
 		{
-			output << "npcID" << " " << characterEntities[index].getId() << " " << "xPos" << " " << characterEntities[index].getX() << " " << "yPos" << " " << characterEntities[index].getY() << endl;
+			output << "npcID" << " " << characterEntities[index].getId() << " " << "xPos" << " " << characterEntities[index].getX() << " " << "yPos" << " " << characterEntities[index].getY() << " " << characterEntities[index].getType() << endl;
 			count++;
 		}
 		index++;
@@ -505,13 +505,15 @@ void MapScreen::loadFromFile(string filename)
 
 	int i, xP, yP;
 
+	string nature;
+
 	for (int x = 0; x < numberOfNPCs; x++)
 	{
-		input >> type >> i >> type >> xP >> type >> yP;
+		input >> type >> i >> type >> xP >> type >> yP >> nature;
 		characterEntities[x] = characterTable[i];
 		characterEntities[x].setX(xP);
 		characterEntities[x].setY(yP);
-		characterEntities[x].setType("hostile"); //This can be changed later
+		characterEntities[x].setType(nature); //This can be changed later
 		spaces[xP][yP].occupied = true;
 	}
 
@@ -601,7 +603,7 @@ void MapScreen::loadNPCs(void)
 //This method adds an NPC onto the map, with its ID and position and adds them
 //to the entity table
 //NOTE: This is not for creating new NPCs
-bool MapScreen::addNPC(int id, int xPos, int yPos)
+bool MapScreen::addNPC(int id, int xPos, int yPos, string npcType)
 {
 	if (numberOfNPCs >= 100)
 	{
@@ -618,6 +620,7 @@ bool MapScreen::addNPC(int id, int xPos, int yPos)
 	characterEntities[i] = characterTable[id];
 	characterEntities[i].setX(xPos);
 	characterEntities[i].setY(yPos);
+	characterEntities[i].setType(npcType);
 	spaces[xPos][yPos].occupied = true;
 
 	return true;

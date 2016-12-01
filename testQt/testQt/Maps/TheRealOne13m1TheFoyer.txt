@@ -120,8 +120,8 @@ space 15 4 0
 space 15 5 0
 space 15 6 0
 numberOfNPCs 3
-npcID 0 xPos 13 yPos 0
-npcID 0 xPos 13 yPos 6
-npcID 0 xPos 10 yPos 3
+npcID 0 xPos 13 yPos 0 hostile
+npcID 0 xPos 13 yPos 6 hostile
+npcID 0 xPos 10 yPos 3 hostile
 numberOfItems 1
 itemX 6 itemY 3 itemID 8

@@ -11,6 +11,7 @@ Logic header file
 #define LOGIC_H
 
 #include <QPoint>
+#include <QDialog>
 #include <QWidget>
 #include "MapScreen.h"
 #include "player_Log.h"
@@ -118,6 +119,8 @@ class logic : public QWidget
 		int oldPlayerX;
 		int oldPlayerY;
 		string replace = "";
+
+		string npcType = "";
 
 		int wid;
 		int hei;

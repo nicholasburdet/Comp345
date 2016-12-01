@@ -304,7 +304,35 @@ void logic::mousePressEvent(QMouseEvent *event)
 									ms.removeNPC(currentX / resolution, currentY / resolution);
 									ms.removeItem(currentX / resolution, currentY / resolution);
 								}
-								ms.addNPC(npcId, currentX / resolution, currentY / resolution);
+								/////////////////////////////////////////
+								QDialog * d = new QDialog();
+								d->setWindowTitle("Friendly or hostile?");
+
+								QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
+									| QDialogButtonBox::Cancel);
+
+								QObject::connect(buttonBox, SIGNAL(accepted()), d, SLOT(accept()));
+								QObject::connect(buttonBox, SIGNAL(rejected()), d, SLOT(reject()));
+
+								buttonBox->button(QDialogButtonBox::Ok)->setText("Friendly");
+								buttonBox->button(QDialogButtonBox::Cancel)->setText("Hostile");
+
+								QVBoxLayout * vbox = new QVBoxLayout();
+
+								vbox->addWidget(buttonBox);
+								d->setLayout(vbox);
+
+								int result = d->exec();
+								if (result == QDialog::Accepted)
+								{
+									npcType = "friendly";
+								}
+								else
+								{
+									npcType = "hostile";
+								}
+								/////////////////////////////////////////
+								ms.addNPC(npcId, currentX / resolution, currentY / resolution, npcType);
 								drawNPC = true;
 								update(rect);
 							}
@@ -413,8 +441,8 @@ void logic::mousePressEvent(QMouseEvent *event)
 			else if ((currentY == (ms.getMaxY() * resolution) + resolution * 3) && currentX == 1 * resolution)
 			{
 				//Item chest container
-				currentTile = chest;
-				mode = 7;
+				//currentTile = chest;
+				//mode = 7;
 			}
 		}
 		else
@@ -587,7 +615,7 @@ void logic::paintEvent(QPaintEvent *event)
 			}
 			//Item buttons drawn here
 			painter.drawPixmap(0, yRes + resolution*3, resolution, resolution, item);
-			painter.drawPixmap(resolution * 1, yRes + resolution*3, resolution, resolution, chest);
+			//painter.drawPixmap(resolution * 1, yRes + resolution*3, resolution, resolution, chest);
 		}
 		else
 		{
@@ -1260,6 +1288,10 @@ void logic::keyPressEvent(QKeyEvent *event)
 			//This handles the code if player enters a map for the first time
 			else
 			{
+				string startString = "Now entering ";
+				startString.append(ms.getName());
+				startString.append(".");
+				combatLog.addToLog(startString);
 				npcTurn = 0;
 				int pcInit = ms.playerCharacter.getInitiative();
 				int roll = Dice::roll(1, 20, 0);

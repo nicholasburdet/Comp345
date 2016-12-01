@@ -127,17 +127,11 @@ editscreen::editscreen(char n[])
 	connect(menuCloseAction, SIGNAL(triggered()), this, SLOT(menuClose()));
 
 	editMenu = new QMenu(tr("&Main Menu"), this);
-	editMenu->addAction(campaignMenuAction);
-	
-
-	
-	//// Item Generator && Character Movement
-	editMenu->addAction(newItemAction);
-	editMenu->addAction(newMoveableMapAction);
-	////
-	
-	editMenu->addAction(characterMenuAction);
 	editMenu->addAction(viewMapAction);
+	editMenu->addAction(campaignMenuAction);
+	editMenu->addAction(newItemAction);
+	editMenu->addAction(characterMenuAction);
+	
 
 	mapMenu = new QMenu(tr("&Map File"), this);
 	mapMenu->addAction(newMapAction);

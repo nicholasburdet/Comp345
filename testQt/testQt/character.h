@@ -226,7 +226,7 @@ private:
 	bool alive = true;
 	int previousConstitutionBonus = 0;
 
-	string type = ""; //Will eventually be "player", "friendly" or "hostile"
+	string type = "hostile"; //Will eventually be "player", "friendly" or "hostile"
 
 	set<observer*, less<observer*>> observers;
 
