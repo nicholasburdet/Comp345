@@ -1,0 +1,2 @@
+HeroCampaign 20 numberOfMaps 1
+id 0 fname HeroCampaign20m0Thebridge.txt

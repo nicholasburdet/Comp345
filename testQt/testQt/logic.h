@@ -1,8 +1,15 @@
 /*
-Author: Nicholas Burdet
-Id: 29613773
+Team #8
+
+Authors:
+Nicholas Burdet
+Nathan Lacasse
+Shihao Ning
+Alexi Grondin
+
 Course: COMP 345
-Assignment 2 Part 3: Map
+
+Final Project Delivery
 
 Logic header file
 */

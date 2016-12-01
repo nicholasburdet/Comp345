@@ -1,12 +1,19 @@
 #pragma once
 
 /*
+Team #8
 
-Alexis Grondin
-ID:26639569
+Authors:
+Nicholas Burdet
+Nathan Lacasse
+Shihao Ning
+Alexi Grondin
 
-COMP 345 Assignment 3: Character Builder
+Course: COMP 345
 
+Final Project Delivery
+
+character header file
 
 */
 

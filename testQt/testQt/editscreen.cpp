@@ -1,16 +1,23 @@
 /*
-Author: Nicholas Burdet
-Id: 29613773
+Team #8
+
+Authors:
+Nicholas Burdet
+Nathan Lacasse
+Shihao Ning
+Alexi Grondin
+
 Course: COMP 345
-Assignment 2 Part 3: Map
+
+Final Project Delivery
 
 Editscreen cpp file
 
 This cpp file handles menu and window functionalities and calls the appropriate methods in the widget depending
 on user commands.
 
-Menu commands are generally handled here, allowing the user to choose between program options. This file will eventually
-serve as the UI controller for the entire game project for the most part
+Menu commands are generally handled here, allowing the user to choose between program options. This file
+serves as the UI controller for the entire game project for the most part
 */
 #include "editscreen.h"
 #include "itemContainer.h"
@@ -198,6 +205,7 @@ editscreen::editscreen(char n[])
 	createMainMenu();
 }
 
+//This slot handles the creation and editing of maps and campaigns
 void editscreen::editMap()
 {
 	bool ok1;
@@ -351,9 +359,7 @@ void editscreen::openMap()
 //// Creating a new Item
 void editscreen::newItem() 
 {
-
 	bool ok1;
-
 	
 	int armorClass = 1;
 	int enchantmentBonus = 0;
@@ -385,25 +391,18 @@ void editscreen::newItem()
 	//Currently has to be typed out -- at a later date it'll be a combo box to prevent errors and to improve the ux
 	//QString itemType = QInputDialog::getText(this, tr("Item Type"), tr("Enter Item Type: Helmet, Armor, Shield, Ring, Belt, Boots, Weapon"), QLineEdit::Normal, "", &ok1);
 	
-	
 	QString itemName = QInputDialog::getText(this, tr("Item Name"), tr("Give your item a Name!"), QLineEdit::Normal, "", &ok1);
-	
-
 	
 		//Make Id base on line number in file
 		string customItemsFile = "Resources/items.txt";
 	
-	
 		if (ok1) {
 
 			if (itemType == "Helmet") {
-
 				//enchantmentType
 				
 				enchants << tr("None") << tr("Intelligence") << tr("Wisdom") << tr("Constitution") << tr("Armor Class");
 				enchantmentType = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select Enchantment:"), enchants, 0, false, &ok1);
-
-
 
 				//enchantmentBonus if applicable	
 				if (enchantmentType != "") {
@@ -413,13 +412,11 @@ void editscreen::newItem()
 					enchantmentBonus = 0;
 				}
 
-
 				armorGrade = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select armor grade:"), armorList, 0, false, &ok1);
 
 			}
 			else if (itemType == "Armor" || itemType == "Shield") {
 				//armor and shield have the same potential bonuses
-
 
 				//enchantmentType
 			
@@ -437,13 +434,10 @@ void editscreen::newItem()
 
 			}
 			else if (itemType == "Ring") {
-
 				//enchantmentType
 				enchants << tr("None") << tr("Armor Class") << tr("Strength") << tr("Constitution") << tr("Wisdom") << tr("Charisma");
 				enchantmentType = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select Item enchantment:"), enchants, 0, false, &ok1);
 
-
-	
 				//enchantmentBonus if applicable	
 				if (enchantmentType != "None") {
 					enchantmentBonus = QInputDialog::getInt(this, "Enchantment Bonus", tr("Enter the enchantment bonus. Range: 1 - 5"), 1, 1, 5, 1, &ok1);
@@ -454,15 +448,11 @@ void editscreen::newItem()
 
 				armorGrade = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select armor grade:"), armorList, 0, false, &ok1);
 
-
 			}
 			else if (itemType == "Belt") {
-
-
 				//enchantmentType
 				enchants << tr("None")  << tr("Armor Class") << tr("Strength") << tr("Constitution") << tr("Wisdom") << tr("Charisma");
 				enchantmentType = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select Enchantment:"), enchants, 0, false, &ok1);
-
 
 				//enchantmentBonus if applicable	
 				if (enchantmentType != "None") {
@@ -611,6 +601,7 @@ void editscreen::menuClose()
 
 void editscreen::newCampaign()
 {
+	logicPersistence = false;
 	campaignCreation = true;
 	editMap();
 }
@@ -914,7 +905,7 @@ void editscreen::miscLogToggle()
 
 //**********************************************
 //
-// GAME START IS HERE IN VIEW MAP
+// THIS IS WHERE GAME START HAPPENS
 //
 //**********************************************
 void editscreen::viewMap()

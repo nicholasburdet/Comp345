@@ -1,3 +1,17 @@
+/**
+Team #8
+
+Authors:
+Nicholas Burdet
+Nathan Lacasse
+Shihao Ning
+Alexi Grondin
+
+Course: COMP 345
+
+Final Project Delivery
+*/
+
 #include "Dice.h"
 #include <iostream>
 #include <string>

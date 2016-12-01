@@ -1,12 +1,18 @@
 /*
-Author: Nicholas Burdet
-Id: 29613773
+Team #8
+
+Authors:
+Nicholas Burdet
+Nathan Lacasse
+Shihao Ning
+Alexi Grondin
+
 Course: COMP 345
-Assignment 2 Part 3: Map
 
-Map Screen header file
+Final Project Delivery
 
-Campaign functionality added in second update
+MapScreen header file
+
 */
 
 #pragma once

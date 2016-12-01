@@ -3,16 +3,19 @@
 
 /*
 
-Alexis Grondin
-ID:26639569
+Team #8
 
-COMP 345 Assignment 3: Character Builder
+Authors:
+Nicholas Burdet
+Nathan Lacasse
+Shihao Ning
+Alexi Grondin
 
-Added to this file: 
--GetAttackBonusLst returns a list of attack bonuses, given by the table (as provided in the requirement) plus an ability bonus (based on strength if using short-range weapon and dexterity otherwise)
--Data sanitation in setLevel
--Various others, unrelated to assignment requirements
+Course: COMP 345
 
+Final Project Delivery
+
+character cpp file
 
 */
 
@@ -191,6 +194,7 @@ string character::getClassName() {
 	return charClassName;
 }
 
+//Increases level by a set amount, mods HP in accordance
 int character::levelUp(int incAmount = 1) {
 	level = level+  incAmount;
 	HP = HP + getModifier(abilities.constitution)*incAmount + Dice::roll(incAmount, hitDice, 0);
@@ -342,6 +346,7 @@ int character::getWeaponRange()
 	return weaponRange;
 }
 
+//Reduces damage from character, sets to dead if below 0
 void character::takeDamage(int dmg)
 {
 	currentHP = currentHP - dmg;
@@ -351,6 +356,7 @@ void character::takeDamage(int dmg)
 	}
 }
 
+//Gets flag to see if damage was just taken (for use with logic)
 bool character::getDamageTaken()
 {
 	if (damageTaken)
@@ -542,11 +548,9 @@ void character::loadFromFile(string filepath)
 	}
 }
 
+//This will check the equipped items file and add the appropriate stats to the player
 void character::loadEquipment()
 {
-	//Potentially more robust for NPCs?
-	//Currently just for single player
-
 	string result;
 	string customItemsFile = "Resources/";
 	string nStr = name;
@@ -732,6 +736,7 @@ void character::loadEquipment()
 	currentEquipment.equipStrength = totalStr;
 }
 
+//This (using d20 rules) will check if the constitution changes after equipping and changes current HP accordingly
 void character::checkConstitutionChange()
 {
 	if (previousConstitutionBonus > currentEquipment.equipConstitution)

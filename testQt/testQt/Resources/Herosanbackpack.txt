@@ -13,3 +13,20 @@
 13|Boots|Heavy Metal Boots|None|0|Medium
 14|Helmet|Phaser Helm|Wisdom|3|Heavy
 22|Weapon|Godsword|Damage Bonus|5|1d1000
+6|Ring|Emerald Ring|Armor Class|0|Light
+16|Weapon|Broadsword|Damage Bonus|3|1d8
+14|Helmet|Phaser Helm|Wisdom|3|Heavy
+6|Ring|Emerald Ring|Armor Class|0|Light
+16|Weapon|Broadsword|Damage Bonus|3|1d8
+14|Helmet|Phaser Helm|Wisdom|3|Heavy
+6|Ring|Emerald Ring|Armor Class|0|Light
+16|Weapon|Broadsword|Damage Bonus|3|1d8
+14|Helmet|Phaser Helm|Wisdom|3|Heavy
+2|Armor|Half Platebody||0|Heavy
+3|Weapon|Sword||0|1d4
+8|Belt|Titanium Belt|Strength|1|Heavy
+8|Belt|Titanium Belt|Strength|1|Heavy
+3|Weapon|Sword||0|1d4
+8|Belt|Titanium Belt|Strength|1|Heavy
+3|Weapon|Sword||0|1d4
+8|Belt|Titanium Belt|Strength|1|Heavy

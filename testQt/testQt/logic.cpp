@@ -1,23 +1,17 @@
 /*
-Author: Nicholas Burdet
-Id: 29613773
+Team #8
+
+Authors:
+Nicholas Burdet
+Nathan Lacasse
+Shihao Ning
+Alexi Grondin
+
 Course: COMP 345
-Assignment 2 Part 3: Map
+
+Final Project Delivery
 
 Logic cpp file
-
-Using QT libraries, the map grid is painted to screen and the user mouse clicks
-and its coordinates are mapped and the system interprets those coordinates to determine
-what element they clicked.
-
-Mouse click event determines the space clicked in and sets the appropriate flag to true and
-invokes an update method to invoke the painter method. The painter method checks the flags
-to determine what steps it needs to take. Flags are reset upon handling for next event.
-
-NOTE: Mouse click and painter methods could be broken down into smaller methods to reduce code
-complexity.
-
-Second update now handles campaign functionality
 */
 
 #include <QtWidgets>

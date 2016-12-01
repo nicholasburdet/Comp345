@@ -1,18 +1,17 @@
 /*
-Author: Nicholas Burdet
-Id: 29613773
+Team #8
+
+Authors:
+Nicholas Burdet
+Nathan Lacasse
+Shihao Ning
+Alexi Grondin
+
 Course: COMP 345
-Assignment 2 Part 3: Map
+
+Final Project Delivery
 
 Map Screen cpp file
-
-Map Screen class holds the state of the generated map (its size, passable spaces,
-start and exit). Currently has a save function for potential multiple map entities
-in the main project. Also contains the method to check if a valid path exists from
-entrance to exit. Explanation of method's functionality listed below.
-
-Campaign functionality added, campaigns now have an ordered list of maps that flow
-one into the other.
 */
 
 
@@ -714,11 +713,13 @@ string MapScreen::getFilename()
 	return fName;
 }
 
+//with the npcID (their position in the array, not their distinct id) you can give a point
+//On the map (player or otherwise) and npcs will do their best to move as close to it as possible.
 bool MapScreen::npcMovement(int npcID, int destX, int destY)
 {
 	int beginX = characterEntities[npcID].getX();
 	int beginY = characterEntities[npcID].getY();
-	//Dead NPCs may get changed to name DEAD to signify dead?
+
 	if (characterEntities[npcID].getName() != "NULL")
 	{
 		int npcX = characterEntities[npcID].getX();
@@ -749,7 +750,6 @@ bool MapScreen::npcMovement(int npcID, int destX, int destY)
 			//Goes through the pathfinding array
 			for (int index = 0; index < pathfinding.size(); index++)
 			{
-				//CHECK IF ADDING TO ARRAY PATHFINDING WHILE ITERATING THROUGH IT CAUSES ISSUES
 				//If it sees a space with current steps - 1, we will check the adjacent squares if it is -1
 				if (pathfinding[index].stepsTaken == (i - 1))
 				{
@@ -854,6 +854,8 @@ void MapScreen::loadPlayerCharacter(string filename)
 	playerCharacter.loadFromFile(filename);
 }
 
+//Function for determining attack, it passes the direction and the (starting) point
+//at which the space the player is attacking (not the space the player is standing on)
 string MapScreen::playerAttack(int sX, int sY, string dir, bool fullAttack)
 {
 	string combatText = "";
@@ -995,6 +997,8 @@ string MapScreen::playerAttack(int sX, int sY, string dir, bool fullAttack)
 	return combatText;
 }
 
+//Function for determining NPC attack. Similar to PC except it checks around themselves
+//instead of a single direction.
 string MapScreen::npcAttack(int npcID, bool moved)
 {
 	string combatText = "Nothing";
