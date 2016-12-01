@@ -4,6 +4,11 @@
 5|Ring|Ruby Ring|Armor Class|2|Light
 8|Belt|Titanium Belt|Strength|1|Heavy
 9|Boots|Rugged boots||0|Heavy
-11|Weapon|Long Sword|Attack Bonus|2|1d122|Armor|Half Platebody||0|Heavy
+11|Weapon|Long Sword|Attack Bonus|2|1d12
 2|Armor|Half Platebody||0|Heavy
 2|Armor|Half Platebody||0|Heavy
+2|Armor|Half Platebody||0|Heavy
+3|Weapon|Sword||0|1d4
+12|Boots|Dexterity Boots|Dexteriy|3|Light
+13|Boots|Heavy Metal Boots|None|0|Medium
+14|Helmet|Phaser Helm|Wisdom|3|Heavy

@@ -1115,6 +1115,38 @@ void editscreen::viewWornItems()
 	QStringList bootsList;
 	QStringList weaponList;
 
+	string res;
+	string customItemsFile = "Resources/";
+	customItemsFile.append(playerFile);
+	customItemsFile.append("wornItems.txt");
+	ifstream equipInput(customItemsFile);
+
+	string values[7];
+	int coun = 0;
+
+	if (equipInput.is_open()) {
+		while (getline(equipInput, res))
+		{
+			values[coun] = res;
+			coun++;
+		}
+	}
+
+	int helmetC = 0;
+	int armorC = 0;
+	int shieldC = 0;
+	int ringC = 0;
+	int beltC = 0;
+	int bootsC = 0;
+	int weaponC = 0;
+
+	int helmets = 0;
+	int armors = 0;
+	int shields = 0;
+	int rings = 0;
+	int belts = 0;
+	int boots = 0;
+	int weapons = 0;
 
 	if (!myTextFile.open(QIODevice::ReadOnly))
 	{
@@ -1146,33 +1178,72 @@ void editscreen::viewWornItems()
 			newLine = newLine.substr(found + 1, newLine.length());
 			found = newLine.find("|");
 			newLine = newLine.substr(0, found);
-
-
+			
 			bool ok1;
 
+			string tempString = tempLine.toStdString();
+			tempString.erase(std::remove(tempString.begin(), tempString.end(), '\r'), tempString.end());
+			tempString.erase(std::remove(tempString.begin(), tempString.end(), '\n'), tempString.end());
+			tempLine = QString::fromStdString(tempString);
 			
-			
-			if (string(newLine) == "Helmet")
+			if (string(newLine) == "Helmet") {
 				helmetList.append(tempLine);
-
-			if (string(newLine) == "Armor")
+				if (tempLine.toStdString() == values[0])
+				{
+					helmetC = helmets;
+				}
+				helmets++;
+			}
+			if (string(newLine) == "Armor") {
 				armorList.append(tempLine);
-
-			if (string(newLine) == "Shield")
+				if (tempLine.toStdString() == values[1])
+				{
+					armorC = armors;
+				}
+				armors++;
+			}
+			if (string(newLine) == "Shield") {
 				shieldList.append(tempLine);
-
-			if (string(newLine) == "Ring")
+				if (tempLine.toStdString() == values[2])
+				{
+					shieldC = shields;
+				}
+				shields++;
+			}
+			if (string(newLine) == "Ring") {
 				ringList.append(tempLine);
-
-			if (string(newLine) == "Belt")
+				if (tempLine.toStdString() == values[3])
+				{
+					ringC = rings;
+				}
+				rings++;
+			}
+			if (string(newLine) == "Belt") {
 				beltList.append(tempLine);
-
-			if (string(newLine) == "Boots")
+				if (tempLine.toStdString() == values[4])
+				{
+					beltC = belts;
+				}
+				belts++;
+			}
+			if (string(newLine) == "Boots") {
 				bootsList.append(tempLine);
-
-			if (string(newLine) == "Weapon")
+				if (tempLine.toStdString() == values[5])
+				{
+					bootsC = boots;
+				}
+				boots++;
+			}
+			if (string(newLine) == "Weapon") {
 				weaponList.append(tempLine);
-
+				qDebug() << "HEEEERE " << tempLine << " | " << QString::fromStdString(values[6]);
+				if (tempLine.toStdString() == values[6])
+				{
+					qDebug() << "HERE???";
+					weaponC = weapons;
+				}
+				weapons++;
+			}
 		}
 
 		myTextFile.close();
@@ -1182,33 +1253,37 @@ void editscreen::viewWornItems()
 	QLabel *helmetLabel = new QLabel("Helmet");
 	QComboBox * comboBoxHelmet = new QComboBox();
 	comboBoxHelmet->addItems(helmetList);
-
+	comboBoxHelmet->setCurrentIndex(helmetC);
 
 	QLabel *armorLabel = new QLabel("Armor");
 	QComboBox * comboBoxArmor = new QComboBox();
 	comboBoxArmor->addItems(armorList);
+	comboBoxArmor->setCurrentIndex(armorC);
 
 	QLabel *shieldLabel = new QLabel("Shield");
 	QComboBox * comboBoxShield = new QComboBox();
 	comboBoxShield->addItems(shieldList);
+	comboBoxShield->setCurrentIndex(shieldC);
 
 	QLabel *ringLabel = new QLabel("Ring");
 	QComboBox * comboBoxRing = new QComboBox();
 	comboBoxRing->addItems(ringList);
+	comboBoxRing->setCurrentIndex(ringC);
 
 	QLabel *beltLabel = new QLabel("Belt");
 	QComboBox * comboBoxBelt = new QComboBox();
 	comboBoxBelt->addItems(beltList);
-
+	comboBoxBelt->setCurrentIndex(beltC);
 
 	QLabel *bootsLabel = new QLabel("Boots");
 	QComboBox * comboBoxBoots = new QComboBox();
 	comboBoxBoots->addItems(bootsList);
+	comboBoxBoots->setCurrentIndex(bootsC);
 
 	QLabel *weaponLabel = new QLabel("Weapon");
 	QComboBox * comboBoxWeapon = new QComboBox();
 	comboBoxWeapon->addItems(weaponList);
-
+	comboBoxWeapon->setCurrentIndex(weaponC);
 
 	QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
 		| QDialogButtonBox::Cancel);

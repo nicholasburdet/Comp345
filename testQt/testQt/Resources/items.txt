@@ -10,3 +10,6 @@
 9|Boots|Rugged boots||0|Heavy
 10|Shield|Large Shield|Armor Class|4|Medium
 11|Weapon|Long Sword|Attack Bonus|2|1d12
+12|Boots|Dexterity Boots|Dexteriy|3|Light
+13|Boots|Heavy Metal Boots|None|0|Medium
+14|Helmet|Phaser Helm|Wisdom|3|Heavy
