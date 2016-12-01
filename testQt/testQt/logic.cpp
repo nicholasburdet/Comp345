@@ -1237,7 +1237,6 @@ void logic::keyPressEvent(QKeyEvent *event)
 							character pc = ms.playerCharacter;
 							if (nextMap())
 							{
-								qDebug() << "ENDING MAP";
 								string file = Campaign.getMapFilename(Campaign.getCurrentMapId());
 								string extension = "Maps/";
 								//MapScreen newMap; //Should reimplement the map (possibly breaks stuff?)
@@ -1247,6 +1246,11 @@ void logic::keyPressEvent(QKeyEvent *event)
 								ms.setCurrentX(ms.getStartX());
 								ms.setCurrentY(ms.getStartY());
 								
+								ms.playerCharacter.levelUp(1);
+								combatLog.addToLog("PLAYER LEVEL UP!");
+								textChange = true;
+								update(rect);
+
 								int playerLevel = ms.playerCharacter.getLevel();
 								
 								if (playerLevel > 3)
