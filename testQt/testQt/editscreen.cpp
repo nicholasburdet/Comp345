@@ -465,7 +465,7 @@ void editscreen::newItem()
 
 				//enchantmentType
 
-				enchants << tr("None") << tr("Armor Class") << tr("Dexteriy");
+				enchants << tr("None") << tr("Armor Class") << tr("Dexterity");
 				enchantmentType = QInputDialog::getItem(this, tr("QInputDialog::getItem()"), tr("Select Enchantment:"), enchants, 0, false, &ok1);
 
 				

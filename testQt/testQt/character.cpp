@@ -548,7 +548,11 @@ void character::loadEquipment()
 	//Currently just for single player
 
 	string result;
-	string customItemsFile = "Resources/wornItems.txt";
+	string customItemsFile = "Resources/";
+	string nStr = name;
+	nStr.erase(std::remove(nStr.begin(), nStr.end(), ' '), nStr.end());
+	customItemsFile.append(nStr);
+	customItemsFile.append("wornItems.txt");
 	ifstream equipInput(customItemsFile);
 
 	if (equipInput.is_open()) {

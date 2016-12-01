@@ -9,6 +9,6 @@
 2|Armor|Half Platebody||0|Heavy
 2|Armor|Half Platebody||0|Heavy
 3|Weapon|Sword||0|1d4
-12|Boots|Dexterity Boots|Dexteriy|3|Light
+12|Boots|Dexterity Boots|Dexterity|3|Light
 13|Boots|Heavy Metal Boots|None|0|Medium
 14|Helmet|Phaser Helm|Wisdom|3|Heavy

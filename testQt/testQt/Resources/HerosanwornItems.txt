@@ -3,5 +3,5 @@
 7|Shield|Kiteshield|Armor Class|3|Heavy
 5|Ring|Ruby Ring|Armor Class|2|Light
 8|Belt|Titanium Belt|Strength|1|Heavy
-13|Boots|Heavy Metal Boots|None|0|Medium
+12|Boots|Dexterity Boots|Dexterity|3|Light
 11|Weapon|Long Sword|Attack Bonus|2|1d12
